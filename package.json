@@ -1,0 +1,31 @@
+{
+  "name": "onfontready",
+  "version": "0.0.1",
+  "description": "Browser-based font load and parse detection with minimal size and maximum compatibility.",
+  "main": "onfontready.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dwighthouse/onfontready.git"
+  },
+  "keywords": [
+    "font",
+    "webfont",
+    "ready",
+    "fout",
+    "foit",
+    "foft"
+  ],
+  "author": {
+    "name": "Dwight House",
+    "email": "dwighthouse@gmail.com",
+    "url": "http://dwighthouse.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dwighthouse/onfontready/issues"
+  },
+  "homepage": "https://github.com/dwighthouse/onfontready"
+}
