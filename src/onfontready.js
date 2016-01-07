@@ -58,8 +58,8 @@ module.exports = function(fontName, onReady, options) {
         // Similarly, the `bottom` is set to 0 to ensure a vertical scrollbar
         //    will not appear no matter how tall the font is.
         // `obj` styles should more accurately use `display:block`.
-        box.style.cssText = 'display:inline-block;position:absolute;bottom:0;right:0;opacity:0;white-space:nowrap;font:100px ' + fallbackFont + ';' + (options.fontStyles || '');
-        obj.style.cssText = 'display:inline-block;position:absolute;bottom:0;right:0;width:100%;';
+        box.style.cssText = 'display:inline-block;position:absolute;bottom:0;right:110%;opacity:0;white-space:nowrap;font:100px ' + fallbackFont + ';' + (options.fontStyles || '');
+        obj.style.cssText = 'display:inline-block;position:absolute;bottom:0;right:110%;width:100%;';
 
         // How It Works
         // Some arbitrary, but representative text is used to give many
