@@ -1,14 +1,14 @@
 # onfontready
 Browser-based font load and parse detection with minimal size and maximum compatibility.
 
-**onfontready**
 
-* allows pages to become readable immediately by allowing complete control over when fonts display, allowing the [prevention of FOIT](https://www.filamentgroup.com/lab/font-events.html) or the creation of a more complex mid-load experience
-* is based on the concepts described in bramstein's [fontfaceobserver](https://github.com/bramstein/fontfaceobserver), but with a more efficient implementation based on Back Alley Coder's [Element Resize Detector](http://www.backalleycoder.com/2013/03/18/cross-browser-event-based-element-resize-detection/)
-* has no dependencies
-* compresses to just over 0.5 kb when gzipped, easily suitable for inlining into the HTML
-* is CommonJS compatible, but only works in a Browser context
-* partially tested on IE9+, Chrome, Firefox, Safari, and Opera
+### Features
+* Can be used to [prevent FOIT](https://www.filamentgroup.com/lab/font-events.html) or to create a more complex font loading experience
+* Ridiculous browser support (IE9+, Edge, Chrome, Firefox, Safari, Opera, plus IE6, IE7, and IE8 with `legacy` version)
+* Ludicrously small, at just 492 bytes (gzip -6), or 569 bytes (gzip -6) for the `legacy` version, GREAT for inlining
+* Completely unopinionated (simple callback model, no Promises or other polyfilled structures)
+* CommonJS compatible (but only works in a browser context)
+* No dependencies other than a browser context
 
 
 ### Install
@@ -36,12 +36,12 @@ In the CSS, describe the desired `@font-face`. Read [CSS-Tricks' Page on Font-Fa
 
 Or import a font with one of the many web font services, such as [Google Fonts](https://www.google.com/fonts).
 
-Include the `dist/onfontready.global.min.js` script in the HTML, either by adding it as a remote source...
+Include the `dist/onfontready.min.js` script in the HTML, either by adding it as a remote source...
 
 ```html
 <html>
 ...
-<script src="myScriptsLocation/onfontready.global.min.js"></script>
+<script src="js/onfontready.min.js"></script>
 </html>
 ```
 
@@ -51,15 +51,15 @@ or by inlining it.
 <html>
 ...
 <script>
-window.onfontready=function(t,e,n){function o(){}function i(){} ... (n.onTimeout||i)()},n.timeoutAfter)};
+// From js/onfontready.min.js
+window.onfontready=...;
 </script>
 </html>
 ```
 
-onfontready may also be included into an existing codebase using `require('onfontready')` (CommonJS syntax).
+`onfontready` may also be included into an existing codebase using `require('onfontready')` (CommonJS syntax).
 
-
-After onfontready is loaded on the page, call it with the appropriate options for the web font.
+After `onfontready` is loaded on the page, call it with the appropriate options for the web font.
 
 ```javascript
 window.onfontready('MyWebFont', function() {
@@ -70,7 +70,7 @@ window.onfontready('MyWebFont', function() {
         // additional fallback options
         document.documentElement.className += " fontNotLoaded";
     },
-    sampleText: 'MmOoIi|='
+    sampleText: 'Hello World'
 });
 ```
 
@@ -81,46 +81,70 @@ The `onReady` and `onTimeout` callbacks can be used to attach classes to the doc
     font-family: sans-serif;
 }
 
+.fontNotLoaded .fancyFontElement {
+    font-family: sans-serif;
+    color: #ddd;
+}
+
 .fontLoaded .fancyFontElement {
     font-family: 'MyWebFont', sans-serif;
 }
 ```
 
+This is the basic usage. More interesting patterns can make use of localStorage or cookies to optimize for second load, optimize for first load, or emulate font display behavior from previous browsers.
+
 
 ### API
 
-The onfontready function is attached to the `window` object unless required directly via CommonJS-style. It has two required arguments and one optional argument.
+The `onfontready` function is attached to the `window` object unless required directly via CommonJS-style. It has two required arguments and one optional argument.
 
 ```javascript
 onfontready(fontName, onReady, [options={}])
 ```
 
 * fontName - text name used in the `@font-face` declaration
-* onReady - function callback that will be called upon successful detection of the font's successful load and parse by the browser
+* onReady - function callback that will be called upon successful detection of the font's load and parse by the browser
 * options - an optional object with several settings
-  - options.sampleText - text string added to the test string (defaults to 'text/html'). If specifying a font that does not contain the characters in the default text string, sampleText must be specified to correctly detect the font load and parse. Failing to do so will result in a false negative, where the font may be ready, but onfontready may be unable to detect that it is ready.
-  - options.fontStyles - string of css styles to apply to the font such as `font-weight`, `font-style`, and `font-variant` to match with the usage when these options can change which @font-face is requested
-  - options.timeoutAfter - milliseconds to wait before giving up and calling the `options.onTimeout` callback. onfontready will wait indefinitely if `options.timeoutAfter` is unset or 0.
+  - options.sampleText - text string added to the test string (defaults to "onfontready"). If specifying a font that does not contain the characters in the default text string, sampleText must be specified to correctly detect the font load and parse. Failing to do so will result in a false negative, where the font may be ready, but `onfontready` may be unable to detect that it is ready.
+  - options.timeoutAfter - milliseconds to wait before giving up and calling the `options.onTimeout` callback. `onfontready` will wait indefinitely if `options.timeoutAfter` is unset or 0.
   - options.onTimeout - supplied callback called after `options.timeoutAfter` milliseconds have elapsed.
 
 
-### Build
+### Compression
+The code for `onfontready` has been [code-golfed](https://en.wikipedia.org/wiki/Code_golf) for gzip compression. There are numerous 'bad-practice' code structures and lots of seemingly unnecessary repetition. However, the code is designed to be as small as possible after running it through standard [UglifyJS2](https://github.com/mishoo/UglifyJS2) and then gzipping it. Standard gzip compression (usually level 6) was used when building the library. The code, in its current form, gzips to 492 bytes (or 569 bytes for `legacy` version) at standard gzip level 6. Using [zopfli](https://en.wikipedia.org/wiki/Zopfli), the smallest possible gzip-compatible size, creates a version at 489 bytes (or 558 bytes for `legacy` version). Read the comments in the source code to understand the various hacks and tricks used.
 
-onfontready is built with gulp and minified with uglify. Right now, the only command is `global` which creates the minified and unminified global versions of the script in the `dist/` folder.
 
-```
-gulp global
-```
+### Why?!
+I was attempting to build a website with a [size budget of less than 14KB gzipped](https://www.filamentgroup.com/lab/performance-rwd.html) for all HTML, CSS, JS, SVGs, and some inline images. I encountered the Known Issue (below) with inline SVGs, which prompted me to research font loading in detail. The library I had been using, [fontfaceobserver](https://github.com/bramstein/fontfaceobserver), while small, still accounts for over 1KB when gzipped, which was a huge dent in my size budget. Using ideas from Back Alley Coder's [Element Resize Detector](http://www.backalleycoder.com/2013/03/18/cross-browser-event-based-element-resize-detection/), font load detection can be done on any browser without resorting to setTimeout polling.
+
+
+### Considerations
+* Several missing features in IE6, IE7, and IE8 necessitate the use of the `legacy` version of `onfontready`. IE9+ and all modern browsers can use standard `onfontready`. If IE8 or lower support is desired, use the `legacy` version.
+* `onfontready` cannot be used to detect whether a generic named font-family is ready. These following fonts, and probably more, must be specified without quotes, but `onfontready` uses quotes to account for [fonts with exotic names or made up of reserved words](https://mathiasbynens.be/notes/unquoted-font-family). However, detecting such a font is usually unnecessary because they will already be ready, due to their special status in the browser.
+  * `serif`
+  * `sans-serif`
+  * `monospace`
+  * `fantasy`
+  * `cursive`
+  * `menu`
+  * `-apple-system`
+  * `BlinkMacSystemFont`
+  * others?
+* IE6 uses same-sized box glyphs for missing glyphs in custom fonts. False-positive calls to `onReady` may occur if a custom font is missing glyphs in the `options.sampleText`. There is no feasible fix, but this is incorrect library usage anyway.
+* IE7 uses serif font glyphs for missing glyphs in custom fonts, regardless of the specified fallback font. False-positive calls to `onReady` may occur if a custom font is missing glyphs in the `options.sampleText`. There is no feasible fix, but this is incorrect library usage anyway.
 
 
 ### Known Issues
 
-* A strange rendering bug can occur on Safari if this library is used and switches fonts if the page contains inline SVGs that use remote SVG resources containing either SVG masks or SVG filters AND the remote reference SVG is positioned absolute or fixed. [More detail here](https://github.com/bramstein/fontfaceobserver/issues/35).
-* IE8 and lower do not appear to work, though they should. More investigation is planned.
+A strange rendering bug can occur in Safari. The bug occurs if...
+
+1. A font is switched using `onfontready` during the page load process, and
+2. The page contains inline SVGs that use remote SVG resources containing either SVG masks or SVG filters, and
+3. The remote reference SVG is positioned absolute or fixed, then
+4. The custom font may either rendered as invisible or as the fallback font until the next browser repaint.
+
+[More details here](https://github.com/bramstein/fontfaceobserver/issues/35). This can be mitigated by applying `style="display:block;height:0"` to the inline SVG tag acting as the remote SVG, rather than trying to absolutely position it.
 
 
 ### Future Plans
-
-* onfontsready multi-font load test/callback
-* more testing, especially on legacy browsers
-* more compression, once the timing of DOM operations are properly understood
+* Add some recipes for how `onfontready` might be used for various font loading experiences

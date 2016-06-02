@@ -1,8 +1,8 @@
 // First 3 parameters are part of the API
 // Last 5 parameters are used as local variables and will be overwritten
-module.exports = function(fontName, onReady, options, startupIframe, shutdown, root, onTimeout, areEqual) {
+window.onfontready = function(fontName, onReady, options, startupIframe, shutdown, root, onTimeout, areEqual) {
 
-    if ('test' === process.env.NODE_ENV)
+    if ('test' === "production")
     {
         // A helper function that counts the creation and destruction of
         //   elements and event listeners for testing purposes
@@ -67,14 +67,14 @@ module.exports = function(fontName, onReady, options, startupIframe, shutdown, r
                             onReady(shutdown());
                         }
                     };
-                    if ('test' === process.env.NODE_ENV)
+                    if ('test' === "production")
                     {
                         window.onfontreadyTestReporter.increment(fontName, 'resize');
                     }
                 }
             }
         };
-        if ('test' === process.env.NODE_ENV)
+        if ('test' === "production")
         {
             window.onfontreadyTestReporter.increment(fontName, 'load');
         }
@@ -86,14 +86,14 @@ module.exports = function(fontName, onReady, options, startupIframe, shutdown, r
                 // Break the references to remove event listener
                 iframe.contentWindow.onresize = 0;
             }
-            if ('test' === process.env.NODE_ENV)
+            if ('test' === "production")
             {
                 window.onfontreadyTestReporter.decrement(fontName, 'resize');
             }
 
             // Break the references to remove event listener
             iframe.onload = 0;
-            if ('test' === process.env.NODE_ENV)
+            if ('test' === "production")
             {
                 window.onfontreadyTestReporter.decrement(fontName, 'load');
             }
@@ -109,7 +109,7 @@ module.exports = function(fontName, onReady, options, startupIframe, shutdown, r
         {
             // DEBUG: Comment to see the test elements on the page
             document.body.removeChild(root);
-            if ('test' === process.env.NODE_ENV)
+            if ('test' === "production")
             {
                 window.onfontreadyTestReporter.decrement(fontName, 'root');
             }
@@ -145,7 +145,7 @@ module.exports = function(fontName, onReady, options, startupIframe, shutdown, r
 
     // Combine assignment and insertion
     document.body.appendChild(root = document.createElement('div'));
-    if ('test' === process.env.NODE_ENV)
+    if ('test' === "production")
     {
         window.onfontreadyTestReporter.increment(fontName, 'root');
     }
