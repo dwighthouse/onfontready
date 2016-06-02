@@ -1,0 +1,192 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Modern Tests</title>
+
+<link href="../../tests/main/styles.css" rel="stylesheet">
+
+<p>Please clear or disable your browser's cache prior to running these tests.</p>
+
+<p><strong>Not compatible with IE6, IE7, or IE8</strong></p>
+
+<pre id="console"></pre>
+
+<button id="startButton">Start Tests</button>
+
+<table class="box">
+    <tr>
+        <td class="example f1">Font</td>
+        <td class="description">
+            <strong>Sanity Check</strong>
+            <br>
+            Does not use onfontready (susceptible to FOIT)
+            <br>
+            <em>Custom font should display</em>
+        </td>
+    </tr>
+</table>
+
+<table class="box">
+    <tr>
+        <td class="example f2">Font</td>
+        <td class="description">
+            <strong>Normal Usage</strong>
+            <br>
+            No options set; Indefinite wait
+            <br>
+            <em>Custom font should display</em>
+        </td>
+    </tr>
+</table>
+
+<table class="box">
+    <tr>
+        <td class="example arial">Font</td>
+        <td class="description">
+            <strong>Known Font</strong>
+            <br>
+            No options set; Indefinite wait
+            <br>
+            <em>Arial font should display</em>
+        </td>
+    </tr>
+</table>
+
+<table class="box">
+    <tr>
+        <td class="example f3">Font</td>
+        <td class="description">
+            <strong>Timeout Usage</strong>
+            <br>
+            1 millisecond timeout
+            <br>
+            <em>Fallback font (serif) should display</em>
+        </td>
+    </tr>
+</table>
+
+<table class="box">
+    <tr>
+        <td class="example f4">Font</td>
+        <td class="description">
+            <strong>Zero Timeout</strong>
+            <br>
+            0 millisecond timeout; Indefinite wait
+            <br>
+            <em>Custom font should display</em>
+        </td>
+    </tr>
+</table>
+
+<table class="box">
+    <tr>
+        <td class="example f5">Font</td>
+        <td class="description">
+            <strong>Missing Timeout Function</strong>
+            <br>
+            1 millisecond timeout; onTimeout function unset
+            <br>
+            <span style="color: #f33">Incorrect usage</span>
+            <br>
+            <em>Fallback font (serif) should display</em>
+        </td>
+    </tr>
+</table>
+
+<table class="box">
+    <tr>
+        <td class="example f8">Font</td>
+        <td class="description">
+            <strong>Missing Timeout</strong>
+            <br>
+            Timeout unset; onTimeout function set
+            <br>
+            <span style="color: #f33">Incorrect usage</span>
+            <br>
+            <em>Custom font should display</em>
+        </td>
+    </tr>
+</table>
+
+<table class="box">
+    <tr>
+        <td class="example f6">Font</td>
+        <td class="description">
+            <strong>Custom Sample Text</strong>
+            <br>
+            Indefinite wait
+            <br>
+            <em>Custom font should display</em>
+        </td>
+    </tr>
+</table>
+
+<table class="box">
+    <tr>
+        <td class="example f_Fo">Font</td>
+        <td class="description">
+            <strong>Custom Sample Text using Limited Font</strong>
+            <br>
+            Indefinite wait
+            <br>
+            <em>Custom font should display only for 'F' and 'o' in 'Font'</em>
+        </td>
+    </tr>
+</table>
+
+<table class="box">
+    <tr>
+        <td class="example f_Yu">Font</td>
+        <td class="description">
+            <strong>Custom Sample Text using Limited Font with Unsupported Glyphs</strong>
+            <br>
+            Indefinite wait
+            <br>
+            <span style="color: #f33">Incorrect usage</span>
+            <br>
+            <em>Fallback font (serif) should display, detection elements remain forever</em>
+        </td>
+    </tr>
+</table>
+
+<table class="box">
+    <tr>
+        <td class="example f7">Font</td>
+        <td class="description">
+            <strong>Custom Sample Text using Limited Font with Partially Supported Glyphs</strong>
+            <br>
+            Indefinite wait
+            <br>
+            <span style="color: #f33">Incorrect usage</span>
+            <br>
+            <em>Fallback font (serif) should display, detection elements remain forever</em>
+        </td>
+    </tr>
+</table>
+
+<table class="box">
+    <tr>
+        <td id="shutdownStateStatus" class="example shutdownStates">?</td>
+        <td class="description">
+            <strong>Shutdown States</strong>
+            <br>
+            Did the tests correctly shutdown, removing event listeners and DOM elements as expected?
+            <br>
+            Runs on a 5 second timeout. False negatives are possible if on slow connections.
+            <br>
+            <br>
+            <em>Output</em>
+            <br>
+            <pre id="shutdownStateOutput" style="white-space: pre;">?</pre>
+        </td>
+    </tr>
+</table>
+
+<script src="../../tests/main/builds/onfontready.js"></script>
+<script src="../../tests/main/helpers.js"></script>
+
+<script>
+
+document.getElementById('startButton').onclick = window.generateTestRunner(document.getElementById('startButton'), document.getElementById('shutdownStateStatus'), document.getElementById('shutdownStateOutput'));
+
+</script>

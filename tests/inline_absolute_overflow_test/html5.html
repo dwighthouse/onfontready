@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Inline Test</title>
+
+    <style>
+        .box {
+            font: 99px monospace;
+            white-space: nowrap;
+            background: #ddd;
+
+            display: inline-block;
+            zoom: 1;
+            *display: inline;
+
+            position: relative;
+        }
+
+        .wide {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: #f00;
+        }
+    </style>
+</head>
+
+<body>
+
+    <p>Browsers that support correct absolutely positioned elements within an inline-block will have a red line that is exactly as wide as the grey text box above it.</p>
+
+    <span class="box">
+        text box
+        <span class="wide"></span>
+    </span>
+
+</body>
+
+</html>
