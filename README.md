@@ -137,6 +137,7 @@ I was attempting to build a website with a [size budget of less than 14KB gzippe
 ### Known Issues
 
 A strange rendering bug can occur in Safari. The bug occurs if...
+
 1. A font is switched using `onfontready` during the page load process, and
 2. The page contains inline SVGs that use remote SVG resources containing either SVG masks or SVG filters, and
 3. The remote reference SVG is positioned absolute or fixed, then
