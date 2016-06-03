@@ -5,7 +5,7 @@ Browser-based font load and parse detection with minimal size and maximum compat
 ### Features
 * Can be used to [prevent FOIT](https://www.filamentgroup.com/lab/font-events.html) or to create a more complex font loading experience
 * Ridiculous browser support (IE9+, Edge, Chrome, Firefox, Safari, Opera, plus IE6, IE7, and IE8 with `legacy` version)
-* Ludicrously small, at just 492 bytes (gzip -6), or 569 bytes (gzip -6) for the `legacy` version, GREAT for inlining
+* Ludicrously small, at just 480 bytes (gzip -6), or 555 bytes (gzip -6) for the `legacy` version, GREAT for inlining
 * Completely unopinionated (simple callback model, no Promises or other polyfilled structures)
 * CommonJS compatible (but only works in a browser context)
 * No dependencies other than a browser context
@@ -111,7 +111,7 @@ onfontready(fontName, onReady, [options={}])
 
 
 ### Compression
-The code for `onfontready` has been [code-golfed](https://en.wikipedia.org/wiki/Code_golf) for gzip compression. There are numerous 'bad-practice' code structures and lots of seemingly unnecessary repetition. However, the code is designed to be as small as possible after running it through standard [UglifyJS2](https://github.com/mishoo/UglifyJS2) and then gzipping it. Standard gzip compression (usually level 6) was used when building the library. The code, in its current form, gzips to 492 bytes (or 569 bytes for `legacy` version) at standard gzip level 6. Using [zopfli](https://en.wikipedia.org/wiki/Zopfli), the smallest possible gzip-compatible size, creates a version at 489 bytes (or 558 bytes for `legacy` version). Read the comments in the source code to understand the various hacks and tricks used.
+The code for `onfontready` has been [code-golfed](https://en.wikipedia.org/wiki/Code_golf) for gzip compression. There are numerous 'bad-practice' code structures and lots of seemingly unnecessary repetition. However, the code is designed to be as small as possible after running it through standard [UglifyJS2](https://github.com/mishoo/UglifyJS2) and then gzipping it. Standard gzip compression (usually level 6) was used when building the library. The code, in its current form, gzips to 480 bytes (or 555 bytes for `legacy` version) at standard gzip level 6. Using [zopfli](https://en.wikipedia.org/wiki/Zopfli), the smallest possible gzip-compatible size, creates a version at 468 bytes (or 543 bytes for `legacy` version). Read the comments in the source code to understand the various hacks and tricks used.
 
 
 ### Why?!
