@@ -1,6 +1,24 @@
 // First 3 parameters are part of the API
 // Last 5 parameters are used as local variables and will be overwritten
-window.onfontready = function(fontName, onReady, options, startupIframe, shutdown, root, onTimeout, areEqual) {
+window.onfontready = function(fontName, onReady, options) {
+
+    // Ensure options is an object to prevent access errors
+    options = options || {};
+
+    // A 0 timeoutAfter will prevent the timeout functionality
+    if (options.timeoutAfter)
+    {
+        setTimeout(function(onTimeoutTemp) {
+            // shutdown breaks the onTimeout reference, so store a reference
+            onTimeoutTemp = onTimeout;
+
+            shutdown();
+            if (onTimeoutTemp)
+            {
+                onTimeoutTemp();
+            }
+        }, options.timeoutAfter);
+    }
 
     if ('test' === "production")
     {
@@ -40,37 +58,72 @@ window.onfontready = function(fontName, onReady, options, startupIframe, shutdow
         window.onfontreadyTestReporter = window.onfontreadyTestReporter || reporter();
     }
 
+    // Prevent reassignment from overwriting external API data
+    var onTimeout = options.onTimeout;
+
+    var root = document.createElement('div');
+
+    var shutdown = function() {
+        if (root)
+        {
+            // DEBUG: Comment to see the test elements on the page
+            document.body.removeChild(root);
+            if ('test' === "production")
+            {
+                window.onfontreadyTestReporter.decrement(fontName, 'root');
+            }
+        }
+
+        // Setting root to 0 prevents extra tests and shutdowns
+        // Setting onTimeout to 0 prevents scheduled timeout calls
+        //   The onTimeout function is checked before being called
+        // Combined assignment compresses better
+        onTimeout = root = 0;
+    };
+
     // Passing outerShutdown allows shutdown sequence in reverse order
     //   without variables or loops
-    startupIframe = function(iframe, outerShutdown) {
-        // The iframe is already positioned off the top-left of the page
-        //   Thus, the positive right and bottom offsets do not matter
-        // Most of the string is shared with the div styles below
-        iframe.style.cssText = 'position:absolute;right:999%;bottom:999%;width:100%';
-
+    var startupIframe = function(iframe, outerShutdown) {
         iframe.onload = function() {
             // Prevent onload startup if shutdown already called
             if (root)
             {
-                if (areEqual())
+                // Elements are positioned relative to right (999%)
+                //   We can determine equal widths by checking the left value
+                // Only dealing with left number values, so == equality is safe
+                // Only equality is checked, so `2 * x` should equal `y + z`
+                // Inlined equality check compresses better
+                // Looking up the childNodes each time compresses better
+                if (root.childNodes[0].getBoundingClientRect().left * 2 ==
+                    root.childNodes[1].getBoundingClientRect().left +
+                    root.childNodes[2].getBoundingClientRect().left)
                 {
                     // Two calls combined, shutdown is called first
                     onReady(shutdown());
                 }
-                else
-                {
-                    iframe.contentWindow.onresize = function() {
-                        // Prevent equality check if shutdown already called
-                        if (root && areEqual())
+            }
+
+            // If shutdown has already been called due to equality above
+            //   root will already be destroyed and this code won't run
+            if (root)
+            {
+                iframe.contentWindow.onresize = function() {
+                    // Prevent equality check if shutdown already called
+                    if (root)
+                    {
+                        // Inlined equality check compresses better
+                        if (root.childNodes[0].getBoundingClientRect().left * 2 ==
+                            root.childNodes[1].getBoundingClientRect().left +
+                            root.childNodes[2].getBoundingClientRect().left)
                         {
                             // Two calls combined, shutdown is called first
                             onReady(shutdown());
                         }
-                    };
-                    if ('test' === "production")
-                    {
-                        window.onfontreadyTestReporter.increment(fontName, 'resize');
                     }
+                };
+                if ('test' === "production")
+                {
+                    window.onfontreadyTestReporter.increment(fontName, 'resize');
                 }
             }
         };
@@ -102,49 +155,14 @@ window.onfontready = function(fontName, onReady, options, startupIframe, shutdow
             // This prevents the need to return or store a shutdown function
             outerShutdown();
         };
+
+        // The iframe is already positioned off the top-left of the page
+        //   Thus, the positive right and bottom offsets do not matter
+        // Most of the string is shared with the div styles below
+        iframe.style.cssText = 'position:absolute;right:999%;bottom:999%;width:100%';
     };
 
-    shutdown = function() {
-        if (root)
-        {
-            // DEBUG: Comment to see the test elements on the page
-            document.body.removeChild(root);
-            if ('test' === "production")
-            {
-                window.onfontreadyTestReporter.decrement(fontName, 'root');
-            }
-        }
-
-        // Setting root to 0 prevents extra tests and shutdowns
-        // Setting onTimeout to 0 prevents scheduled timeout calls
-        //   The onTimeout function is checked before being called
-        // Combined assignment compresses better
-        onTimeout = root = 0;
-    };
-
-    // Ensure options is an object to prevent access errors
-    options = options || {};
-
-    // Prevent reassignment from overwriting external API data
-    onTimeout = options.onTimeout;
-
-    // A 0 timeoutAfter will prevent the timeout functionality
-    if (options.timeoutAfter)
-    {
-        setTimeout(function(onTimeoutTemp) {
-            // shutdown breaks the onTimeout reference, so store a reference
-            onTimeoutTemp = onTimeout;
-
-            shutdown();
-            if (onTimeoutTemp)
-            {
-                onTimeoutTemp();
-            }
-        }, options.timeoutAfter);
-    }
-
-    // Combine assignment and insertion
-    document.body.appendChild(root = document.createElement('div'));
+    document.body.appendChild(root);
     if ('test' === "production")
     {
         window.onfontreadyTestReporter.increment(fontName, 'root');
@@ -172,25 +190,19 @@ window.onfontready = function(fontName, onReady, options, startupIframe, shutdow
                           (options.sampleText || 'onfontready') +
                      '</div>';
 
-    // Function definition down here because it improves compression
-    // Elements are positioned relative to right (999%)
-    //   Thus, we can determine equal widths by checking on the left value
-    // Only dealing with left number values, so == equality is safe
-    // Only equality is checked, so `2 * x` should equal `y + z`
-    // Looking up the childNodes each time compresses better
-    areEqual = function() {
-        return root.childNodes[0].getBoundingClientRect().left * 2 == 
-               root.childNodes[1].getBoundingClientRect().left +
-               root.childNodes[2].getBoundingClientRect().left;
-    };
-
     // Check if font is already loaded startup time
-    if (areEqual())
+    // Inlined equality check compresses better
+    if (root.childNodes[0].getBoundingClientRect().left * 2 ==
+        root.childNodes[1].getBoundingClientRect().left +
+        root.childNodes[2].getBoundingClientRect().left)
     {
         // Two calls combined, shutdown is called first
         onReady(shutdown());
     }
-    else
+
+    // If shutdown has already been called due to equality above
+    //   root will already be destroyed and this code won't run
+    if (root)
     {
         // Combine assignment and argument passing
         // Each element is only used once below, making assignment
