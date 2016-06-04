@@ -1,5 +1,4 @@
 // First 3 parameters are part of the API
-// Last 5 parameters are used as local variables and will be overwritten
 window.onfontready = function(fontName, onReady, options) {
 
     // Ensure options is an object to prevent access errors
@@ -8,7 +7,7 @@ window.onfontready = function(fontName, onReady, options) {
     // A 0 timeoutAfter will prevent the timeout functionality
     if (options.timeoutAfter)
     {
-        setTimeout(function(onTimeoutTemp) {
+        setTimeout(function(onTimeoutTemp, fakeParam1, fakeParam2) {
             // shutdown breaks the onTimeout reference, so store a reference
             onTimeoutTemp = onTimeout;
 
@@ -63,6 +62,26 @@ window.onfontready = function(fontName, onReady, options) {
 
     var root = document.createElement('div');
 
+    var tryFinish = function() {
+        // Prevent equality check if shutdown already called
+        if (root)
+        {
+            // Elements are positioned relative to right (999%)
+            //   We can determine equal widths by checking the left value
+            // Only dealing with left number values, so == equality is safe
+            // Only equality is checked, so `2 * x` should equal `y + z`
+            // Inlined equality check compresses better
+            // Looking up the childNodes each time compresses better
+            if (root.childNodes[0].getBoundingClientRect().left * 2 ==
+                root.childNodes[1].getBoundingClientRect().left +
+                root.childNodes[2].getBoundingClientRect().left)
+            {
+                // Two calls combined, shutdown is called first
+                onReady(shutdown());
+            }
+        }
+    };
+
     var shutdown = function() {
         if (root)
         {
@@ -78,49 +97,22 @@ window.onfontready = function(fontName, onReady, options) {
         // Setting onTimeout to 0 prevents scheduled timeout calls
         //   The onTimeout function is checked before being called
         // Combined assignment compresses better
-        onTimeout = root = 0;
+        root = onTimeout = 0;
     };
 
     // Passing outerShutdown allows shutdown sequence in reverse order
     //   without variables or loops
-    var startupIframe = function(iframe, outerShutdown) {
+    var startupIframe = function(iframe, outerShutdown, fakeParam1) {
         iframe.onload = function() {
-            // Prevent onload startup if shutdown already called
-            if (root)
-            {
-                // Elements are positioned relative to right (999%)
-                //   We can determine equal widths by checking the left value
-                // Only dealing with left number values, so == equality is safe
-                // Only equality is checked, so `2 * x` should equal `y + z`
-                // Inlined equality check compresses better
-                // Looking up the childNodes each time compresses better
-                if (root.childNodes[0].getBoundingClientRect().left * 2 ==
-                    root.childNodes[1].getBoundingClientRect().left +
-                    root.childNodes[2].getBoundingClientRect().left)
-                {
-                    // Two calls combined, shutdown is called first
-                    onReady(shutdown());
-                }
-            }
+            // Check if font is loaded at iframe onload time
+            tryFinish();
 
             // If shutdown has already been called due to equality above
             //   root will already be destroyed and this code won't run
             if (root)
             {
-                iframe.contentWindow.onresize = function() {
-                    // Prevent equality check if shutdown already called
-                    if (root)
-                    {
-                        // Inlined equality check compresses better
-                        if (root.childNodes[0].getBoundingClientRect().left * 2 ==
-                            root.childNodes[1].getBoundingClientRect().left +
-                            root.childNodes[2].getBoundingClientRect().left)
-                        {
-                            // Two calls combined, shutdown is called first
-                            onReady(shutdown());
-                        }
-                    }
-                };
+                // Check if font is loaded during iframe resize
+                iframe.contentWindow.onresize = tryFinish;
                 if ('test' === "production")
                 {
                     window.onfontreadyTestReporter.increment(fontName, 'resize');
@@ -134,26 +126,21 @@ window.onfontready = function(fontName, onReady, options) {
 
         // Reassign the shutdown function to new wrapped shutdown function
         shutdown = function() {
-            if (iframe.contentWindow)
-            {
-                // Break the references to remove event listener
-                iframe.contentWindow.onresize = 0;
-            }
             if ('test' === "production")
             {
                 window.onfontreadyTestReporter.decrement(fontName, 'resize');
-            }
-
-            // Break the references to remove event listener
-            iframe.onload = 0;
-            if ('test' === "production")
-            {
                 window.onfontreadyTestReporter.decrement(fontName, 'load');
             }
 
+            // Perform shutdown operation inside function call for compression
+            // Break the references to remove event listeners
+            // If the iframe.contentWindow is already gone,
+            //   perform reference break assignment to empty object
+            //   This is safe, and compresses better
+
             // The inner shutdown calls outerShutdown in reverse order
             // This prevents the need to return or store a shutdown function
-            outerShutdown();
+            outerShutdown(iframe.onload = (iframe.contentWindow || {}).onresize = 0);
         };
 
         // The iframe is already positioned off the top-left of the page
@@ -190,15 +177,8 @@ window.onfontready = function(fontName, onReady, options) {
                           (options.sampleText || 'onfontready') +
                      '</div>';
 
-    // Check if font is already loaded startup time
-    // Inlined equality check compresses better
-    if (root.childNodes[0].getBoundingClientRect().left * 2 ==
-        root.childNodes[1].getBoundingClientRect().left +
-        root.childNodes[2].getBoundingClientRect().left)
-    {
-        // Two calls combined, shutdown is called first
-        onReady(shutdown());
-    }
+    // Check if font is already loaded at startup time
+    tryFinish();
 
     // If shutdown has already been called due to equality above
     //   root will already be destroyed and this code won't run
