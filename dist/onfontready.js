@@ -7,14 +7,14 @@ window.onfontready = function(fontName, onReady, options) {
     // A 0 timeoutAfter will prevent the timeout functionality
     if (options.timeoutAfter)
     {
-        setTimeout(function(onTimeoutTemp, fakeParam1, fakeParam2) {
-            // shutdown breaks the onTimeout reference, so store a reference
-            onTimeoutTemp = onTimeout;
-
-            shutdown();
-            if (onTimeoutTemp)
+        setTimeout(function() {
+            if (root)
             {
-                onTimeoutTemp();
+                shutdown();
+                if (options.onTimeout)
+                {
+                    options.onTimeout();
+                }
             }
         }, options.timeoutAfter);
     }
@@ -57,9 +57,6 @@ window.onfontready = function(fontName, onReady, options) {
         window.onfontreadyTestReporter = window.onfontreadyTestReporter || reporter();
     }
 
-    // Prevent reassignment from overwriting external API data
-    var onTimeout = options.onTimeout;
-
     var root = document.createElement('div');
 
     var tryFinish = function() {
@@ -94,10 +91,7 @@ window.onfontready = function(fontName, onReady, options) {
         }
 
         // Setting root to 0 prevents extra tests and shutdowns
-        // Setting onTimeout to 0 prevents scheduled timeout calls
-        //   The onTimeout function is checked before being called
-        // Combined assignment compresses better
-        root = onTimeout = 0;
+        root = 0;
     };
 
     // Passing outerShutdown allows shutdown sequence in reverse order
