@@ -2,7 +2,7 @@
 
 ## [1.0.1] - 2016-06-03
 
-- Improved compression by 22 bytes (modern) and 26 bytes (legacy)
+- Improved compression by 25 bytes (modern) and 30 bytes (legacy)
 - Made modern and legacy versions more structurally similar
 - Updated README
 
