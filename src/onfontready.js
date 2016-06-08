@@ -54,7 +54,7 @@ module.exports = function(fontName, onReady, options) {
                 }
             };
         }
-        window.onfontreadyTestReporter = window.onfontreadyTestReporter || reporter();
+        window.testReporter = window.testReporter || reporter();
     }
 
     var root = document.createElement('div');
@@ -86,7 +86,7 @@ module.exports = function(fontName, onReady, options) {
             document.body.removeChild(root);
             if ('test' === process.env.NODE_ENV)
             {
-                window.onfontreadyTestReporter.decrement(fontName, 'root');
+                window.testReporter.decrement(fontName, 'root');
             }
         }
 
@@ -109,21 +109,21 @@ module.exports = function(fontName, onReady, options) {
                 iframe.contentWindow.onresize = tryFinish;
                 if ('test' === process.env.NODE_ENV)
                 {
-                    window.onfontreadyTestReporter.increment(fontName, 'resize');
+                    window.testReporter.increment(fontName, 'resize');
                 }
             }
         };
         if ('test' === process.env.NODE_ENV)
         {
-            window.onfontreadyTestReporter.increment(fontName, 'load');
+            window.testReporter.increment(fontName, 'load');
         }
 
         // Reassign the shutdown function to new wrapped shutdown function
         shutdown = function() {
             if ('test' === process.env.NODE_ENV)
             {
-                window.onfontreadyTestReporter.decrement(fontName, 'resize');
-                window.onfontreadyTestReporter.decrement(fontName, 'load');
+                window.testReporter.decrement(fontName, 'resize');
+                window.testReporter.decrement(fontName, 'load');
             }
 
             // Perform shutdown operation inside function call for compression
@@ -146,7 +146,7 @@ module.exports = function(fontName, onReady, options) {
     document.body.appendChild(root);
     if ('test' === process.env.NODE_ENV)
     {
-        window.onfontreadyTestReporter.increment(fontName, 'root');
+        window.testReporter.increment(fontName, 'root');
     }
 
     // DEBUG: Uncomment to see the test elements on the page

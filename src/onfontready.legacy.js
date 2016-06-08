@@ -54,7 +54,7 @@ module.exports = function(fontName, onReady, options) {
                 }
             };
         }
-        window.onfontreadyTestReporter = window.onfontreadyTestReporter || reporter();
+        window.testReporter = window.testReporter || reporter();
     }
 
     var root = document.createElement('div');
@@ -66,7 +66,7 @@ module.exports = function(fontName, onReady, options) {
             document.body.removeChild(root);
             if ('test' === process.env.NODE_ENV)
             {
-                window.onfontreadyTestReporter.decrement(fontName, 'root');
+                window.testReporter.decrement(fontName, 'root');
             }
         }
 
@@ -98,7 +98,7 @@ module.exports = function(fontName, onReady, options) {
                 }
                 if ('test' === process.env.NODE_ENV)
                 {
-                    window.onfontreadyTestReporter.increment(fontName, 'resize');
+                    window.testReporter.increment(fontName, 'resize');
                 }
             }
         };
@@ -114,7 +114,7 @@ module.exports = function(fontName, onReady, options) {
         }
         if ('test' === process.env.NODE_ENV)
         {
-            window.onfontreadyTestReporter.increment(fontName, 'load');
+            window.testReporter.increment(fontName, 'load');
         }
 
         // Reassign the shutdown function to new wrapped shutdown function
@@ -134,7 +134,7 @@ module.exports = function(fontName, onReady, options) {
                 }
                 if ('test' === process.env.NODE_ENV)
                 {
-                    window.onfontreadyTestReporter.decrement(fontName, 'resize');
+                    window.testReporter.decrement(fontName, 'resize');
                 }
             }
 
@@ -151,7 +151,7 @@ module.exports = function(fontName, onReady, options) {
             }
             if ('test' === process.env.NODE_ENV)
             {
-                window.onfontreadyTestReporter.decrement(fontName, 'load');
+                window.testReporter.decrement(fontName, 'load');
             }
 
             // The inner shutdown calls outerShutdown in reverse order
@@ -189,7 +189,7 @@ module.exports = function(fontName, onReady, options) {
     document.body.appendChild(root);
     if ('test' === process.env.NODE_ENV)
     {
-        window.onfontreadyTestReporter.increment(fontName, 'root');
+        window.testReporter.increment(fontName, 'root');
     }
 
     // DEBUG: Uncomment to see the test elements on the page

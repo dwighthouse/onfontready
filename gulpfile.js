@@ -46,7 +46,7 @@ gulp.task('legacy', function() {
         path.basename += '.min';
     }))
     .pipe(gulp.dest('./dist'))
-    .pipe(gzip({ gzipOptions: { level: 6 } }))
+    .pipe(gzip())
     .pipe(gulp.dest('./dist'));
 });
 
