@@ -1,6 +1,24 @@
 // First 3 parameters are part of the API
-// Last 6 parameters are used as local variables and will be overwritten
-module.exports = function(fontName, onReady, options, areEqual, onResize, shutdown, startupIframe, root, onTimeout) {
+module.exports = function(fontName, onReady, options) {
+
+    // Ensure options is an object to prevent access errors
+    options = options || {};
+
+    // A 0 timeoutAfter will prevent the timeout functionality
+    if (options.timeoutAfter)
+    {
+        setTimeout(function() {
+            // Prevent timeout after shutdown
+            if (root)
+            {
+                shutdown();
+                if (options.onTimeout)
+                {
+                    options.onTimeout();
+                }
+            }
+        }, options.timeoutAfter);
+    }
 
     if ('test' === process.env.NODE_ENV)
     {
@@ -37,81 +55,53 @@ module.exports = function(fontName, onReady, options, areEqual, onResize, shutdo
                 }
             };
         }
-        window.onfontreadyTestReporter = window.onfontreadyTestReporter || reporter();
+        window.testReporter = window.testReporter || reporter();
     }
 
-    // Parameter serifLeft is used as local varible
-    // Elements are positioned relative to right (999%)
-    //   Thus, we can determine equal widths by checking on the left value
-    // Only dealing with left number values, so == equality is safe
-    // Looking up the childNodes each time compresses better
-    areEqual = function(serifLeft) {
-        serifLeft = root.childNodes[0].childNodes[0].childNodes[0].childNodes[0].getBoundingClientRect().left;
-        return serifLeft == root.childNodes[1].childNodes[0].childNodes[0].childNodes[0].getBoundingClientRect().left &&
-               serifLeft == root.childNodes[2].childNodes[0].childNodes[0].childNodes[0].getBoundingClientRect().left; 
-    };
+    var root = document.createElement('div');
 
-    onResize = function() {
-        // Prevent equality check if shutdown already called
-        if (root && areEqual())
-        {
-            // Two calls combined, shutdown is called first
-            onReady(shutdown());
-        }
-    };
-
-    shutdown = function() {
+    var shutdown = function() {
+        // Prevent double-removal of root
         if (root)
         {
             // DEBUG: Comment to see the test elements on the page
             document.body.removeChild(root);
             if ('test' === process.env.NODE_ENV)
             {
-                window.onfontreadyTestReporter.decrement(fontName, 'root');
+                window.testReporter.decrement(fontName, 'root');
             }
         }
 
         // Setting root to 0 prevents extra tests and shutdowns
-        // Setting onTimeout to 0 prevents scheduled timeout calls
-        //   The onTimeout function is checked before being called
-        // Combined assignment compresses better
-        onTimeout = root = 0;
+        root = 0;
     };
 
     // IE6, IE7, and IE8 require attachEvent/detachEvent, not event assignment
     // Passing outerShutdown allows shutdown sequence in reverse order
     //   without variables or loops
     // Parameter onLoad is used as local variable
-    startupIframe = function(iframe, outerShutdown, onLoad) {
-        // The iframe is already positioned off the top-left of the page
-        //   Thus, the positive right and bottom offsets do not matter
-        // The 999% percentages allow strings to be shared with the tables
-        iframe.style.cssText = 'position:absolute;right:999%;bottom:999%;width:100%';
-
+    var startupIframe = function(iframe, outerShutdown, onLoad) {
         onLoad = function() {
-            // Prevent onload startup if shutdown already called
+            // Check if font is loaded at iframe onload time
+            tryFinish();
+
+            // If shutdown has already been called due to equality above
+            //   root will already be destroyed and this code won't run
             if (root)
             {
-                if (areEqual())
+                // Check if font is loaded during iframe resize
+                // Inlining compresses better than separate function
+                if (iframe.contentWindow.attachEvent)
                 {
-                    // Two calls combined, shutdown is called first
-                    onReady(shutdown());
+                    iframe.contentWindow.attachEvent('onresize', tryFinish);
                 }
                 else
                 {
-                    // Inlining compresses better than separate function
-                    if (iframe.contentWindow.attachEvent)
-                    {
-                        iframe.contentWindow.attachEvent('onresize', onResize);
-                    }
-                    else
-                    {
-                        iframe.contentWindow.onresize = onResize;
-                    }
-                    if ('test' === process.env.NODE_ENV)
-                    {
-                        window.onfontreadyTestReporter.increment(fontName, 'resize');
-                    }
+                    iframe.contentWindow.onresize = tryFinish;
+                }
+                if ('test' === process.env.NODE_ENV)
+                {
+                    window.testReporter.increment(fontName, 'resize');
                 }
             }
         };
@@ -127,7 +117,7 @@ module.exports = function(fontName, onReady, options, areEqual, onResize, shutdo
         }
         if ('test' === process.env.NODE_ENV)
         {
-            window.onfontreadyTestReporter.increment(fontName, 'load');
+            window.testReporter.increment(fontName, 'load');
         }
 
         // Reassign the shutdown function to new wrapped shutdown function
@@ -138,7 +128,7 @@ module.exports = function(fontName, onReady, options, areEqual, onResize, shutdo
                 // If attachEvent exists, so does detactEvent
                 if (iframe.contentWindow.attachEvent)
                 {
-                    iframe.contentWindow.detachEvent('onresize', onResize);
+                    iframe.contentWindow.detachEvent('onresize', tryFinish);
                 }
                 else
                 {
@@ -147,7 +137,7 @@ module.exports = function(fontName, onReady, options, areEqual, onResize, shutdo
                 }
                 if ('test' === process.env.NODE_ENV)
                 {
-                    window.onfontreadyTestReporter.decrement(fontName, 'resize');
+                    window.testReporter.decrement(fontName, 'resize');
                 }
             }
 
@@ -164,41 +154,43 @@ module.exports = function(fontName, onReady, options, areEqual, onResize, shutdo
             }
             if ('test' === process.env.NODE_ENV)
             {
-                window.onfontreadyTestReporter.decrement(fontName, 'load');
+                window.testReporter.decrement(fontName, 'load');
             }
 
             // The inner shutdown calls outerShutdown in reverse order
             // This prevents the need to return or store a shutdown function
             outerShutdown();
         };
+
+        // The iframe is already positioned off the top-left of the page
+        //   Thus, the positive right and bottom offsets do not matter
+        // Most of the string is shared with the styles below
+        iframe.style.cssText = 'position:absolute;right:999%;bottom:999%;width:100%';
     };
 
-    // Ensure options is an object to prevent access errors
-    options = options || {};
-
-    // Prevent reassignment from overwriting external API data
-    onTimeout = options.onTimeout;
-
-    // A 0 timeoutAfter will prevent the timeout functionality
-    if (options.timeoutAfter)
-    {
-        setTimeout(function(onTimeoutTemp) {
-            // shutdown breaks the onTimeout reference, so store a reference
-            onTimeoutTemp = onTimeout;
-
-            shutdown();
-            if (onTimeoutTemp)
+    var tryFinish = function() {
+        // Prevent equality check if shutdown already called
+        if (root)
+        {
+            // Elements are positioned relative to right (999%)
+            //   We can determine equal widths by checking the left value
+            // Only dealing with left number values, so == equality is safe
+            // Only equality is checked, so `2 * x` should equal `y + z`
+            // Looking up the childNodes each time compresses better
+            if (root.childNodes[0].childNodes[0].childNodes[0].childNodes[0].getBoundingClientRect().left * 2 ==
+                root.childNodes[1].childNodes[0].childNodes[0].childNodes[0].getBoundingClientRect().left +
+                root.childNodes[2].childNodes[0].childNodes[0].childNodes[0].getBoundingClientRect().left)
             {
-                onTimeoutTemp();
+                // Two calls combined, shutdown is called first
+                onReady(shutdown());
             }
-        }, options.timeoutAfter);
-    }
+        }
+    };
 
-    // Combine assignment and insertion
-    document.body.appendChild(root = document.createElement('div'));
+    document.body.appendChild(root);
     if ('test' === process.env.NODE_ENV)
     {
-        window.onfontreadyTestReporter.increment(fontName, 'root');
+        window.testReporter.increment(fontName, 'root');
     }
 
     // DEBUG: Uncomment to see the test elements on the page
@@ -233,13 +225,12 @@ module.exports = function(fontName, onReady, options, areEqual, onResize, shutdo
                               (options.sampleText || 'onfontready') +
                      '</table>';
 
-    // Check if font is already loaded startup time
-    if (areEqual())
-    {
-        // Two calls combined, shutdown is called first
-        onReady(shutdown());
-    }
-    else
+    // Check if font is already loaded at startup time
+    tryFinish();
+
+    // If shutdown has already been called due to equality above
+    //   root will already be destroyed and this code won't run
+    if (root)
     {
         // Combine assignment and argument passing
         // Each element is only used once below, making assignment

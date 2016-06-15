@@ -162,7 +162,7 @@ window.generateTestRunner = function(startButton, shutdownStateStatus, shutdownS
         window.addFontFace('f7', '../../tests/main/custom_fonts/f7', 'comfortaalight');
 
         setTimeout(function() {
-            var fullReport = window.onfontreadyTestReporter.fullReport();
+            var fullReport = window.testReporter.fullReport();
             var hasStandardError = false;
 
             var fonts = ['Arial', 'f2', 'f3', 'f4', 'f5', 'f6', 'f8', 'f_Fo'];

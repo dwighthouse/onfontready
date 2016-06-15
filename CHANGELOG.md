@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.0.1] - 2016-06-14
+
+- Improved compression by 25 bytes (modern) and 30 bytes (legacy)
+- Made modern and legacy versions more structurally similar
+- Updated README
+
 ## [1.0.0] - 2016-06-02
 
 ### Possibly Breaking Changes
