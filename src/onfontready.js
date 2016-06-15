@@ -1,4 +1,3 @@
-// First 3 parameters are part of the API
 module.exports = function(fontName, onReady, options) {
 
     // Ensure options is an object to prevent access errors
@@ -8,6 +7,7 @@ module.exports = function(fontName, onReady, options) {
     if (options.timeoutAfter)
     {
         setTimeout(function() {
+            // Prevent timeout after shutdown
             if (root)
             {
                 shutdown();
@@ -67,7 +67,6 @@ module.exports = function(fontName, onReady, options) {
             //   We can determine equal widths by checking the left value
             // Only dealing with left number values, so == equality is safe
             // Only equality is checked, so `2 * x` should equal `y + z`
-            // Inlined equality check compresses better
             // Looking up the childNodes each time compresses better
             if (root.childNodes[0].getBoundingClientRect().left * 2 ==
                 root.childNodes[1].getBoundingClientRect().left +
@@ -80,6 +79,7 @@ module.exports = function(fontName, onReady, options) {
     };
 
     var shutdown = function() {
+        // Prevent double-removal of root
         if (root)
         {
             // DEBUG: Comment to see the test elements on the page
@@ -96,6 +96,8 @@ module.exports = function(fontName, onReady, options) {
 
     // Passing outerShutdown allows shutdown sequence in reverse order
     //   without variables or loops
+    // fakeParam1 is added to improve compression, gaining the same
+    //   signature text as the outer closure function at the top
     var startupIframe = function(iframe, outerShutdown, fakeParam1) {
         iframe.onload = function() {
             // Check if font is loaded at iframe onload time
@@ -139,7 +141,7 @@ module.exports = function(fontName, onReady, options) {
 
         // The iframe is already positioned off the top-left of the page
         //   Thus, the positive right and bottom offsets do not matter
-        // Most of the string is shared with the div styles below
+        // Most of the string is shared with the styles below
         iframe.style.cssText = 'position:absolute;right:999%;bottom:999%;width:100%';
     };
 

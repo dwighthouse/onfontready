@@ -8,6 +8,7 @@ module.exports = function(fontName, onReady, options) {
     if (options.timeoutAfter)
     {
         setTimeout(function() {
+            // Prevent timeout after shutdown
             if (root)
             {
                 shutdown();
@@ -60,6 +61,7 @@ module.exports = function(fontName, onReady, options) {
     var root = document.createElement('div');
 
     var shutdown = function() {
+        // Prevent double-removal of root
         if (root)
         {
             // DEBUG: Comment to see the test elements on the page
@@ -87,6 +89,7 @@ module.exports = function(fontName, onReady, options) {
             //   root will already be destroyed and this code won't run
             if (root)
             {
+                // Check if font is loaded during iframe resize
                 // Inlining compresses better than separate function
                 if (iframe.contentWindow.attachEvent)
                 {
@@ -161,7 +164,7 @@ module.exports = function(fontName, onReady, options) {
 
         // The iframe is already positioned off the top-left of the page
         //   Thus, the positive right and bottom offsets do not matter
-        // The 999% percentages allow strings to be shared with the tables
+        // Most of the string is shared with the styles below
         iframe.style.cssText = 'position:absolute;right:999%;bottom:999%;width:100%';
     };
 
@@ -173,9 +176,7 @@ module.exports = function(fontName, onReady, options) {
             //   We can determine equal widths by checking the left value
             // Only dealing with left number values, so == equality is safe
             // Only equality is checked, so `2 * x` should equal `y + z`
-            // Inlined equality check compresses better
             // Looking up the childNodes each time compresses better
-            // Inlined equality check compresses better
             if (root.childNodes[0].childNodes[0].childNodes[0].childNodes[0].getBoundingClientRect().left * 2 ==
                 root.childNodes[1].childNodes[0].childNodes[0].childNodes[0].getBoundingClientRect().left +
                 root.childNodes[2].childNodes[0].childNodes[0].childNodes[0].getBoundingClientRect().left)
