@@ -11,14 +11,11 @@ window.onfontready = function(fontName, onReady, options) {
             if (root)
             {
                 // Shutdown should occur whether onTimeout exists or not
-                shutdown();
-
-                // This will not protect against assigning onTimeout to a
-                //   non-function, only lack of assignment (falsy values)
-                if (options.onTimeout)
-                {
-                    options.onTimeout();
-                }
+                // Two calls combined, shutdown is called first
+                // onTimeout should not be called if undefined in options
+                //   Since shutdown called a second time is effectively a
+                //   no-op, use that as a default function
+                (options.onTimeout || shutdown)(shutdown());
             }
         }, options.timeoutAfter);
     }
@@ -61,20 +58,20 @@ window.onfontready = function(fontName, onReady, options) {
         window.testReporter = window.testReporter || reporter();
     }
 
-    var root;
+    var root = document.createElement('div');
 
+    var serifWidth;
     var tryFinish = function() {
         // Prevent equality check if shutdown already called
         if (root)
         {
-            // Elements are positioned relative to right (999%)
-            //   We can determine equal widths by checking the left value
-            // Only dealing with left number values, so == equality is safe
-            // Only equality is checked, so `2 * x` should equal `y + z`
+            // Saving off the serifWidth and comparing directly to each other
+            //   is more accurate and much smaller than getBoundingClientRect
+            //   However, it will round widths to nearest integer
+            //   This should be safe due to the large size of the fonts
             // Looking up the childNodes each time compresses better
-            if (root.childNodes[0].getBoundingClientRect().left * 2 ==
-                root.childNodes[1].getBoundingClientRect().left +
-                root.childNodes[2].getBoundingClientRect().left)
+            if ((serifWidth = root.childNodes[0].clientWidth) == root.childNodes[1].clientWidth &&
+                serifWidth == root.childNodes[2].clientWidth)
             {
                 // Two calls combined, shutdown is called first
                 onReady(shutdown());
@@ -178,21 +175,21 @@ window.onfontready = function(fontName, onReady, options) {
     // It is more compressable to assign root here (oddly)
     // The return value of appendChild is the appended element,
     //   so the innerHTML assignment can be done immediately
-    document.body.appendChild(root = document.createElement('div')).innerHTML =
-        '<div style="position:fixed;right:999%;bottom:999%;white-space:nowrap;font:999% \'' + fontName + '\',serif">' +
+    document.body.appendChild(root).innerHTML =
+        '<div style="font:999% \'' + fontName + '\',serif;position:fixed;right:999%;bottom:999%;white-space:pre">' +
             (options.sampleText || 'onfontready') +
         '</div>' +
-        '<div style="position:fixed;right:999%;bottom:999%;white-space:nowrap;font:999% \'' + fontName + '\',sans-serif">' +
+        '<div style="font:999% \'' + fontName + '\',sans-serif;position:fixed;right:999%;bottom:999%;white-space:pre">' +
             (options.sampleText || 'onfontready') +
         '</div>' +
-        '<div style="position:fixed;right:999%;bottom:999%;white-space:nowrap;font:999% \'' + fontName + '\',monospace">' +
+        '<div style="font:999% \'' + fontName + '\',monospace;position:fixed;right:999%;bottom:999%;white-space:pre">' +
             (options.sampleText || 'onfontready') +
         '</div>';
     // -Unapplied Compressions-
     // Modern browsers (except Edge and IE12) can allow the space between
     //   999% and the quote for the font name to be removed
     // Using <pre> tags instead of <div> tags would allow us to ignore
-    //   white-space:nowrap in modern browsers, and compress much better,
+    //   white-space:pre in modern browsers, and compress much better,
     //   but this is more likely to interfere with user's page styles
 
     if ('test' === "production")
