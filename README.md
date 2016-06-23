@@ -5,7 +5,7 @@ Browser-based font load and parse detection with minimal size and maximum compat
 ### Features
 * Can be used to [prevent FOIT](https://www.filamentgroup.com/lab/font-events.html) or to create a more complex font loading experience
 * Ridiculous browser support (IE9+, Edge, Chrome, Firefox, Safari, Opera, plus IE6, IE7, and IE8 with `legacy` version)
-* Ludicrously small, at just 467 bytes (gzip -6), or 539 bytes (gzip -6) for the `legacy` version, GREAT for inlining
+* Ludicrously small, at just 417 bytes (gzip -6), or 498 bytes (gzip -6) for the `legacy` version, GREAT for inlining
 * Completely unopinionated (simple callback model, no Promises or other polyfilled structures)
 * CommonJS compatible (but only works in a browser context)
 * No dependencies other than a browser context
@@ -111,15 +111,16 @@ onfontready(fontName, onReady, [options={}])
 
 
 ### Compression
-The code for `onfontready` has been [code-golfed](https://en.wikipedia.org/wiki/Code_golf) for gzip compression. There are numerous 'bad-practice' code structures and lots of seemingly unnecessary repetition. However, the code is designed to be as small as possible after running it through standard [UglifyJS2](https://github.com/mishoo/UglifyJS2) and then gzipping it. Standard gzip compression (usually level 6) was used when building the library. The code, in its current form, gzips to 467 bytes (or 539 bytes for `legacy` version) at standard gzip level 6. Using [zopfli](https://en.wikipedia.org/wiki/Zopfli), the smallest possible gzip-compatible size, creates a version at 460 bytes (or 527 bytes for `legacy` version). Read the comments in the source code to understand the various hacks and tricks used.
+The code for `onfontready` has been [code-golfed](https://en.wikipedia.org/wiki/Code_golf) for gzip compression. There are numerous 'bad-practice' code structures and lots of seemingly unnecessary repetition. However, the code is designed to be as small as possible after running it through standard [UglifyJS2](https://github.com/mishoo/UglifyJS2) and then gzipping it. Standard gzip compression (usually level 6) was used when building the library. The code, in its current form, gzips to 417 bytes (or 498 bytes for `legacy` version) at standard gzip level 6. Using [zopfli](https://en.wikipedia.org/wiki/Zopfli), the smallest possible gzip-compatible size, creates a version at 414 bytes (or 490 bytes for `legacy` version). Using [brotli](https://en.wikipedia.org/wiki/Brotli), a new higher-performing compression available to some modern browsers over HTTPS connections, creates a version at 321 bytes (or 379 bytes for `legacy` version). Read the comments in the source code to understand the various hacks and tricks used.
 
 
 ### Why?!
-I was attempting to build a website with a [size budget of less than 14KB gzipped](https://www.filamentgroup.com/lab/performance-rwd.html) for all HTML, CSS, JS, SVGs, and some inline images. I encountered the Known Issue (below) with inline SVGs, which prompted me to research font loading in detail. The library I had been using, [fontfaceobserver](https://github.com/bramstein/fontfaceobserver), while small, still accounts for over 1KB when gzipped, which was a huge dent in my size budget. Using ideas from Back Alley Coder's [Element Resize Detector](http://www.backalleycoder.com/2013/03/18/cross-browser-event-based-element-resize-detection/), font load detection can be done on any browser without resorting to setTimeout polling.
+I was attempting to build a website with a [size budget of less than 14KB gzipped](https://www.filamentgroup.com/lab/performance-rwd.html) for all HTML, CSS, JS, SVGs, and some inline images. I encountered the Known Issue (below) with inline SVGs, which prompted me to research font loading in detail. The library I had been using, [fontfaceobserver](https://github.com/bramstein/fontfaceobserver), while small, still accounts for over 1KB when gzipped, which was a huge dent in my size budget. Using ideas from Back Alley Coder's [Element Resize Detector](http://www.backalleycoder.com/2013/03/18/cross-browser-event-based-element-resize-detection/), font load detection can be done on any browser without resorting to setTimeout polling at a much smaller size.
 
 
 ### Considerations
 * Several missing features in IE6, IE7, and IE8 necessitate the use of the `legacy` version of `onfontready`. IE9+ and all modern browsers can use standard `onfontready`. If IE8 or lower support is desired, use the `legacy` version.
+* Standard `onfontready` must create a div and iframe element. Any CSS styles applied via stylesheets or style tags that are applied globally to divs or iframes may interfere with the detection. Likewise, the `legacy` version of `onfontready` uses div, iframe, table, tbody, tr, or td tags. Globally applied CSS styles applied to these elements may interfere with the detection. Please use CSS classes when specifying styling behavior for these elements to avoid incorrect detection.
 * `onfontready` cannot be used to detect whether a generic named font-family is ready. These following fonts, and probably more, must be specified without quotes, but `onfontready` uses quotes to account for [fonts with exotic names or made up of reserved words](https://mathiasbynens.be/notes/unquoted-font-family). However, detecting such a font is usually unnecessary because they will already be ready, due to their special status in the browser.
   * `serif`
   * `sans-serif`

@@ -1,6 +1,17 @@
+// * fontName - Font name used in the `@font-face` declaration
+// * onReady - Function called upon successful font load and parse detection
+// * options - Optional parameter
+//   - options.sampleText - Text string used to test font loading
+//                          Defaults to "onfontready"
+//   - options.timeoutAfter - Milliseconds to wait before giving up
+//                            Calls the `options.onTimeout` callback
+//                            Unset or 0 will result in an indefinite wait
+//   - options.onTimeout - Called after `options.timeoutAfter` milliseconds
+//                           have elapsed without an `onReady` call
 window.onfontready = function(fontName, onReady, options) {
 
     // Ensure options is defined to prevent access errors
+    // The defaulted 'onfontready' works as an object and is more compressable
     options = options || 'onfontready';
 
     // A 0 timeoutAfter will prevent the timeout functionality
@@ -22,6 +33,7 @@ window.onfontready = function(fontName, onReady, options) {
 
     if ('test' === "production")
     {
+        var testName = fontName;
         // A helper function that counts the creation and destruction of
         //   elements and event listeners for testing purposes
         function reporter() {
@@ -58,20 +70,20 @@ window.onfontready = function(fontName, onReady, options) {
         window.testReporter = window.testReporter || reporter();
     }
 
-    var root = document.createElement('div');
-
-    var serifWidth;
     var tryFinish = function() {
         // Prevent equality check if shutdown already called
         if (root)
         {
-            // Saving off the serifWidth and comparing directly to each other
-            //   is more accurate and much smaller than getBoundingClientRect
-            //   However, it will round widths to nearest integer
-            //   This should be safe due to the large size of the fonts
+            // Save off the serif width inline with the comparison and use
+            //   it to directly compare to other two widths
+            // Reuse the fontName variable for serif width, since it has
+            //   already been fully used by the time this tryFinish is called
+            // Using clientWidth is smaller than getBoundingClientRect().left
+            //   It rounds to nearest integer instead of using floating point
+            //   However, this is safe due to the large font sizes
             // Looking up the childNodes each time compresses better
-            if ((serifWidth = root.childNodes[0].clientWidth) == root.childNodes[1].clientWidth &&
-                serifWidth == root.childNodes[2].clientWidth)
+            if ((fontName = root.childNodes[0].clientWidth) == root.childNodes[1].clientWidth &&
+                fontName == root.childNodes[2].clientWidth)
             {
                 // Two calls combined, shutdown is called first
                 onReady(shutdown());
@@ -86,7 +98,7 @@ window.onfontready = function(fontName, onReady, options) {
             document.body.removeChild(root);
             if ('test' === "production")
             {
-                window.testReporter.decrement(fontName, 'root');
+                window.testReporter.decrement(testName, 'root');
             }
         }
 
@@ -118,13 +130,13 @@ window.onfontready = function(fontName, onReady, options) {
                 iframe.contentWindow.onresize = tryFinish;
                 if ('test' === "production")
                 {
-                    window.testReporter.increment(fontName, 'resize');
+                    window.testReporter.increment(testName, 'resize');
                 }
             }
         };
         if ('test' === "production")
         {
-            window.testReporter.increment(fontName, 'load');
+            window.testReporter.increment(testName, 'load');
         }
 
         // Reassign the shutdown function to new wrapped shutdown function
@@ -134,8 +146,8 @@ window.onfontready = function(fontName, onReady, options) {
             // Test is up here because outerShutdown acts recursively
             if ('test' === "production")
             {
-                window.testReporter.decrement(fontName, 'resize');
-                window.testReporter.decrement(fontName, 'load');
+                window.testReporter.decrement(testName, 'resize');
+                window.testReporter.decrement(testName, 'load');
             }
 
             // Perform shutdown operation inside function call for compression
@@ -161,6 +173,8 @@ window.onfontready = function(fontName, onReady, options) {
         root.childNodes[appendToChildIndex].appendChild(iframe);
     };
 
+    var root;
+
     // An iframe within an out-of-flow div, allows the iframe's width to be
     //   associated with the text's width
     //   If the text width changes, the iframe is resized
@@ -175,7 +189,7 @@ window.onfontready = function(fontName, onReady, options) {
     // It is more compressable to assign root here (oddly)
     // The return value of appendChild is the appended element,
     //   so the innerHTML assignment can be done immediately
-    document.body.appendChild(root).innerHTML =
+    document.body.appendChild(root = document.createElement('div')).innerHTML =
         '<div style="font:999% \'' + fontName + '\',serif;position:fixed;right:999%;bottom:999%;white-space:pre">' +
             (options.sampleText || 'onfontready') +
         '</div>' +
@@ -194,7 +208,7 @@ window.onfontready = function(fontName, onReady, options) {
 
     if ('test' === "production")
     {
-        window.testReporter.increment(fontName, 'root');
+        window.testReporter.increment(testName, 'root');
     }
 
     // Check if font is already loaded at startup time

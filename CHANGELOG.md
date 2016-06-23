@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.0.2] - 2016-06-23
+
+- Improved compression by 50 bytes (modern) and 41 bytes (legacy)
+- Made modern and legacy versions more structurally similar
+- Updated comments, including adding comments about the API structure in the source itself
+- Updated README with additional considerations about styling practices
+- Updated README with new compression information, and added data about brotli compression
+
 ## [1.0.1] - 2016-06-14
 
 - Improved compression by 25 bytes (modern) and 30 bytes (legacy)
