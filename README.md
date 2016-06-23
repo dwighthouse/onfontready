@@ -1,4 +1,4 @@
-# onfontready 1.0.1
+# onfontready 1.0.2
 Browser-based font load and parse detection with minimal size and maximum compatibility.
 
 
