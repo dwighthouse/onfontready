@@ -1,190 +1,183 @@
 <!doctype html>
-<html>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<head>
-    <meta charset="utf-8">
-    <title>Scroll-Based Resize Detection Test</title>
+<title>Scroll-Based Resize Detection Test</title>
 
-    <style>
-        .results {
-            border-collapse: collapse;
-        }
+<style>
+    .results {
+        border-collapse: collapse;
+    }
 
-        .results td {
-            padding: 6px;
-            border: 1px solid #ddd;
-        }
+    .results td {
+        padding: 6px;
+        border: 1px solid #ddd;
+    }
 
-        .success {
-            background: #328332;
-            color: #fff;
-        }
+    .success {
+        background: #328332;
+        color: #fff;
+    }
 
-        .success:before {
-            content: "✓";
-            display: inline-block;
-            width: 20px;
-        }
+    .success:before {
+        content: "✓";
+        display: inline-block;
+        width: 20px;
+    }
 
-        .failure {
-            background: #f00;
-            color: #fff;
-        }
+    .failure {
+        background: #f00;
+        color: #fff;
+    }
 
-        .failure:before {
-            content: "×";
-            display: inline-block;
-            width: 20px;
-        }
+    .failure:before {
+        content: "×";
+        display: inline-block;
+        width: 20px;
+    }
 
-        .warning {
-            background: #ff9300;
-            color: #fff;
-        }
+    .warning {
+        background: #ff9300;
+        color: #fff;
+    }
 
-        .warning:before {
-            content: "?";
-            display: inline-block;
-            width: 20px;
-        }
+    .warning:before {
+        content: "?";
+        display: inline-block;
+        width: 20px;
+    }
 
-        #resultsArea {
-            padding: 10px;
-            display: none;
-        }
+    #resultsArea {
+        padding: 10px;
+        display: none;
+    }
 
-    </style>
-</head>
+</style>
 
-<body>
+<h1>Scroll-Based Resize Detection Test</h1>
 
-    <h1>Scroll-Based Resize Detection Test</h1>
+<p>There is no native method or event to detect the resizing of an element on the page. Resize events are only fired for page contexts (which includes iframes). To detect a resize of a specific element, there are two primary methods:</p>
 
-    <p>There is no native method or event to detect the resizing of an element on the page. Resize events are only fired for page contexts (which includes iframes). To detect a resize of a specific element, there are two primary methods:</p>
+<ol>
+    <li>Create an iframe associated with the size of the element and listen for the iframe's resize event.</li>
+    <li>Construct a pair of scrollbars the same size as the element, where one will be scrolled automatically depending on whether the element grew or shrank, indicating a resize of the element.</li>
+</ol>
 
-    <ol>
-        <li>Create an iframe associated with the size of the element and listen for the iframe's resize event.</li>
-        <li>Construct a pair of scrollbars the same size as the element, where one will be scrolled automatically depending on whether the element grew or shrank, indicating a resize of the element.</li>
-    </ol>
+<p>Iframes are very inefficient, but well supported and very compressable. The scrollbar method doesn't work on some browsers because only user-triggered scroll events are fired. Programmatic resizes of scrollable elements will not trigger a scroll event. This page contains a test to determine if a given browser will trigger scroll events on programmatic element resizes.</p>
 
-    <p>Iframes are very inefficient, but well supported and very compressable. The scrollbar method doesn't work on some browsers because only user-triggered scroll events are fired. Programmatic resizes of scrollable elements will not trigger a scroll event. This page contains a test to determine if a given browser will trigger scroll events on programmatic element resizes.</p>
+<h2>Test Results</h2>
 
-    <h2>Test Results</h2>
-
-    <table class="results">
-        <tr>
-            <td>Google Chrome (50.0.2661.94)</td>
-            <td class="success">Supported</td>
-        </tr>
-        <tr>
-            <td>Mozilla Firefox (45.0.2)</td>
-            <td class="success">Supported</td>
-        </tr>
-        <tr>
-            <td>Opera (36.0.2130.65)</td>
-            <td class="success">Supported</td>
-        </tr>
-        <tr>
-            <td>Apple Safari (9.1, 11601.5.17.1)</td>
-            <td class="success">Supported</td>
-        </tr>
-        <tr>
-            <td>Microsoft Edge</td>
-            <td class="success">Supported</td>
-        </tr>
-        <tr>
-            <td>Internet Explorer 11</td>
-            <td class="success">Supported</td>
-        </tr>
-        <tr>
-            <td>Internet Explorer 10</td>
-            <td class="success">Supported</td>
-        </tr>
-        <tr>
-            <td>Internet Explorer 9</td>
-            <td class="failure">Unsupported</td>
-        </tr>
-        <tr>
-            <td>Internet Explorer 8</td>
-            <td class="failure">Unsupported</td>
-        </tr>
-        <tr>
-            <td>Internet Explorer 7</td>
-            <td class="failure">Unsupported</td>
-        </tr>
-        <tr>
-            <td>Internet Explorer 6</td>
-            <td class="failure">Unsupported</td>
-        </tr>
-    </table>
+<table class="results">
+    <tr>
+        <td>Google Chrome (50.0.2661.94)</td>
+        <td class="success">Supported</td>
+    </tr>
+    <tr>
+        <td>Mozilla Firefox (45.0.2)</td>
+        <td class="success">Supported</td>
+    </tr>
+    <tr>
+        <td>Opera (36.0.2130.65)</td>
+        <td class="success">Supported</td>
+    </tr>
+    <tr>
+        <td>Apple Safari (9.1, 11601.5.17.1)</td>
+        <td class="success">Supported</td>
+    </tr>
+    <tr>
+        <td>Microsoft Edge</td>
+        <td class="success">Supported</td>
+    </tr>
+    <tr>
+        <td>Internet Explorer 11</td>
+        <td class="success">Supported</td>
+    </tr>
+    <tr>
+        <td>Internet Explorer 10</td>
+        <td class="success">Supported</td>
+    </tr>
+    <tr>
+        <td>Internet Explorer 9</td>
+        <td class="failure">Unsupported</td>
+    </tr>
+    <tr>
+        <td>Internet Explorer 8</td>
+        <td class="failure">Unsupported</td>
+    </tr>
+    <tr>
+        <td>Internet Explorer 7</td>
+        <td class="failure">Unsupported</td>
+    </tr>
+    <tr>
+        <td>Internet Explorer 6</td>
+        <td class="failure">Unsupported</td>
+    </tr>
+</table>
 
 
-    <h2>Conclusion</h2>
+<h2>Conclusion</h2>
 
-    <p>Since the use case for onfontready is to create tests for fonts and then quickly shut them down, rather than remaining on the page for long periods, the advantages to compression and wide-reaching support of the iframe method is the preferred solution to detecting element resizes.</p>
+<p>Since the use case for onfontready is to create tests for fonts and then quickly shut them down, rather than remaining on the page for long periods, the advantages to compression and wide-reaching support of the iframe method is the preferred solution to detecting element resizes.</p>
 
-    <hr>
+<hr>
 
-    <h2>Test</h2>
+<h2>Test</h2>
 
-    <div id="testOuterDiv" style="width: 80%; height: 50px; background: #ccf; overflow-x: scroll;">
-        <div style="width: 200%; height: 25px; background: #cfc"></div>
-    </div>
+<div id="testOuterDiv" style="width: 80%; height: 50px; background: #ccf; overflow-x: scroll;">
+    <div style="width: 200%; height: 25px; background: #cfc"></div>
+</div>
 
-    <div id="resultsArea"></div>
+<div id="resultsArea"></div>
 
-    <button id="doTestButton" type="button">
-        Run Test
-    </button>
+<button id="doTestButton" type="button">
+    Run Test
+</button>
 
-    <script>
+<script>
 
-        (function() {
-            function attachEvent(element, eventName, callback) {
-                if (element.attachEvent)
-                {
-                    element.attachEvent(eventName, callback);
-                }
-                else
-                {
-                    element[eventName] = callback;
-                }
+    (function() {
+        function attachEvent(element, eventName, callback) {
+            if (element.attachEvent)
+            {
+                element.attachEvent(eventName, callback);
             }
+            else
+            {
+                element[eventName] = callback;
+            }
+        }
 
-            var testOuterDiv = document.getElementById('testOuterDiv');
-            testOuterDiv.scrollLeft = 9999;
+        var testOuterDiv = document.getElementById('testOuterDiv');
+        testOuterDiv.scrollLeft = 9999;
 
-            function doTest() {
-                var timeout;
+        function doTest() {
+            var timeout;
 
-                var resultsArea = document.getElementById('resultsArea');
+            var resultsArea = document.getElementById('resultsArea');
+
+            setTimeout(function() {
+                function onScroll() {
+                    clearTimeout(timeout);
+                    resultsArea.className = 'success';
+                    resultsArea.style.display = 'block';
+                    resultsArea.innerHTML = 'Supported';
+                }
+
+                timeout = setTimeout(function() {
+                    resultsArea.className = 'failure';
+                    resultsArea.style.display = 'block';
+                    resultsArea.innerHTML = 'Unsupported';
+                }, 100);
+
+                attachEvent(testOuterDiv, 'onscroll', onScroll);
 
                 setTimeout(function() {
-                    function onScroll() {
-                        clearTimeout(timeout);
-                        resultsArea.className = 'success';
-                        resultsArea.style.display = 'block';
-                        resultsArea.innerHTML = 'Supported';
-                    }
+                    testOuterDiv.style.width = '40%';
+                }, 10);
+            }, 1);
+        };
 
-                    timeout = setTimeout(function() {
-                        resultsArea.className = 'failure';
-                        resultsArea.style.display = 'block';
-                        resultsArea.innerHTML = 'Unsupported';
-                    }, 100);
-
-                    attachEvent(testOuterDiv, 'onscroll', onScroll);
-
-                    setTimeout(function() {
-                        testOuterDiv.style.width = '40%';
-                    }, 10);
-                }, 1);
-            };
-
-            attachEvent(document.getElementById('doTestButton'), 'onclick', doTest);
-        }());
-    </script>
-
-</body>
-
-</html>
+        attachEvent(document.getElementById('doTestButton'), 'onclick', doTest);
+    }());
+</script>

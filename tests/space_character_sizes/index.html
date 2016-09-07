@@ -1,0 +1,56 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Space Width Test</title>
+
+
+<div id="a" style="position:absolute;bottom:999%;right:999%;white-space:pre;font:999px serif"> </div>
+<div id="b" style="position:absolute;bottom:999%;right:999%;white-space:pre;font:999px sans-serif"> </div>
+<div id="c" style="position:absolute;bottom:999%;right:999%;white-space:pre;font:999px monospace"> </div>
+<div id="d" style="position:absolute;bottom:999%;right:999%;white-space:pre;font:999px cursive"> </div>
+<div id="e" style="position:absolute;bottom:999%;right:999%;white-space:pre;font:999px fantasy"> </div>
+
+<pre id="out" style="white-space: pre"></pre>
+
+<script>
+// setTimeout required by IE6, 7, and 8 for some reason. Other characters do not need this delay, but space does.
+setTimeout(function() {
+    var names = [
+        {
+            id: 'a',
+            name: 'serif'
+        },
+        {
+            id: 'b',
+            name: 'sans-serif'
+        },
+        {
+            id: 'c',
+            name: 'monospace'
+        },
+        {
+            id: 'd',
+            name: 'cursive'
+        },
+        {
+            id: 'e',
+            name: 'fantasy'
+        }
+    ];
+
+    var widths = [];
+
+    var len = names.length;
+    var n;
+
+    for (n = 0; n < len; n += 1)
+    {
+        widths.push([document.getElementById(names[n].id).clientWidth, names[n].name].join(' - '));
+    }
+
+    document.getElementById('out').innerHTML = widths.join('\n');
+}, 0);
+
+</script>

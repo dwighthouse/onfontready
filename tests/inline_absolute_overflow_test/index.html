@@ -1,83 +1,78 @@
 <!doctype html>
-<html>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<head>
-    <meta charset="utf-8">
-    <title>Inline Absolute Overflow Test</title>
+<title>Inline Absolute Overflow Test</title>
 
-    <style>
-        .testItem {
-            margin-bottom: 6px;
-        }
+<style>
+    .testItem {
+        margin-bottom: 6px;
+    }
 
-        .success {
-            padding: 2px 3px;
-            margin-bottom: 6px;
-            background: #328332;
-            color: #fff;
-        }
+    .success {
+        padding: 2px 3px;
+        margin-bottom: 6px;
+        background: #328332;
+        color: #fff;
+    }
 
-        .success:before {
-            content: "✓";
-            display: inline-block;
-            width: 20px;
-        }
+    .success:before {
+        content: "✓";
+        display: inline-block;
+        width: 20px;
+    }
 
-        .failure {
-            padding: 2px 3px;
-            margin-bottom: 6px;
-            background: #f00;
-            color: #fff;
-        }
+    .failure {
+        padding: 2px 3px;
+        margin-bottom: 6px;
+        background: #f00;
+        color: #fff;
+    }
 
-        .failure:before {
-            content: "×";
-            display: inline-block;
-            width: 20px;
-        }
-    </style>
-</head>
-
-<body>
-
-    <h1>Inline Absolute Overflow Test</h1>
-
-    <p>Modern browsers will allow absolutely positioned elements to be positioned relative to an inline (or inline-block) element that contains it. If available, this allows the sizing of an iframe based on the width of some text inside a div. If not, the absolutely positioned element's width will be based on the next highest relatively positioned parent (or the page). Without this feature, the only known automatic way to associate the size of text with the width of an element is to use a table.</p>
-
-    <p>There are numerous browser versions and modes, particularly in the case of legacy Internet Explorer versions. The same test is provided for the most common doctypes. Each one can be tested against not only different browser versions, but also different display modes within that browser. For legacy Internet Explorer versions, the pages should be tested in Standards View and Compatibility View. There are far more modes and versions that it is feasible to test, so below are some tests that conform to common scenarios. For exhaustive data on this subject, <a href="https://hsivonen.fi/doctype/">read Activating Browser Modes with Doctype</a>. Additional doctypes were obtained from <a href="http://www.webstandards.org/learn/reference/templates/">Webstandards.org's Templates</a>.</p>
+    .failure:before {
+        content: "×";
+        display: inline-block;
+        width: 20px;
+    }
+</style>
 
 
-    <h2>Modes</h2>
 
-    <ul>
-        <li><a href="html5.html">HTML5 doctype</a> - Always use this form, even for older browsers</li>
-        <li><a href="html4strict.html">Strict HTML4 doctype</a> - The common standard prior to HTML5</li>
-        <li><a href="html4transitional.html">Transitional HTML4 doctype</a> - Often used for legacy sites as they were modernized</li>
-        <li><a href="xhtml.html">Strict XHTML doctype</a> - Prior to HTML5, XHTML was expected to replace HTML4</li>
-        <li><a href="quirks.html">No doctype</a> - This usually triggers Quirks mode in many browsers</li>
-    </ul>
+<h1>Inline Absolute Overflow Test</h1>
+
+<p>Modern browsers will allow absolutely positioned elements to be positioned relative to an inline (or inline-block) element that contains it. If available, this allows the sizing of an iframe based on the width of some text inside a div. If not, the absolutely positioned element's width will be based on the next highest relatively positioned parent (or the page). Without this feature, the only known automatic way to associate the size of text with the width of an element is to use a table.</p>
+
+<p>There are numerous browser versions and modes, particularly in the case of legacy Internet Explorer versions. The same test is provided for the most common doctypes. Each one can be tested against not only different browser versions, but also different display modes within that browser. For legacy Internet Explorer versions, the pages should be tested in Standards View and Compatibility View. There are far more modes and versions that it is feasible to test, so below are some tests that conform to common scenarios. For exhaustive data on this subject, <a href="https://hsivonen.fi/doctype/">read Activating Browser Modes with Doctype</a>. Additional doctypes were obtained from <a href="http://www.webstandards.org/learn/reference/templates/">Webstandards.org's Templates</a>.</p>
 
 
-    <h2>Tested Browsers</h2>
+<h2>Modes</h2>
 
-    <div class="testItem"><span class="success">Chrome (50.0.2661.86)</span></div>
-    <div class="testItem"><span class="success">Chrome iOS (49.0.2623.109)</span></div>
-    <div class="testItem"><span class="success">Firefox (26.0)</span></div>
-    <div class="testItem"><span class="success">Opera (36.0.2130.46)</span></div>
-    <div class="testItem"><span class="success">Safari (Version 9.0 - 11601.1.56)</span></div>
-    <div class="testItem"><span class="success">Safari iOS (Version 9.0 Mobile - 13E238)</span></div>
-    <div class="testItem"><span class="success">Microsoft Edge (20.10240.16384.0)</span></div>
-    <div class="testItem"><span class="success">Internet Explorer 11 (Standards View)</span></div>
-    <div class="testItem"><span class="success">Internet Explorer 11 (Compatibility View)</span></div>
-    <div class="testItem"><span class="success">Internet Explorer 10 (Standards View)</span></div>
-    <div class="testItem"><span class="success">Internet Explorer 10 (Compatibility View)</span></div>
-    <div class="testItem"><span class="success">Internet Explorer 9 (Standards View)</span></div>
-    <div class="testItem"><span class="success">Internet Explorer 9 (Compatibility View)</span></div>
-    <div class="testItem"><span class="success">Internet Explorer 8 (Standards View)</span></div>
-    <div class="testItem"><span class="success">Internet Explorer 8 (Compatibility View)</span></div>
-    <div class="testItem"><span class="success">Internet Explorer 7</span></div>
-    <div class="testItem"><span class="failure">Internet Explorer 6</span></div>
+<ul>
+    <li><a href="html5.html">HTML5 doctype</a> - Always use this form, even for older browsers</li>
+    <li><a href="html4strict.html">Strict HTML4 doctype</a> - The common standard prior to HTML5</li>
+    <li><a href="html4transitional.html">Transitional HTML4 doctype</a> - Often used for legacy sites as they were modernized</li>
+    <li><a href="xhtml.html">Strict XHTML doctype</a> - Prior to HTML5, XHTML was expected to replace HTML4</li>
+    <li><a href="quirks.html">No doctype</a> - This usually triggers Quirks mode in many browsers</li>
+</ul>
 
-</body>
 
-</html>
+<h2>Tested Browsers</h2>
+
+<div class="testItem"><span class="success">Chrome (50.0.2661.86)</span></div>
+<div class="testItem"><span class="success">Chrome iOS (49.0.2623.109)</span></div>
+<div class="testItem"><span class="success">Firefox (26.0)</span></div>
+<div class="testItem"><span class="success">Opera (36.0.2130.46)</span></div>
+<div class="testItem"><span class="success">Safari (Version 9.0 - 11601.1.56)</span></div>
+<div class="testItem"><span class="success">Safari iOS (Version 9.0 Mobile - 13E238)</span></div>
+<div class="testItem"><span class="success">Microsoft Edge (20.10240.16384.0)</span></div>
+<div class="testItem"><span class="success">Internet Explorer 11 (Standards View)</span></div>
+<div class="testItem"><span class="success">Internet Explorer 11 (Compatibility View)</span></div>
+<div class="testItem"><span class="success">Internet Explorer 10 (Standards View)</span></div>
+<div class="testItem"><span class="success">Internet Explorer 10 (Compatibility View)</span></div>
+<div class="testItem"><span class="success">Internet Explorer 9 (Standards View)</span></div>
+<div class="testItem"><span class="success">Internet Explorer 9 (Compatibility View)</span></div>
+<div class="testItem"><span class="success">Internet Explorer 8 (Standards View)</span></div>
+<div class="testItem"><span class="success">Internet Explorer 8 (Compatibility View)</span></div>
+<div class="testItem"><span class="success">Internet Explorer 7</span></div>
+<div class="testItem"><span class="failure">Internet Explorer 6</span></div>

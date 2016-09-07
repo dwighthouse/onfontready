@@ -82,16 +82,6 @@
 }
 
 @font-face {
-  font-family: 'f5';
-  src: url('f5.eot');
-  src: url('f5.eot?#iefix') format('embedded-opentype'),
-       url('f5.woff2') format('woff2'),
-       url('f5.woff') format('woff'),
-       url('f5.ttf') format('truetype'),
-       url('f5.svg#comfortaalight') format('svg');
-}
-
-@font-face {
   font-family: 'f6';
   src: url('f6.eot');
   src: url('f6.eot?#iefix') format('embedded-opentype'),
@@ -109,4 +99,14 @@
        url('f7.woff') format('woff'),
        url('f7.ttf') format('truetype'),
        url('f7.svg#comfortaalight') format('svg');
+}
+
+@font-face {
+  font-family: 'f8';
+  src: url('f8.eot');
+  src: url('f8.eot?#iefix') format('embedded-opentype'),
+       url('f8.woff2') format('woff2'),
+       url('f8.woff') format('woff'),
+       url('f8.ttf') format('truetype'),
+       url('f8.svg#comfortaalight') format('svg');
 }
