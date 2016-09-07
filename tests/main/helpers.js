@@ -161,41 +161,41 @@ window.generateTestRunner = function(startButton, shutdownStateStatus, shutdownS
         document.documentElement.className += " f7Loading";
         window.addFontFace('f7', '../../tests/main/custom_fonts/f7', 'comfortaalight');
 
-        setTimeout(function() {
-            var fullReport = window.testReporter.fullReport();
-            var hasStandardError = false;
+        // setTimeout(function() {
+        //     var fullReport = window.testReporter.fullReport();
+        //     var hasStandardError = false;
 
-            var fonts = ['Arial', 'f2', 'f3', 'f4', 'f5', 'f6', 'f8', 'f_Fo'];
-            var f;
+        //     var fonts = ['Arial', 'f2', 'f3', 'f4', 'f5', 'f6', 'f8', 'f_Fo'];
+        //     var f;
 
-            for (f = 0; f < fonts.length; f += 1)
-            {
-                hasStandardError = hasStandardError || (fonts[f].root > 0 || fonts[f].load > 0 || fonts[f].resize > 0);
-            }
+        //     for (f = 0; f < fonts.length; f += 1)
+        //     {
+        //         hasStandardError = hasStandardError || (fonts[f].root > 0 || fonts[f].load > 0 || fonts[f].resize > 0);
+        //     }
 
-            var f7PartialFallbackSupported = fullReport.f7.root === 1 && fullReport.f7.load === 3 && fullReport.f7.resize === 3;
-            var f_YuPartialFallbackSupported = fullReport.f_Yu.root === 1 && fullReport.f_Yu.load === 3 && fullReport.f_Yu.resize === 3;
+        //     var f7PartialFallbackSupported = fullReport.f7.root === 1 && fullReport.f7.load === 3 && fullReport.f7.resize === 3;
+        //     var f_YuPartialFallbackSupported = fullReport.f_Yu.root === 1 && fullReport.f_Yu.load === 3 && fullReport.f_Yu.resize === 3;
 
-            var f7PartialFallbackUnsupported = fullReport.f7.root <= 0 && fullReport.f7.load <= 0 && fullReport.f7.resize <= 0;
-            var f_YuPartialFallbackUnsupported = fullReport.f_Yu.root <= 0 && fullReport.f_Yu.load <= 0 && fullReport.f_Yu.resize <= 0;
+        //     var f7PartialFallbackUnsupported = fullReport.f7.root <= 0 && fullReport.f7.load <= 0 && fullReport.f7.resize <= 0;
+        //     var f_YuPartialFallbackUnsupported = fullReport.f_Yu.root <= 0 && fullReport.f_Yu.load <= 0 && fullReport.f_Yu.resize <= 0;
 
-            if (!hasStandardError && f7PartialFallbackSupported && f_YuPartialFallbackSupported)
-            {
-                shutdownStateStatus.innerHTML = 'OK';
-                document.documentElement.className += ' shutdownStatesValid';
-            }
-            else if (!hasStandardError && f7PartialFallbackUnsupported && f_YuPartialFallbackUnsupported)
-            {
-                shutdownStateStatus.innerHTML = 'OK';
-                document.documentElement.className += ' shutdownStatesPartiallyValid';
-            }
-            else
-            {
-                shutdownStateStatus.innerHTML = 'X';
-                document.documentElement.className += ' shutdownStatesInvalid';
-            }
+        //     if (!hasStandardError && f7PartialFallbackSupported && f_YuPartialFallbackSupported)
+        //     {
+        //         shutdownStateStatus.innerHTML = 'OK';
+        //         document.documentElement.className += ' shutdownStatesValid';
+        //     }
+        //     else if (!hasStandardError && f7PartialFallbackUnsupported && f_YuPartialFallbackUnsupported)
+        //     {
+        //         shutdownStateStatus.innerHTML = 'OK';
+        //         document.documentElement.className += ' shutdownStatesPartiallyValid';
+        //     }
+        //     else
+        //     {
+        //         shutdownStateStatus.innerHTML = 'X';
+        //         document.documentElement.className += ' shutdownStatesInvalid';
+        //     }
 
-            shutdownStateOutput.innerHTML = 'hasStandardError: ' + hasStandardError + ',<br>f7PartialFallbackSupported: ' + f7PartialFallbackSupported + ', f_YuPartialFallbackSupported: ' + f_YuPartialFallbackSupported + ',<br>f7PartialFallbackUnsupported: ' + f7PartialFallbackUnsupported + ', f_YuPartialFallbackUnsupported: ' + f_YuPartialFallbackUnsupported;
-        }, 5000);
+        //     shutdownStateOutput.innerHTML = 'hasStandardError: ' + hasStandardError + ',<br>f7PartialFallbackSupported: ' + f7PartialFallbackSupported + ', f_YuPartialFallbackSupported: ' + f_YuPartialFallbackSupported + ',<br>f7PartialFallbackUnsupported: ' + f7PartialFallbackUnsupported + ', f_YuPartialFallbackUnsupported: ' + f_YuPartialFallbackUnsupported;
+        // }, 5000);
     };
 };
