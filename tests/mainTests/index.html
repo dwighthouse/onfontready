@@ -1,0 +1,231 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Main Tests</title>
+
+<link href="../../tests/mainTests/helpers/styles.css" rel="stylesheet">
+
+<!--[if lt IE 9]><script>document.documentElement.className+=' ie';</script><![endif]-->
+
+<pre id="console"></pre>
+
+<div class="group">
+    <h1>Main Tests</h1>
+    <p>These tests verify all aspects of the onfontready library itself, including graceful failures when improperly used. Please clear or disable your browser's cache prior to running these tests.</p>
+</div>
+
+<div class="group">
+    <button id="startButton">Start Tests</button>
+
+    <label>
+        <input id="useLegacyCheckbox" type="checkbox" /> Use Legacy Version
+    </label>
+</div>
+
+<div class="group">
+    <h2>Results</h2>
+
+    <table class="box">
+        <tr>
+            <td class="example f1">Font</td>
+            <td class="description">
+                <h4>Sanity Check</h4>
+                <p>Does not use onfontready (susceptible to FOIT)</p>
+                <p><em>Custom font should display</em></p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f2">Font</td>
+            <td class="description">
+                <h4>Normal Usage</h4>
+                <p>No options set; Indefinite wait</p>
+                <p><em>Custom font should display</em></p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example arial">Font</td>
+            <td class="description">
+                <h4>Known Font</h4>
+                <p>No options set; Indefinite wait</p>
+                <p><em>Arial font should display</em></p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example fantasy">Font</td>
+            <td class="description">
+                <h4>Known Generic Font-Family</h4>
+                <p>generic set true; Indefinite wait</p>
+                <p><em>Generic font-family fantasy should display</em></p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example cursive">Font</td>
+            <td class="description">
+                <h4>Known Generic Font-Family Without Setting Generic Option</h4>
+                <p>generic set false; Indefinite wait</p>
+                <p><span style="color: #f33">Incorrect usage</span></p>
+                <p><em>Fallback font (serif) should display, detection elements remain forever</em></p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f3">Font</td>
+            <td class="description">
+                <h4>Timeout Usage</h4>
+                <p>1 millisecond timeout</p>
+                <p><em>Fallback font (serif) should display</em></p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f4">Font</td>
+            <td class="description">
+                <h4>Zero Timeout</h4>
+                <p>0 millisecond timeout; Indefinite wait</p>
+                <p><em>Custom font should display</em></p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f9">Font</td>
+            <td class="description">
+                <h4>Negative Timeout Usage</h4>
+                <p>negative timeout (-1)</p>
+                <p><em>Fallback font (serif) should display</em></p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f5">Font</td>
+            <td class="description">
+                <h4>Missing Timeout Function</h4>
+                <p>1 millisecond timeout; onTimeout function unset</p>
+                <p><span style="color: #f33">Incorrect usage</span></p>
+                <p><em>Fallback font (serif) should display</em></p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f8">Font</td>
+            <td class="description">
+                <h4>Missing Timeout</h4>
+                <p>Timeout unset; onTimeout function set</p>
+                <p><span style="color: #f33">Incorrect usage</span></p>
+                <p><em>Custom font should display</em></p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f6">Font</td>
+            <td class="description">
+                <h4>Custom Sample Text</h4>
+                <p>Indefinite wait</p>
+                <p><em>Custom font should display</em></p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f_Fo">Font</td>
+            <td class="description">
+                <h4>Custom Sample Text using Limited Font</h4>
+                <p>Indefinite wait</p>
+                <p><em>Custom font should display only for 'F' and 'o' in 'Font'</em></p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f_Yu">Font</td>
+            <td class="description">
+                <h4>Custom Sample Text using Limited Font with Unsupported Glyphs</h4>
+                <p>Indefinite wait</p>
+                <p><span style="color: #f33">Incorrect usage</span></p>
+                <p><em>Fallback font (serif) should display, detection elements remain forever</em></p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f7">Font</td>
+            <td class="description">
+                <h4>Custom Sample Text using Limited Font with Partially Supported Glyphs</h4>
+                <p>Indefinite wait</p>
+                <p><span style="color: #f33">Incorrect usage</span></p>
+                <p><em>Fallback font (serif) should display, detection elements remain forever</em></p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td id="shutdownStateStatus" class="example shutdownStates">?</td>
+            <td class="description">
+                <h4>Shutdown States</h4>
+                <p>Did the tests correctly shutdown, removing event listeners and DOM elements as expected?</p>
+                <p>Runs on a 5 second timeout. False negatives are possible if on slow connections.</p>
+                <p><em>Output</em></p>
+                <pre id="shutdownStateOutput" style="white-space: pre;">?</pre>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script src="../../tests/mainTests/helpers/log.js"></script>
+<script src="../../tests/mainTests/helpers/addFontFace.js"></script>
+<script src="../../tests/mainTests/helpers/testRunner.js"></script>
+
+<script src="../../tests/mainTests/builds/onfontready.legacy.js"></script>
+<script>window.onfontreadyLegacy = window.onfontready;</script>
+<script src="../../tests/mainTests/builds/onfontready.js"></script>
+
+<script>
+var startButton = document.getElementById('startButton');
+var useLegacyCheckbox = document.getElementById('useLegacyCheckbox');
+var shutdownStateStatus = document.getElementById('shutdownStateStatus');
+var shutdownStateOutput = document.getElementById('shutdownStateOutput');
+
+// Default IE 8 and below to using legacy version
+if (document.documentElement.className.indexOf('ie') !== -1)
+{
+    useLegacyCheckbox.checked = true;
+}
+
+startButton.onclick = function() {
+    startButton.setAttribute('disabled', 'disabled');
+
+    if (useLegacyCheckbox.checked)
+    {
+        window.onfontready = window.onfontreadyLegacy;
+    }
+
+    window.testRunner(shutdownStateStatus, shutdownStateOutput);
+};
+</script>

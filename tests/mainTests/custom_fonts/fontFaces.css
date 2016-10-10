@@ -1,4 +1,9 @@
-/* Max Compatibility Font Face Declarations */
+/* Font Selection for Test Usage */
+/*  - EOT included for old IE support */
+/*  - TTF included for most older browsers */
+/*  - WOFF included for most newer browsers */
+/*  - WOFF2 support was skilled because browsers that support WOFF2 also support WOFF */
+/*  - SVG Font support was skipped because iOS 4.1 or less is at 0% global usage */
 /* https://css-tricks.com/snippets/css/using-font-face/ */
 
 /* All custom fonts are a subset of the Comfortaa (light) font */
@@ -12,101 +17,97 @@
 /* https://www.fontsquirrel.com/tools/webfont-generator */
 
 @font-face {
-  font-family: 'f_Fo';
-  src: url('f_Fo.eot');
-  src: url('f_Fo.eot?#iefix') format('embedded-opentype'),
-       url('f_Fo.woff2') format('woff2'),
-       url('f_Fo.woff') format('woff'),
-       url('f_Fo.ttf') format('truetype'),
-       url('f_Fo.svg#comfortaalight') format('svg');
-}
-
-@font-face {
-  font-family: 'f_Yu';
-  src: url('f_Yu.eot');
-  src: url('f_Yu.eot?#iefix') format('embedded-opentype'),
-       url('f_Yu.woff2') format('woff2'),
-       url('f_Yu.woff') format('woff'),
-       url('f_Yu.ttf') format('truetype'),
-       url('f_Yu.svg#comfortaalight') format('svg');
-}
-
-@font-face {
   font-family: 'f1';
   src: url('f1.eot');
   src: url('f1.eot?#iefix') format('embedded-opentype'),
-       url('f1.woff2') format('woff2'),
        url('f1.woff') format('woff'),
-       url('f1.ttf') format('truetype'),
-       url('f1.svg#comfortaalight') format('svg');
+       url('f1.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'f2';
   src: url('f2.eot');
   src: url('f2.eot?#iefix') format('embedded-opentype'),
-       url('f2.woff2') format('woff2'),
        url('f2.woff') format('woff'),
-       url('f2.ttf') format('truetype'),
-       url('f2.svg#comfortaalight') format('svg');
+       url('f2.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'f3';
   src: url('f3.eot');
   src: url('f3.eot?#iefix') format('embedded-opentype'),
-       url('f3.woff2') format('woff2'),
        url('f3.woff') format('woff'),
-       url('f3.ttf') format('truetype'),
-       url('f3.svg#comfortaalight') format('svg');
+       url('f3.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'f4';
   src: url('f4.eot');
   src: url('f4.eot?#iefix') format('embedded-opentype'),
-       url('f4.woff2') format('woff2'),
        url('f4.woff') format('woff'),
-       url('f4.ttf') format('truetype'),
-       url('f4.svg#comfortaalight') format('svg');
+       url('f4.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'f5';
   src: url('f5.eot');
   src: url('f5.eot?#iefix') format('embedded-opentype'),
-       url('f5.woff2') format('woff2'),
        url('f5.woff') format('woff'),
-       url('f5.ttf') format('truetype'),
-       url('f5.svg#comfortaalight') format('svg');
+       url('f5.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'f6';
   src: url('f6.eot');
   src: url('f6.eot?#iefix') format('embedded-opentype'),
-       url('f6.woff2') format('woff2'),
        url('f6.woff') format('woff'),
-       url('f6.ttf') format('truetype'),
-       url('f6.svg#comfortaalight') format('svg');
+       url('f6.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'f7';
   src: url('f7.eot');
   src: url('f7.eot?#iefix') format('embedded-opentype'),
-       url('f7.woff2') format('woff2'),
        url('f7.woff') format('woff'),
-       url('f7.ttf') format('truetype'),
-       url('f7.svg#comfortaalight') format('svg');
+       url('f7.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'f8';
   src: url('f8.eot');
   src: url('f8.eot?#iefix') format('embedded-opentype'),
-       url('f8.woff2') format('woff2'),
        url('f8.woff') format('woff'),
-       url('f8.ttf') format('truetype'),
-       url('f8.svg#comfortaalight') format('svg');
+       url('f8.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'f9';
+  src: url('f9.eot');
+  src: url('f9.eot?#iefix') format('embedded-opentype'),
+       url('f9.woff') format('woff'),
+       url('f9.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'f10';
+  src: url('f10.eot');
+  src: url('f10.eot?#iefix') format('embedded-opentype'),
+       url('f10.woff') format('woff'),
+       url('f10.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'f_Fo';
+  src: url('f_Fo.eot');
+  src: url('f_Fo.eot?#iefix') format('embedded-opentype'),
+       url('f_Fo.woff') format('woff'),
+       url('f_Fo.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'f_Yu';
+  src: url('f_Yu.eot');
+  src: url('f_Yu.eot?#iefix') format('embedded-opentype'),
+       url('f_Yu.woff') format('woff'),
+       url('f_Yu.ttf') format('truetype');
 }

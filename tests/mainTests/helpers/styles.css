@@ -1,0 +1,171 @@
+/* Reset */
+html, * {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    padding: 20px;
+}
+
+
+
+/* General */
+.group {
+    margin-bottom: 12px;
+}
+
+#startButton {
+    padding: 6px 10px;
+    background: #eee;
+    border-radius: 4px;
+    border: 1px solid #bbb;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+#startButton:hover, #startButton:focus {
+    background: #fefefe;
+}
+
+#startButton[disabled] {
+    cursor: not-allowed;
+    background: #bbb;
+}
+
+.box {
+    background: #eee;
+    margin-bottom: 10px;
+    vertical-align: middle;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.example {
+    padding: 10px;
+    font-size: 40px;
+}
+
+.description {
+    padding: 10px;
+    font-family: sans-serif;
+    font-weight: normal;
+    font-size: 16px;
+    width: 100%;
+}
+
+
+
+/* Font Tests */
+.f1                      { background: #fcc; font-family: serif; }
+.f1Loading .f1           { background: #fcc; font-family: serif; }
+.f1TimedOut .f1          { background: #fcc; font-family: serif; }
+.f1Loaded .f1            { background: #cfc; font-family: 'f1', serif; }
+.f1LoadedAndTimedOut .f1 { background: #fcc; font-family: serif; }
+
+.f2                      { background: #fcc; font-family: serif; }
+.f2Loading .f2           { background: #fcc; font-family: serif; }
+.f2TimedOut .f2          { background: #fcc; font-family: serif; }
+.f2Loaded .f2            { background: #cfc; font-family: 'f2', serif; }
+.f2LoadedAndTimedOut .f2 { background: #fcc; font-family: serif; }
+
+.arial                         { background: #fcc; font-family: serif; }
+.arialLoading .arial           { background: #fcc; font-family: serif; }
+.arialTimedOut .arial          { background: #fcc; font-family: serif; }
+.arialLoaded .arial            { background: #cfc; font-family: 'Arial', serif; }
+.arialLoadedAndTimedOut .arial { background: #fcc; font-family: serif; }
+
+.fantasy                           { background: #fcc; font-family: serif; }
+.fantasyLoading .fantasy           { background: #fcc; font-family: serif; }
+.fantasyTimedOut .fantasy          { background: #fcc; font-family: serif; }
+.fantasyLoaded .fantasy            { background: #cfc; font-family: fantasy, serif; }
+.fantasyLoadedAndTimedOut .fantasy { background: #fcc; font-family: serif; }
+
+.cursive                           { background: #fcc; font-family: serif; }
+.cursiveLoading .cursive           { background: #cfc; font-family: serif; }
+.cursiveTimedOut .cursive          { background: #fcc; font-family: serif; }
+.cursiveLoaded .cursive            { background: #fcc; font-family: cursive, serif; }
+.cursiveLoadedAndTimedOut .cursive { background: #fcc; font-family: serif; }
+
+.f3                      { background: #fcc; font-family: serif; }
+.f3Loading .f3           { background: #fcc; font-family: serif; }
+.f3TimedOut .f3          { background: #cfc; font-family: serif; }
+.f3Loaded .f3            { background: #fcc; font-family: 'f3', serif; }
+.f3LoadedAndTimedOut .f3 { background: #fcc; font-family: serif; }
+
+.f4                      { background: #fcc; font-family: serif; }
+.f4Loading .f4           { background: #fcc; font-family: serif; }
+.f4TimedOut .f4          { background: #fcc; font-family: serif; }
+.f4Loaded .f4            { background: #cfc; font-family: 'f4', serif; }
+.f4LoadedAndTimedOut .f4 { background: #fcc; font-family: serif; }
+
+.f9                      { background: #fcc; font-family: serif; }
+.f9Loading .f9           { background: #fcc; font-family: serif; }
+.f9TimedOut .f9          { background: #cfc; font-family: serif; }
+.f9Loaded .f9            { background: #fcc; font-family: 'f9', serif; }
+.f9LoadedAndTimedOut .f9 { background: #fcc; font-family: serif; }
+
+.f5                      { background: #fcc; font-family: serif; }
+.f5Loading .f5           { background: #cfc; font-family: serif; }
+.f5TimedOut .f5          { background: #fcc; font-family: serif; }
+.f5Loaded .f5            { background: #fcc; font-family: 'f5', serif; }
+.f5LoadedAndTimedOut .f5 { background: #fcc; font-family: serif; }
+
+.f8                      { background: #fcc; font-family: serif; }
+.f8Loading .f8           { background: #fcc; font-family: serif; }
+.f8TimedOut .f8          { background: #fcc; font-family: serif; }
+.f8Loaded .f8            { background: #cfc; font-family: 'f8', serif; }
+.f8LoadedAndTimedOut .f8 { background: #fcc; font-family: serif; }
+
+.f6                      { background: #fcc; font-family: serif; }
+.f6Loading .f6           { background: #fcc; font-family: serif; }
+.f6TimedOut .f6          { background: #fcc; font-family: serif; }
+.f6Loaded .f6            { background: #cfc; font-family: 'f6', serif; }
+.f6LoadedAndTimedOut .f6 { background: #fcc; font-family: serif; }
+
+.f_Fo                        { background: #fcc; font-family: serif; }
+.f_FoLoading .f_Fo           { background: #fcc; font-family: serif; }
+.f_FoTimedOut .f_Fo          { background: #fcc; font-family: serif; }
+.f_FoLoaded .f_Fo            { background: #cfc; font-family: 'f_Fo', serif; }
+.f_FoLoadedAndTimedOut .f_Fo { background: #fcc; font-family: serif; }
+
+.f_Yu                        { background: #fcc; font-family: 'f_Yu', serif; }
+.f_YuLoading .f_Yu           { background: #cfc; font-family: serif; }
+.f_YuTimedOut .f_Yu          { background: #fcc; font-family: serif; }
+.f_YuLoaded .f_Yu            { background: #fcc; font-family: 'f_Yu', serif; }
+.f_YuLoadedAndTimedOut .f_Yu { background: #fcc; font-family: serif; }
+
+.f7                      { background: #fcc; font-family: serif; }
+.f7Loading .f7           { background: #cfc; font-family: serif; }
+.f7TimedOut .f7          { background: #fcc; font-family: serif; }
+.f7Loaded .f7            { background: #fcc; font-family: 'f7', serif; }
+.f7LoadedAndTimedOut .f7 { background: #fcc; font-family: serif; }
+
+
+
+/* Memory Tests */
+.shutdownStates {
+    background: #ffb347;
+}
+
+.shutdownStatesValid .shutdownStates {
+    background: #cfc;
+}
+
+.shutdownStatesPartiallyValid .shutdownStates {
+    background: #ffb347;
+}
+
+.shutdownStatesInvalid .shutdownStates {
+    background: #fcc;
+}
