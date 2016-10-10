@@ -1,76 +1,51 @@
-// Tests run successfully on modern Chrome, IE6
-
 module.exports = function(fontName, onReady, options) {
-
-    options = options || 0;
+    options = options || fontName;
 
     if (options.timeoutAfter)
     {
         setTimeout(function() {
             if (root)
             {
-                (options.onTimeout || shutdown)(shutdown());
+                shutdown();
+                if (options.onTimeout)
+                {
+                    options.onTimeout();
+                }
             }
         }, options.timeoutAfter);
     }
 
-    var startupIframe = function(outerShutdown, parent, iframe, onLoad) {
+    var startupIframe = function(outerShutdown, parent, iframe) {
         iframe = document.createElement('iframe');
 
-        onLoad = function() {
-            tryFinish();
-
-            if (root)
-            {
-                if (iframe.contentWindow.attachEvent)
-                {
-                    iframe.contentWindow.attachEvent('onresize', tryFinish);
-                }
-                else
-                {
-                    iframe.contentWindow.onresize = tryFinish;
-                }
-            }
+        iframe.onload = function() {
+            tryFinish(
+                iframe.contentWindow.onresize = tryFinish,
+                iframe.contentWindow.attachEvent && iframe.contentWindow.attachEvent('onresize', tryFinish)
+            );
         };
-
-        if (iframe.attachEvent)
-        {
-            iframe.attachEvent('onload', onLoad);
-        }
-        else
-        {
-            iframe.onload = onLoad;
-        }
 
         shutdown = function() {
-            if (iframe.contentWindow)
-            {
-                if (iframe.contentWindow.attachEvent)
-                {
-                    iframe.contentWindow.detachEvent('onresize', tryFinish);
-                }
-                else
-                {
-                    iframe.contentWindow.onresize = 0;
-                }
-            }
-
-            if (iframe.attachEvent)
-            {
-                iframe.detachEvent('onload', onLoad);
-            }
-            else
-            {
-                iframe.onload = 0;
-            }
-
-            outerShutdown();
+            outerShutdown(
+                iframe.contentWindow && (iframe.contentWindow.onresize = iframe.contentWindow.attachEvent && iframe.contentWindow.detachEvent('onresize', tryFinish)),
+                iframe.onload = iframe.attachEvent && iframe.detachEvent('onload', iframe.onload)
+            );
         };
 
-        iframe.style.cssText = 'position:absolute;right:999%;bottom:999%;width:999%';
+        iframe.style.cssText = 'position:absolute;width:999%';
 
-        parent.appendChild(iframe);
+        parent.firstChild.firstChild.firstChild.appendChild(iframe, iframe.attachEvent && iframe.attachEvent('onload', iframe.onload));
     };
+
+    var shutdown = function() {
+        if (root)
+        {
+            document.body.removeChild(root);
+            root = 0;
+        }
+    };
+
+    var root = document.createElement('div');
 
     var tryFinish = function() {
         if (root && root.firstChild.clientWidth == root.lastChild.clientWidth)
@@ -79,35 +54,24 @@ module.exports = function(fontName, onReady, options) {
         }
     };
 
-    var shutdown = function() {
-        if (root)
-        {
-            document.body.removeChild(root);
-        }
-
-        root = 0;
-    };
-
-    var root;
-
-    document.body.appendChild(root = document.createElement('div')).innerHTML =
-        '<table style=position:absolute;right:999%;bottom:999%;width:auto>' +
-            '<tr><td style=position:relative>' +
-            '<tr><td style=white-space:pre>.<span style="font:999px \'' + fontName + '\',serif"> </span>.' +
-        '</table>' +
-        '<table style=position:absolute;right:999%;bottom:999%;width:auto>' +
-            '<tr><td style=position:relative>' +
-            '<tr><td style=white-space:pre>.<span style="font:999px \'' + fontName + '\',monospace"> </span>.' +
-        '</table>';
-
-    tryFinish();
+    tryFinish(
+        document.body.appendChild(root).innerHTML =
+            '<table style=position:absolute;width:auto;right:999%;bottom:999%>' +
+                '<tr><td style=position:relative>' +
+                '<tr><td style="font:999px serif;white-space:pre">.<span style="font:999px \'' + fontName + '\',serif"> </span>.' +
+            '</table>' +
+            '<table style=position:absolute;width:auto;right:999%;bottom:999%>' +
+                '<tr><td style=position:relative>' +
+                '<tr><td style="font:999px serif;white-space:pre">.<span style="font:999px \'' + fontName + '\',monospace"> </span>.' +
+            '</table>'
+    );
 
     if (root)
     {
-        startupIframe(shutdown, root.firstChild.firstChild.firstChild.firstChild);
+        startupIframe(shutdown, root.firstChild);
     }
     if (root)
     {
-        startupIframe(shutdown, root.lastChild.firstChild.firstChild.firstChild);
+        startupIframe(shutdown, root.lastChild);
     }
 };

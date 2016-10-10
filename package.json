@@ -28,11 +28,21 @@
   },
   "homepage": "https://github.com/dwighthouse/onfontready",
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-envify": "^1.0.0",
-    "gulp-file": "^0.3.0",
-    "gulp-gzip": "^1.4.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-uglify": "^1.5.3"
+    "babel-plugin-check-es2015-constants": "6.8.0",
+    "babel-plugin-transform-dead-code-elimination": "2.2.1",
+    "babel-plugin-transform-es2015-arrow-functions": "6.8.0",
+    "babel-plugin-transform-es2015-block-scoping": "6.15.0",
+    "babel-plugin-transform-node-env-inline": "6.8.0",
+    "event-stream": "3.3.4",
+    "gulp": "3.9.1",
+    "gulp-babel": "6.1.2",
+    "gulp-brotli": "1.2.0",
+    "gulp-clone": "1.0.0",
+    "gulp-envify": "1.0.0",
+    "gulp-gzip": "1.4.0",
+    "gulp-rename": "1.2.2",
+    "gulp-replace": "0.5.4",
+    "gulp-uglify": "2.0.0",
+    "gulp-zopfli": "1.0.0"
   }
 }
