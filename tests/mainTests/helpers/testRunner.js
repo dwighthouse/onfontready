@@ -9,19 +9,22 @@ window.testRunner = function(shutdownStateStatus, shutdownStateOutput) {
         f5: 0,
         f6: 0,
         f7: 0,
+        f8: 0,
+        f9: 0,
+        f10: 0,
         f_Fo: 0,
         f_Yu: 0
     };
 
     document.documentElement.className += " f1Loading";
-    window.addFontFace('f1', '../../tests/main/custom_fonts/f1', 'comfortaalight');
+    window.addFontFace('f1', '../../tests/mainTests/custom_fonts/f1');
     document.documentElement.className += " f1Loaded";
 
     window.onfontready('f2', function() {
         document.documentElement.className += " f2Loaded";
     });
     document.documentElement.className += " f2Loading";
-    window.addFontFace('f2', '../../tests/main/custom_fonts/f2', 'comfortaalight');
+    window.addFontFace('f2', '../../tests/mainTests/custom_fonts/f2');
 
     document.documentElement.className += " arialLoading";
     window.onfontready('Arial', function() {
@@ -54,7 +57,7 @@ window.testRunner = function(shutdownStateStatus, shutdownStateOutput) {
     });
     setTimeout(function() {
         document.documentElement.className += " f3Loading";
-        window.addFontFace('f3', '../../tests/main/custom_fonts/f3', 'comfortaalight');
+        window.addFontFace('f3', '../../tests/mainTests/custom_fonts/f3');
     }, 10);
     setTimeout(function() {
         if (parts.f3 === 2)
@@ -75,7 +78,7 @@ window.testRunner = function(shutdownStateStatus, shutdownStateOutput) {
     });
     setTimeout(function() {
         document.documentElement.className += " f4Loading";
-        window.addFontFace('f4', '../../tests/main/custom_fonts/f4', 'comfortaalight');
+        window.addFontFace('f4', '../../tests/mainTests/custom_fonts/f4');
     }, 10);
     setTimeout(function() {
         if (parts.f4 === 2)
@@ -96,7 +99,7 @@ window.testRunner = function(shutdownStateStatus, shutdownStateOutput) {
     });
     setTimeout(function() {
         document.documentElement.className += " f9Loading";
-        window.addFontFace('f9', '../../tests/main/custom_fonts/f9', 'comfortaalight');
+        window.addFontFace('f9', '../../tests/mainTests/custom_fonts/f9');
     }, 10);
     setTimeout(function() {
         if (parts.f9 === 2)
@@ -112,7 +115,7 @@ window.testRunner = function(shutdownStateStatus, shutdownStateOutput) {
     });
     setTimeout(function() {
         document.documentElement.className += " f5Loading";
-        window.addFontFace('f5', '../../tests/main/custom_fonts/f5', 'comfortaalight');
+        window.addFontFace('f5', '../../tests/mainTests/custom_fonts/f5');
     }, 10);
 
     window.onfontready('f8', function() {
@@ -126,7 +129,7 @@ window.testRunner = function(shutdownStateStatus, shutdownStateOutput) {
     });
     setTimeout(function() {
         document.documentElement.className += " f8Loading";
-        window.addFontFace('f8', '../../tests/main/custom_fonts/f8', 'comfortaalight');
+        window.addFontFace('f8', '../../tests/mainTests/custom_fonts/f8');
     }, 10);
     setTimeout(function() {
         if (parts.f8 === 2)
@@ -141,7 +144,7 @@ window.testRunner = function(shutdownStateStatus, shutdownStateOutput) {
         sampleText: 'Hello World, onfontready'
     });
     document.documentElement.className += " f6Loading";
-    window.addFontFace('f6', '../../tests/main/custom_fonts/f6', 'comfortaalight');
+    window.addFontFace('f6', '../../tests/mainTests/custom_fonts/f6');
 
     window.onfontready('f_Fo', function() {
         document.documentElement.className += " f_FoLoaded";
@@ -149,7 +152,7 @@ window.testRunner = function(shutdownStateStatus, shutdownStateOutput) {
         sampleText: 'oF' // f_Fo font only contains 'F' and 'o'
     });
     document.documentElement.className += " f_FoLoading";
-    window.addFontFace('f_Fo', '../../tests/main/custom_fonts/f_Fo', 'comfortaalight');
+    window.addFontFace('f_Fo', '../../tests/mainTests/custom_fonts/f_Fo');
 
     window.onfontready('f_Yu', function() {
         document.documentElement.className += " f_YuLoaded";
@@ -157,7 +160,7 @@ window.testRunner = function(shutdownStateStatus, shutdownStateOutput) {
         sampleText: 'Hello World' // f_Yu font only contains 'Y' or 'u'
     });
     document.documentElement.className += " f_YuLoading";
-    window.addFontFace('f_Yu', '../../tests/main/custom_fonts/f_Yu', 'comfortaalight');
+    window.addFontFace('f_Yu', '../../tests/mainTests/custom_fonts/f_Yu');
 
     window.onfontready('f7', function() {
         document.documentElement.className += " f7Loaded";
@@ -165,7 +168,14 @@ window.testRunner = function(shutdownStateStatus, shutdownStateOutput) {
         sampleText: 'Your Font' // f7 font does not contain 'Y', 'r', or 'u'
     });
     document.documentElement.className += " f7Loading";
-    window.addFontFace('f7', '../../tests/main/custom_fonts/f7', 'comfortaalight');
+    window.addFontFace('f7', '../../tests/mainTests/custom_fonts/f7');
+
+    window.onfontready('f10', function() {
+        document.documentElement.className += " f10Loaded";
+    }, {
+        sampleText: '\n'
+    });
+    document.documentElement.className += " f10Loading";
 
     setTimeout(function() {
         var tests = window.reporter.getTests();

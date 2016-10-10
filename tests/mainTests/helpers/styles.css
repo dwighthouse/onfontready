@@ -21,6 +21,19 @@ body {
 
 
 /* General */
+h4, p, li, pre {
+    margin-bottom: 4px;
+}
+
+ul {
+    margin-left: 20px;
+}
+
+pre {
+    font-family: monospace;
+    white-space: pre;
+}
+
 .group {
     margin-bottom: 12px;
 }
@@ -151,6 +164,11 @@ body {
 .f7Loaded .f7            { background: #fcc; font-family: 'f7', serif; }
 .f7LoadedAndTimedOut .f7 { background: #fcc; font-family: serif; }
 
+.f10                       { background: #fcc; font-family: serif; }
+.f10Loading .f10           { background: #fcc; font-family: serif; }
+.f10TimedOut .f10          { background: #fcc; font-family: serif; }
+.f10Loaded .f10            { background: #cfc; font-family: 'f10', serif; }
+.f10LoadedAndTimedOut .f10 { background: #fcc; font-family: serif; }
 
 
 /* Memory Tests */
