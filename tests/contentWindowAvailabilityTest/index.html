@@ -1,0 +1,149 @@
+<!doctype html>
+<meta charset="utf-8">
+
+<title>contentWindow Availability Test</title>
+
+<style>
+.results {
+    border-collapse: collapse;
+}
+
+.results td {
+    padding: 6px;
+    border: 1px solid #ddd;
+}
+
+.onInsertion {
+    background: #328332;
+    color: #fff;
+}
+
+.onLoad {
+    background: #ff9300;
+    color: #fff;
+}
+</style>
+
+<h1>contentWindow Availability Test</h1>
+
+<p>When creating an iframe, at what point does the iframe's contentWindow property become available? Is it only assured <a href="https://davidwalsh.name/iframe-contentwindow-null">after the onload event is fired</a>? Is it available <a href="http://stackoverflow.com/a/10433550/195068">immediately after inserting the iframe into the DOM</a>? The test below can be run to detect the availability point for different browsers.</p>
+
+<h2>Browser Test Results</h2>
+<table class="results">
+    <tr>
+        <td>Google Chrome (53.0.2785.116)</td>
+        <td class="onInsertion">At DOM Insertion Time</td>
+    </tr>
+    <tr>
+        <td>Mozilla Firefox (49.0.1)</td>
+        <td class="onInsertion">At DOM Insertion Time</td>
+    </tr>
+    <tr>
+        <td>Opera (40.0.2308.75)</td>
+        <td class="onInsertion">At DOM Insertion Time</td>
+    </tr>
+    <tr>
+        <td>Apple Safari (9.1.3 (11601.7.8))</td>
+        <td class="onInsertion">At DOM Insertion Time</td>
+    </tr>
+    <tr>
+        <td>Microsoft Edge</td>
+        <td class=""></td>
+    </tr>
+    <tr>
+        <td>Internet Explorer 11</td>
+        <td class=""></td>
+    </tr>
+    <tr>
+        <td>Internet Explorer 10</td>
+        <td class=""></td>
+    </tr>
+    <tr>
+        <td>Internet Explorer 9</td>
+        <td class=""></td>
+    </tr>
+    <tr>
+        <td>Internet Explorer 8</td>
+        <td class=""></td>
+    </tr>
+    <tr>
+        <td>Internet Explorer 7</td>
+        <td class=""></td>
+    </tr>
+    <tr>
+        <td>Internet Explorer 6</td>
+        <td class=""></td>
+    </tr>
+</table>
+
+
+<h2>Test</h2>
+<button id="testButton">Start Test</button>
+<div id="testBox"></div>
+
+<h4>Output</h4>
+<pre id="console"></pre>
+
+<script>
+
+(function() {
+    function attachEvent(element, eventName, callback) {
+        if (element.attachEvent)
+        {
+            element.attachEvent(eventName, callback);
+        }
+        else
+        {
+            element[eventName] = callback;
+        }
+    }
+
+    function detachEvent(element, eventName, callback) {
+        if (element.detachEvent)
+        {
+            element.detachEvent(eventName, callback);
+        }
+        else
+        {
+            element[eventName] = null;
+        }
+    }
+
+    var testButtonElement = document.getElementById('testButton');
+    var testBoxElement = document.getElementById('testBox');
+    var consoleElement = document.getElementById('console');
+
+    attachEvent(testButtonElement, 'onclick', function() {
+        testButtonElement.setAttribute('disabled', 'disabled');
+
+        var contentWindowAvailability = {};
+
+        var iframe = document.createElement('iframe');
+
+        contentWindowAvailability['createElement'] = !!iframe.contentWindow;
+
+        function onload() {
+            contentWindowAvailability['onload'] = !!iframe.contentWindow;
+        }
+
+        attachEvent(iframe, 'onload', onload);
+
+        testBoxElement.appendChild(iframe);
+
+        contentWindowAvailability['appendChild'] = !!iframe.contentWindow;
+
+        setTimeout(function() {
+            consoleElement.innerHTML = [
+                'At createElement time: ' + contentWindowAvailability['createElement'],
+                'At appendChild time: ' + contentWindowAvailability['appendChild'],
+                'At onload time: ' + contentWindowAvailability['onload']
+            ].join('<br>');
+
+            detachEvent(iframe, 'onload', onload);
+            testBoxElement.removeChild(iframe);
+            testButtonElement.removeAttribute('disabled');
+        }, 2000);
+    });
+}());
+
+</script>
