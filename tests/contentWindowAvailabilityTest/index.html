@@ -4,6 +4,10 @@
 <title>contentWindow Availability Test</title>
 
 <style>
+html {
+    font-family: sans-serif;
+}
+
 .results {
     border-collapse: collapse;
 }
@@ -52,27 +56,39 @@
     </tr>
     <tr>
         <td>Internet Explorer 11</td>
-        <td class=""></td>
+        <td class="onInsertion">At DOM Insertion Time</td>
     </tr>
     <tr>
         <td>Internet Explorer 10</td>
-        <td class=""></td>
+        <td class="onInsertion">At DOM Insertion Time</td>
     </tr>
     <tr>
         <td>Internet Explorer 9</td>
-        <td class=""></td>
+        <td class="onInsertion">At DOM Insertion Time</td>
     </tr>
     <tr>
         <td>Internet Explorer 8</td>
-        <td class=""></td>
+        <td class="onInsertion">
+            At DOM Insertion Time
+            <br>
+            <em>contentWindow access before appendChild causes "Unspecified error"</em>
+        </td>
     </tr>
     <tr>
         <td>Internet Explorer 7</td>
-        <td class=""></td>
+        <td class="onInsertion">
+            At DOM Insertion Time
+            <br>
+            <em>contentWindow access before appendChild causes "Unspecified error"</em>
+        </td>
     </tr>
     <tr>
         <td>Internet Explorer 6</td>
-        <td class=""></td>
+        <td class="onInsertion">
+            At DOM Insertion Time
+            <br>
+            <em>contentWindow access before appendChild causes "Unspecified error"</em>
+        </td>
     </tr>
 </table>
 
@@ -120,6 +136,7 @@
 
         var iframe = document.createElement('iframe');
 
+        // Causes "Unspecified error" in IE6, IE7, IE8
         contentWindowAvailability['createElement'] = !!iframe.contentWindow;
 
         function onload() {
