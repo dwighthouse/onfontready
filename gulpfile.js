@@ -1,17 +1,16 @@
 'use strict';
 
 const babel = require('gulp-babel');
+const brotli = require('gulp-brotli');
+const clone = require('gulp-clone');
 const envify = require('gulp-envify');
+const es = require('event-stream');
 const gulp = require('gulp');
 const gzip = require('gulp-gzip');
 const rename = require('gulp-rename');
 const replace = require('gulp-replace');
 const uglify = require('gulp-uglify');
-
-const brotli = require('gulp-brotli');
 const zopfli = require('gulp-zopfli');
-const clone = require('gulp-clone');
-const es = require('event-stream')
 
 function build(options) {
     let baseStream = gulp.src('./src/onfontready.js')
