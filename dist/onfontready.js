@@ -17,12 +17,13 @@ window.onfontready = function (fontName, onReady, options) {
         iframe = document.createElement('iframe');
 
         shutdown = function () {
-            outerShutdown(iframe.contentWindow.onresize = 0);
+            outerShutdown(iframe = 0);
         };
 
         iframe.style.width = '999%';
 
         parent.appendChild(iframe).contentWindow.onresize = tryFinish;
+        tryFinish();
     };
 
 

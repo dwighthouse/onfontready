@@ -1,4 +1,4 @@
-window.testRunner = function(shutdownStateStatus, shutdownStateOutput) {
+window.testRunner = function(shutdownStateStatus) {
 
     var parts = {
         arial: 0,
@@ -31,9 +31,9 @@ window.testRunner = function(shutdownStateStatus, shutdownStateOutput) {
         document.documentElement.className += " arialLoaded";
     });
 
-    document.documentElement.className += " fantasyLoading";
-    window.onfontready('fantasy', function() {
-        document.documentElement.className += " fantasyLoaded";
+    document.documentElement.className += " monospaceLoading";
+    window.onfontready('monospace', function() {
+        document.documentElement.className += " monospaceLoaded";
     }, {
         generic: true
     });
@@ -173,36 +173,59 @@ window.testRunner = function(shutdownStateStatus, shutdownStateOutput) {
     window.onfontready('f10', function() {
         document.documentElement.className += " f10Loaded";
     }, {
-        sampleText: '\n'
+        sampleText: String.fromCharCode(0) // NULL character, it is always 0-width
     });
     document.documentElement.className += " f10Loading";
 
     setTimeout(function() {
         var tests = window.reporter.getTests();
-        // console.log(JSON.stringify(tests, null, '    '))
+        // window.log(JSON.stringify(tests, null, '    '))
+        // window.log(document.documentElement.className);
 
         var hasStandardError = false;
+        var hasFailureError = false;
 
-        var fonts = ['Arial', 'fantasy', 'cursive', 'f2', 'f3', 'f4', 'f5', 'f6', 'f8', 'f9', 'f_Fo'];
+        var standardFontTests = ['Arial', 'monospace', 'f2', 'f3', 'f4', 'f5', 'f6', 'f8', 'f9', 'f10', 'f_Fo'];
         var f;
 
-        for (f = 0; f < fonts.length; f += 1)
+        for (f = 0; f < standardFontTests.length; f += 1)
         {
-            hasStandardError = hasStandardError || (fonts[f].root > 0 || fonts[f].load > 0 || fonts[f].resize > 0);
+            hasStandardError = hasStandardError || (standardFontTests[f].root > 0 || standardFontTests[f].load > 0 || standardFontTests[f].resize > 0);
         }
 
-        var f7PartialFallbackSupported = tests.f7.root === 1 && tests.f7.load === 2 && tests.f7.resize === 2;
-        var f_YuPartialFallbackSupported = tests.f_Yu.root === 1 && tests.f_Yu.load === 2 && tests.f_Yu.resize === 2;
+        var failureFontTests = ['cursive', 'f_Yu', 'f7'];
+        var t;
+        var r;
+        var failureResult;
 
-        var f7PartialFallbackUnsupported = tests.f7.root <= 0 && tests.f7.load <= 0 && tests.f7.resize <= 0;
-        var f_YuPartialFallbackUnsupported = tests.f_Yu.root <= 0 && tests.f_Yu.load <= 0 && tests.f_Yu.resize <= 0;
+        for (t = 0; t < failureFontTests.length; t += 1)
+        {
+            r = tests[failureFontTests[t]];
+            if (!window.isLegacyVersion)
+            {
+                failureResult = r.root === 1 && r.load === 0 && r.resize === 2;
+            }
+            if (window.isLegacyVersion)
+            {
+                if (window.isIE6 || window.isIE7)
+                {
+                    failureResult = r.root === 0 && r.load === 0 && r.resize === 0;
+                }
+                else
+                {
+                    failureResult = r.root === 1 && r.load === 0 && r.resize === 0;
+                }
+            }
 
-        if (!hasStandardError && f7PartialFallbackSupported && f_YuPartialFallbackSupported)
+            hasFailureError = hasFailureError || !failureResult;
+        }
+
+        if (!hasStandardError && !hasFailureError)
         {
             shutdownStateStatus.innerHTML = 'OK';
             document.documentElement.className += ' shutdownStatesValid';
         }
-        else if (!hasStandardError && f7PartialFallbackUnsupported && f_YuPartialFallbackUnsupported)
+        else if (!hasStandardError && hasFailureError)
         {
             shutdownStateStatus.innerHTML = 'OK';
             document.documentElement.className += ' shutdownStatesPartiallyValid';
@@ -212,7 +235,5 @@ window.testRunner = function(shutdownStateStatus, shutdownStateOutput) {
             shutdownStateStatus.innerHTML = 'X';
             document.documentElement.className += ' shutdownStatesInvalid';
         }
-
-        shutdownStateOutput.innerHTML = 'hasStandardError: ' + hasStandardError + ',<br>f7PartialFallbackSupported: ' + f7PartialFallbackSupported + ', f_YuPartialFallbackSupported: ' + f_YuPartialFallbackSupported + ',<br>f7PartialFallbackUnsupported: ' + f7PartialFallbackUnsupported + ', f_YuPartialFallbackUnsupported: ' + f_YuPartialFallbackUnsupported;
     }, 5000);
 };

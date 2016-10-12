@@ -5,7 +5,9 @@
 
 <link href="../../tests/mainTests/helpers/styles.css" rel="stylesheet">
 
-<!--[if lt IE 9]><script>document.documentElement.className+=' ie';</script><![endif]-->
+<!--[if IE 6]><body class="ie6"><![endif]-->
+<!--[if IE 7]><body class="ie7"><![endif]-->
+<!--[if IE 8]><body class="ie8"><![endif]-->
 
 <pre id="console"></pre>
 
@@ -18,7 +20,7 @@
     <button id="startButton">Start Tests</button>
 
     <label>
-        <input id="useLegacyCheckbox" type="checkbox" /> Use Legacy Version (required for IE6, IE7, & IE8)
+        <input id="useLegacyCheckbox" type="checkbox" /> Use Legacy Version (required for IE6, IE7, &amp; IE8)
     </label>
 </div>
 
@@ -63,13 +65,13 @@
 
     <table class="box">
         <tr>
-            <td class="example fantasy">Font</td>
+            <td class="example monospace">Font</td>
             <td class="description">
                 <h4>Generic Font-Family</h4>
                 <p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-family">Generic font families</a> can be specified in a font stack, but only without quotes. Specifying <span style="font-family: monospace;">{ generic: true }</span> causes onfontready to add the tested font without quotes in the CSS. Without this change, the generic font names are assumed to be the names of font faces that are loaded by the page.</p>
-                <pre>Font: fantasy (generic)</pre>
+                <pre>Font: monospace (generic)</pre>
                 <pre>Options: { generic: true }</pre>
-                <p><strong>Results:</strong> <em>Generic font-family fantasy should display</em></p>
+                <p><strong>Results:</strong> <em>Generic font-family monospace should display</em></p>
             </td>
         </tr>
     </table>
@@ -83,6 +85,8 @@
                 <pre>Font: cursive (generic)</pre>
                 <pre>Options: { generic: false }</pre>
                 <p style="color: #f33">Incorrect Usage: Always set the generic option to true when testing generic font families.</p>
+                <p style="color: #f33">IE6 Failure: Generic font-family cursive should display because IE6 accepts generic font family names with quotes.</p>
+                <p style="color: #f33">IE7 Failure: Generic font-family cursive should display because IE7 accepts generic font family names with quotes.</p>
                 <p><strong>Results:</strong> <em>Fallback font (serif) should display, detection elements remain forever</em></p>
             </td>
         </tr>
@@ -173,6 +177,7 @@
                 <p>Font 'f_Fo' only contains uppercase 'F' and lowercase 'o' glyphs. Since the sampleText only contains those characters, onfontready can detect that the custom font has been loaded.</p>
                 <pre>Font: 'f_Fo'</pre>
                 <pre>Options: { sampleText: 'oF' }</pre>
+                <p style="color: #f33">IE6 Failure: Block glyphs should display for the 'n' and 't' in 'Font' because IE6 replaces missing glyphs in custom fonts with equal-sized blocks, creating a potential false-positive condition.</p>
                 <p><strong>Results:</strong> <em>Custom font should display only for 'F' and 'o' in 'Font'</em></p>
             </td>
         </tr>
@@ -187,6 +192,8 @@
                 <pre>Font: 'f_Yu'</pre>
                 <pre>Options: { sampleText: 'Hello World' }</pre>
                 <p style="color: #f33">Incorrect Usage: If sampleText must be used, only use it with characters supported by the custom font being tested.</p>
+                <p style="color: #f33">IE6 Failure: Block glyphs should display because IE6 replaces missing glyphs in custom fonts with equal-sized blocks, creating a potential false-positive condition.</p>
+                <p style="color: #f33">IE7 Failure: IE7 replaces missing glyphs in custom fonts with serif font glyphs, regardless of fallback font, creating a potential false-positive condition.</p>
                 <p><strong>Results:</strong> <em>Fallback font (serif) should display, detection elements remain forever</em></p>
             </td>
         </tr>
@@ -201,6 +208,8 @@
                 <pre>Font: 'f7'</pre>
                 <pre>Options: { sampleText: 'Your Font' }</pre>
                 <p style="color: #f33">Incorrect Usage: If sampleText must be used, only use it with characters supported by the custom font being tested.</p>
+                <p style="color: #f33">IE6 Failure: IE6 replaces missing glyphs in custom fonts with equal-sized blocks, creating a potential false-positive condition.</p>
+                <p style="color: #f33">IE7 Failure: IE7 replaces missing glyphs in custom fonts with serif font glyphs, regardless of fallback font, creating a potential false-positive condition.</p>
                 <p><strong>Results:</strong> <em>Fallback font (serif) should display, detection elements remain forever</em></p>
             </td>
         </tr>
@@ -213,7 +222,7 @@
                 <h4>sampleText with Character Width Equivalence False Positive</h4>
                 <p>Many characters in Unicode can and do have the same width regardless of the font used. For example, consider the line-feed character is always zero-width. Many mathematical symbols and higher-level Unicode characters also have this same-width property, even if they visually appear different, in serif and monospace fonts. Since onfontready relies on differing widths of characters in different fonts, using such a width-equivalent character as the sampleText will cause onReady to be called immediately, even if the custom font isn't fully loaded. The custom font may load, but the false positive generated may allow the page to generate <a href="https://css-tricks.com/fout-foit-foft/">FOIT</a> text.</p>
                 <pre>Font: 'f10'</pre>
-                <pre>Options: { sampleText: '\n' }</pre>
+                <pre>Options: { sampleText: String.fromCharCode(0) }</pre>
                 <p style="color: #f33">Incorrect Usage: If sampleText must be used, only use it with characters known to have different widths in serif and monospace.</p>
                 <p><strong>Results:</strong> <em>Fallback font (serif) should display</em></p>
             </td>
@@ -235,12 +244,51 @@
                     <li>IE7 will always fall back to the serif font for missing glyphs when a custom font has been loaded. The serif values will always be the same width, thus creating the potential for a false-positive onReady callback. There is no feasible fix, however, this is incorrect font usage anyway.</li>
                 </ul>
                 <p>Runs on a 5 second timeout. False negatives are possible on slow connections.</p>
-                <p><strong>Output</strong></p>
-                <pre id="shutdownStateOutput">?</pre>
             </td>
         </tr>
     </table>
 </div>
+
+<script>
+if (!window.JSON) {
+  window.JSON = {
+    parse: function(sJSON) { return eval('(' + sJSON + ')'); },
+    stringify: (function () {
+      var toString = Object.prototype.toString;
+      var isArray = Array.isArray || function (a) { return toString.call(a) === '[object Array]'; };
+      var escMap = {'"': '\\"', '\\': '\\\\', '\b': '\\b', '\f': '\\f', '\n': '\\n', '\r': '\\r', '\t': '\\t'};
+      var escFunc = function (m) { return escMap[m] || '\\u' + (m.charCodeAt(0) + 0x10000).toString(16).substr(1); };
+      var escRE = /[\\"\u0000-\u001F\u2028\u2029]/g;
+      return function stringify(value) {
+        if (value == null) {
+          return 'null';
+        } else if (typeof value === 'number') {
+          return isFinite(value) ? value.toString() : 'null';
+        } else if (typeof value === 'boolean') {
+          return value.toString();
+        } else if (typeof value === 'object') {
+          if (typeof value.toJSON === 'function') {
+            return stringify(value.toJSON());
+          } else if (isArray(value)) {
+            var res = '[';
+            for (var i = 0; i < value.length; i++)
+              res += (i ? ', ' : '') + stringify(value[i]);
+            return res + ']';
+          } else if (toString.call(value) === '[object Object]') {
+            var tmp = [];
+            for (var k in value) {
+              if (value.hasOwnProperty(k))
+                tmp.push(stringify(k) + ': ' + stringify(value[k]));
+            }
+            return '{' + tmp.join(', ') + '}';
+          }
+        }
+        return '"' + value.toString().replace(escRE, escFunc) + '"';
+      };
+    })()
+  };
+}
+</script>
 
 <script src="../../tests/mainTests/helpers/log.js"></script>
 <script src="../../tests/mainTests/helpers/addFontFace.js"></script>
@@ -250,14 +298,17 @@
 <script>window.onfontreadyLegacy = window.onfontready;</script>
 <script src="../../tests/mainTests/builds/onfontready.js"></script>
 
+<!--[if IE 6]><script>window.isIE6 = true;</script><![endif]-->
+<!--[if IE 7]><script>window.isIE7 = true;</script><![endif]-->
+<!--[if IE 8]><script>window.isIE8 = true;</script><![endif]-->
+
 <script>
 var startButton = document.getElementById('startButton');
 var useLegacyCheckbox = document.getElementById('useLegacyCheckbox');
 var shutdownStateStatus = document.getElementById('shutdownStateStatus');
-var shutdownStateOutput = document.getElementById('shutdownStateOutput');
 
 // Default IE 8 and below to using legacy version
-if (document.documentElement.className.indexOf('ie') !== -1)
+if (window.isIE6 || window.isIE7 || window.isIE8)
 {
     useLegacyCheckbox.checked = true;
 }
@@ -267,9 +318,10 @@ startButton.onclick = function() {
 
     if (useLegacyCheckbox.checked)
     {
+        window.isLegacyVersion = true;
         window.onfontready = window.onfontreadyLegacy;
     }
 
-    window.testRunner(shutdownStateStatus, shutdownStateOutput);
+    window.testRunner(shutdownStateStatus);
 };
 </script>
