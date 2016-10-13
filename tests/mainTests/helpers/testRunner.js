@@ -1,4 +1,4 @@
-window.testRunner = function(shutdownStateStatus) {
+window.testRunner = function(shutdownStateStatus, shutdownStateDescription) {
 
     var parts = {
         arial: 0,
@@ -177,6 +177,20 @@ window.testRunner = function(shutdownStateStatus) {
     });
     document.documentElement.className += " f10Loading";
 
+    window.onfontready('f_F1', function() {
+        document.documentElement.className += " f_F1Loaded";
+    }, {
+        sampleText: 'F'
+    });
+    window.addFontFace('f_F1', '../../tests/mainTests/custom_fonts/f_F1');
+    document.documentElement.className += " f_F1Loading";
+
+    window.onfontready('f_F2', function() {
+        document.documentElement.className += " f_F2Loaded";
+    });
+    window.addFontFace('f_F2', '../../tests/mainTests/custom_fonts/f_F2');
+    document.documentElement.className += " f_F2Loading";
+
     setTimeout(function() {
         var tests = window.reporter.getTests();
         // window.log(JSON.stringify(tests, null, '    '))
@@ -185,7 +199,7 @@ window.testRunner = function(shutdownStateStatus) {
         var hasStandardError = false;
         var hasFailureError = false;
 
-        var standardFontTests = ['Arial', 'monospace', 'f2', 'f3', 'f4', 'f5', 'f6', 'f8', 'f9', 'f10', 'f_Fo'];
+        var standardFontTests = ['Arial', 'monospace', 'f2', 'f3', 'f4', 'f5', 'f6', 'f8', 'f9', 'f10', 'f_Fo', 'f_F1'];
         var f;
 
         for (f = 0; f < standardFontTests.length; f += 1)
@@ -193,7 +207,7 @@ window.testRunner = function(shutdownStateStatus) {
             hasStandardError = hasStandardError || (standardFontTests[f].root > 0 || standardFontTests[f].load > 0 || standardFontTests[f].resize > 0);
         }
 
-        var failureFontTests = ['cursive', 'f_Yu', 'f7'];
+        var failureFontTests = ['cursive', 'f_Yu', 'f7', 'f_F2'];
         var t;
         var r;
         var failureResult;
@@ -203,7 +217,7 @@ window.testRunner = function(shutdownStateStatus) {
             r = tests[failureFontTests[t]];
             if (!window.isLegacyVersion)
             {
-                failureResult = r.root === 1 && r.load === 0 && r.resize === 2;
+                failureResult = r.root === 1 && r.load === 2 && r.resize === 2;
             }
             if (window.isLegacyVersion)
             {
@@ -224,16 +238,19 @@ window.testRunner = function(shutdownStateStatus) {
         {
             shutdownStateStatus.innerHTML = 'OK';
             document.documentElement.className += ' shutdownStatesValid';
+            shutdownStateDescription.innerHTML = 'Everything shut down in the expected way. Incorrect Usages and Old IE Differences may not have shut down, but they behaved as expected under those conditions.';
         }
         else if (!hasStandardError && hasFailureError)
         {
             shutdownStateStatus.innerHTML = 'OK';
             document.documentElement.className += ' shutdownStatesPartiallyValid';
+            shutdownStateDescription.innerHTML = 'All normal cases shut down as expected. Some Incorrect Usages or Old IE Differences did not shut down in the expected way.';
         }
         else
         {
             shutdownStateStatus.innerHTML = 'X';
             document.documentElement.className += ' shutdownStatesInvalid';
+            shutdownStateDescription.innerHTML = 'Something went very wrong with the shutdown process.';
         }
     }, 5000);
 };

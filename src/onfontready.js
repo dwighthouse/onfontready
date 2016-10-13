@@ -22,7 +22,7 @@ module.exports = (fontName, onReady, options) => {
         })();
     }
 
-    options = options || fontName;
+    options = options || 0;
 
     if (options.timeoutAfter) {
         setTimeout(() => {
@@ -39,11 +39,19 @@ module.exports = (fontName, onReady, options) => {
         var startupIframe = (outerShutdown, parent, iframe) => {
             iframe = document.createElement('iframe');
 
+            if (process.env.isTest) {
+                window.reporter.increment(fontName, 'load');
+            }
+            iframe.onload = function() {
+                tryFinish(iframe.contentWindow.onresize = tryFinish);
+            };
+
             shutdown = () => {
                 if (process.env.isTest) {
+                    window.reporter.decrement(fontName, 'load');
                     window.reporter.decrement(fontName, 'resize');
                 }
-                outerShutdown(iframe = 0);
+                outerShutdown((iframe.contentWindow || 0).onresize = iframe.onload = 0);
             };
 
             iframe.style.width = '999%';
@@ -51,41 +59,11 @@ module.exports = (fontName, onReady, options) => {
             if (process.env.isTest) {
                 window.reporter.increment(fontName, 'resize');
             }
-            (parent.appendChild(iframe)).contentWindow.onresize = tryFinish;
-            tryFinish();
+            parent.appendChild(iframe);
         };
     }
 
     if (process.env.isLegacy) {
-        // var startupIframe = (outerShutdown, parent, iframe) => {
-        //     iframe = document.createElement('iframe');
-
-        //     shutdown = () => {
-        //         if (process.env.isTest) {
-        //             window.reporter.decrement(fontName, 'resize');
-        //         }
-        //         iframe.contentWindow.onresize = 0;
-        //         if (iframe.contentWindow.attachEvent)
-        //         {
-        //             iframe.contentWindow.detachEvent('onresize', tryFinish);
-        //         }
-        //         outerShutdown();
-        //     };
-
-        //     iframe.style.cssText = 'position:absolute;width:999%';
-
-        //     parent.firstChild.firstChild.firstChild.appendChild(iframe);
-
-        //     iframe.contentWindow.onresize = tryFinish;
-
-        //     if (iframe.contentWindow.attachEvent) {
-        //         if (process.env.isTest) {
-        //             window.reporter.increment(fontName, 'resize');
-        //         }
-        //         iframe.contentWindow.attachEvent('onresize', tryFinish);
-        //     }
-        // };
-
         var startupIframe = (outerShutdown, parent, iframe) => {
             iframe = document.createElement('iframe');
 

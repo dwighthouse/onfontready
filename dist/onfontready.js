@@ -1,6 +1,6 @@
 window.onfontready = function (fontName, onReady, options) {
 
-    options = options || fontName;
+    options = options || 0;
 
     if (options.timeoutAfter) {
         setTimeout(function () {
@@ -16,14 +16,17 @@ window.onfontready = function (fontName, onReady, options) {
     var startupIframe = function (outerShutdown, parent, iframe) {
         iframe = document.createElement('iframe');
 
+        iframe.onload = function () {
+            tryFinish(iframe.contentWindow.onresize = tryFinish);
+        };
+
         shutdown = function () {
-            outerShutdown(iframe = 0);
+            outerShutdown((iframe.contentWindow || 0).onresize = iframe.onload = 0);
         };
 
         iframe.style.width = '999%';
 
-        parent.appendChild(iframe).contentWindow.onresize = tryFinish;
-        tryFinish();
+        parent.appendChild(iframe);
     };
 
 

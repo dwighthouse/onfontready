@@ -229,9 +229,35 @@
         </tr>
     </table>
 
-    <p>TODO: Add test for font containing no space character.</p>
-    <p>TODO: Add test for icon font containing no space character.</p>
-    <p>TODO: Add test for icon font with sampleText for icon replacement that equates to a width-equivalent character.</p>
+    <table class="box">
+        <tr>
+            <td class="example f_F1">Font</td>
+            <td class="description">
+                <h4>Using sampleText with Font Containing No Space Character</h4>
+                <p>Font 'f_F1' contains only a single glyph for the capital 'F'. There is no space character specified at all. Since this font does not contain a space character, sampleText must be used.</p>
+                <pre>Font: 'f_F1'</pre>
+                <pre>Options: { sampleText: 'F' }</pre>
+                <p style="color: #f33">IE6 Failure: IE6 replaces missing glyphs in custom fonts with equal-sized blocks, resulting in block glyphs for 'ont' in 'Font'.</p>
+                <p><strong>Results:</strong> <em>Custom font should display only for 'F' in 'Font'</em></p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f_F2">Font</td>
+            <td class="description">
+                <h4>Not Using sampleText with Font Containing No Space Character</h4>
+                <p>Font 'f_F2' contains only a single glyph for the capital 'F'. There is no space character specified at all. Since no sampleText is specified, onfontready will attempt to use a space for the sampleText. This will result in a false-negative.</p>
+                <pre>Font: 'f_F2'</pre>
+                <pre>Options: {}</pre>
+                <p style="color: #f33">Incorrect Usage: If custom font does not contain a space character, the sampleText option must be used. Furthermore, the sampleText must only contain glyphs the custom font defines.</p>
+                <p style="color: #f33">IE6 Failure: IE6 replaces missing glyphs in custom fonts with equal-sized blocks, creating a potential false-positive condition.</p>
+                <p style="color: #f33">IE7 Failure: IE7 replaces missing glyphs in custom fonts with serif font glyphs, regardless of fallback font, creating a potential false-positive condition.</p>
+                <p><strong>Results:</strong> <em>Fallback font (serif) should display, detection elements remain forever</em></p>
+            </td>
+        </tr>
+    </table>
 
     <table class="box">
         <tr>
@@ -239,11 +265,8 @@
             <td class="description">
                 <h4>Shutdown States</h4>
                 <p>Did the tests correctly shutdown, removing event listeners and DOM elements as expected?</p>
-                <ul>
-                    <li>IE6 will not use the fallback font for missing glyphs when a custom font has been loaded. Box glyphs will be used instead, which are always the same width, thus creating the potential for a false-positive onReady callback. There is no feasible fix, however, this is incorrect font usage anyway.</li>
-                    <li>IE7 will always fall back to the serif font for missing glyphs when a custom font has been loaded. The serif values will always be the same width, thus creating the potential for a false-positive onReady callback. There is no feasible fix, however, this is incorrect font usage anyway.</li>
-                </ul>
                 <p>Runs on a 5 second timeout. False negatives are possible on slow connections.</p>
+                <p><strong>Results:</strong> <em id="shutdownStateDescription">...</em></p>
             </td>
         </tr>
     </table>
@@ -306,6 +329,7 @@ if (!window.JSON) {
 var startButton = document.getElementById('startButton');
 var useLegacyCheckbox = document.getElementById('useLegacyCheckbox');
 var shutdownStateStatus = document.getElementById('shutdownStateStatus');
+var shutdownStateDescription = document.getElementById('shutdownStateDescription');
 
 // Default IE 8 and below to using legacy version
 if (window.isIE6 || window.isIE7 || window.isIE8)
@@ -322,6 +346,6 @@ startButton.onclick = function() {
         window.onfontready = window.onfontreadyLegacy;
     }
 
-    window.testRunner(shutdownStateStatus);
+    window.testRunner(shutdownStateStatus, shutdownStateDescription);
 };
 </script>

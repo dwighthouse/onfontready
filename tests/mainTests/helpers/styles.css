@@ -67,6 +67,7 @@ pre {
 .example {
     padding: 10px;
     font-size: 40px;
+    white-space: pre;
 }
 
 .description {
@@ -175,6 +176,21 @@ pre {
 .f10TimedOut .f10          { background: #fcc; font-family: serif; }
 .f10Loaded .f10            { background: #cfc; font-family: 'f10', serif; }
 .f10LoadedAndTimedOut .f10 { background: #fcc; font-family: serif; }
+
+.f_F1                        { background: #fcc; font-family: serif; }
+.f_F1Loading .f_F1           { background: #fcc; font-family: serif; }
+.f_F1TimedOut .f_F1          { background: #fcc; font-family: serif; }
+.f_F1Loaded .f_F1            { background: #cfc; font-family: 'f_F1', serif; }
+.f_F1LoadedAndTimedOut .f_F1 { background: #fcc; font-family: serif; }
+
+.f_F2                        { background: #fcc; font-family: serif; }
+.f_F2Loading .f_F2           { background: #cfc; font-family: serif; }
+.f_F2TimedOut .f_F2          { background: #fcc; font-family: serif; }
+.f_F2Loaded .f_F2            { background: #fcc; font-family: 'f_F2', serif; }
+.f_F2Loaded .ie6 .f_F2       { background: #ffb347; font-family: 'f_F2', serif; }
+.f_F2Loaded .ie7 .f_F2       { background: #ffb347; font-family: 'f_F2', serif; }
+.f_F2LoadedAndTimedOut .f_F2 { background: #fcc; font-family: serif; }
+
 
 
 /* Memory Tests */

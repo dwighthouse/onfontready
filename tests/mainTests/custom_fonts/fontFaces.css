@@ -9,8 +9,9 @@
 /* All custom fonts are a subset of the Comfortaa (light) font */
 /* http://aajohan.deviantart.com/art/Comfortaa-font-105395949 */
 
-/* f_Fo font is subset containing ```Fo``` */
-/* f_Yu font is subset containing ```Yu``` */
+/* f_Fo font is subset containing ```Fo```, and various whitespace (including space character) */
+/* f_Yu font is subset containing ```Yu```, and various whitespace (including space character) */
+/* f_F1 and f_F2 fonts are a subset containing ```F```, but no space character */
 /* Numbered fonts are copies of subset containing ``` ,FHWadeflnorty``` */
 
 /* Fonts processed with Font Squirrel's webfont generator tool */
@@ -110,4 +111,20 @@
   src: url('f_Yu.eot?#iefix') format('embedded-opentype'),
        url('f_Yu.woff') format('woff'),
        url('f_Yu.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'f_F1';
+  src: url('f_F1.eot');
+  src: url('f_F1.eot?#iefix') format('embedded-opentype'),
+       url('f_F1.woff') format('woff'),
+       url('f_F1.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'f_F2';
+  src: url('f_F2.eot');
+  src: url('f_F2.eot?#iefix') format('embedded-opentype'),
+       url('f_F2.woff') format('woff'),
+       url('f_F2.ttf') format('truetype');
 }

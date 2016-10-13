@@ -1,6 +1,6 @@
 window.onfontready = function (fontName, onReady, options) {
 
-    options = options || fontName;
+    options = options || 0;
 
     if (options.timeoutAfter) {
         setTimeout(function () {
@@ -12,35 +12,6 @@ window.onfontready = function (fontName, onReady, options) {
             }
         }, options.timeoutAfter);
     }
-
-    // var startupIframe = (outerShutdown, parent, iframe) => {
-    //     iframe = document.createElement('iframe');
-
-    //     shutdown = () => {
-    //         if (process.env.isTest) {
-    //             window.reporter.decrement(fontName, 'resize');
-    //         }
-    //         iframe.contentWindow.onresize = 0;
-    //         if (iframe.contentWindow.attachEvent)
-    //         {
-    //             iframe.contentWindow.detachEvent('onresize', tryFinish);
-    //         }
-    //         outerShutdown();
-    //     };
-
-    //     iframe.style.cssText = 'position:absolute;width:999%';
-
-    //     parent.firstChild.firstChild.firstChild.appendChild(iframe);
-
-    //     iframe.contentWindow.onresize = tryFinish;
-
-    //     if (iframe.contentWindow.attachEvent) {
-    //         if (process.env.isTest) {
-    //             window.reporter.increment(fontName, 'resize');
-    //         }
-    //         iframe.contentWindow.attachEvent('onresize', tryFinish);
-    //     }
-    // };
 
     var startupIframe = function (outerShutdown, parent, iframe) {
         iframe = document.createElement('iframe');
