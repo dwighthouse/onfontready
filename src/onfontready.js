@@ -8,7 +8,6 @@ module.exports = (fontName, onReady, options) => {
             function tryCreate(name) {
                 tests[name] = tests[name] || {
                     root: 0,
-                    load: 0,
                     resize: 0
                 };
                 return tests[name];
@@ -39,19 +38,11 @@ module.exports = (fontName, onReady, options) => {
         var startupIframe = (outerShutdown, parent, iframe) => {
             iframe = document.createElement('iframe');
 
-            if (process.env.isTest) {
-                window.reporter.increment(fontName, 'load');
-            }
-            iframe.onload = function() {
-                tryFinish(iframe.contentWindow.onresize = tryFinish);
-            };
-
             shutdown = () => {
                 if (process.env.isTest) {
-                    window.reporter.decrement(fontName, 'load');
                     window.reporter.decrement(fontName, 'resize');
                 }
-                outerShutdown((iframe.contentWindow || 0).onresize = iframe.onload = 0);
+                outerShutdown(iframe.contentWindow.onresize = 0);
             };
 
             iframe.style.width = '999%';
@@ -60,6 +51,8 @@ module.exports = (fontName, onReady, options) => {
                 window.reporter.increment(fontName, 'resize');
             }
             parent.appendChild(iframe);
+
+            iframe.contentWindow.onresize = tryFinish;
         };
     }
 
@@ -67,58 +60,29 @@ module.exports = (fontName, onReady, options) => {
         var startupIframe = (outerShutdown, parent, iframe) => {
             iframe = document.createElement('iframe');
 
-            var onLoad = function() {
-                if (iframe.contentWindow.attachEvent)
-                {
-                    iframe.contentWindow.attachEvent('onresize', tryFinish);
-                }
-                else
-                {
-                    iframe.contentWindow.onresize = tryFinish;
-                }
-
-                tryFinish();
-            };
-
-            if (iframe.attachEvent)
-            {
-                iframe.attachEvent('onload', onLoad);
-            }
-            else
-            {
-                iframe.onload = onLoad;
-            }
-
             shutdown = function() {
-                if (iframe.contentWindow)
-                {
-                    // Using attachEvent as the test compresses better
-                    // IE6, IE7, and IE8 require detachEvent, not event assignement
-                    if (iframe.contentWindow.attachEvent)
-                    {
-                        iframe.contentWindow.detachEvent('onresize', tryFinish);
-                    }
-                    else
-                    {
-                        iframe.contentWindow.onresize = 0;
-                    }
+                if (process.env.isTest) {
+                    window.reporter.decrement(fontName, 'resize');
                 }
 
-                if (iframe.attachEvent)
-                {
-                    iframe.detachEvent('onload', onLoad);
-                }
-                else
-                {
-                    iframe.onload = 0;
-                }
-
-                outerShutdown();
+                // Using attachEvent as the test compresses better
+                // IE6, IE7, and IE8 require detachEvent, not event assignment
+                outerShutdown(iframe.attachEvent ? iframe.contentWindow.detachEvent('onresize', tryFinish) : iframe.contentWindow.onresize = 0);
             };
 
             iframe.style.cssText = 'position:absolute;right:999%;bottom:999%;width:999%';
 
             parent.firstChild.firstChild.firstChild.appendChild(iframe);
+
+            if (process.env.isTest) {
+                window.reporter.increment(fontName, 'resize');
+            }
+            if (iframe.attachEvent) {
+                iframe.contentWindow.attachEvent('onresize', tryFinish);
+            }
+            else {
+                iframe.contentWindow.onresize = tryFinish;
+            }
         };
     }
 
@@ -194,5 +158,8 @@ module.exports = (fontName, onReady, options) => {
     }
     if (root) {
         startupIframe(shutdown, root.lastChild);
+    }
+    if (root) {
+        setTimeout(tryFinish);
     }
 };

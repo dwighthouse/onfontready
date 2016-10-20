@@ -31,9 +31,9 @@ window.testRunner = function(shutdownStateStatus, shutdownStateDescription) {
         document.documentElement.className += " arialLoaded";
     });
 
-    document.documentElement.className += " monospaceLoading";
-    window.onfontready('monospace', function() {
-        document.documentElement.className += " monospaceLoaded";
+    document.documentElement.className += " sansSerifLoading";
+    window.onfontready('sans-serif', function() {
+        document.documentElement.className += " sansSerifLoaded";
     }, {
         generic: true
     });
@@ -193,18 +193,18 @@ window.testRunner = function(shutdownStateStatus, shutdownStateDescription) {
 
     setTimeout(function() {
         var tests = window.reporter.getTests();
-        // window.log(JSON.stringify(tests, null, '    '))
-        // window.log(document.documentElement.className);
+        window.log(JSON.stringify(tests, null, '    '))
+        window.log(document.documentElement.className);
 
         var hasStandardError = false;
         var hasFailureError = false;
 
-        var standardFontTests = ['Arial', 'monospace', 'f2', 'f3', 'f4', 'f5', 'f6', 'f8', 'f9', 'f10', 'f_Fo', 'f_F1'];
+        var standardFontTests = ['Arial', 'sansSerif', 'f2', 'f3', 'f4', 'f5', 'f6', 'f8', 'f9', 'f10', 'f_Fo', 'f_F1'];
         var f;
 
         for (f = 0; f < standardFontTests.length; f += 1)
         {
-            hasStandardError = hasStandardError || (standardFontTests[f].root > 0 || standardFontTests[f].load > 0 || standardFontTests[f].resize > 0);
+            hasStandardError = hasStandardError || (standardFontTests[f].root > 0 || standardFontTests[f].resize > 0);
         }
 
         var failureFontTests = ['cursive', 'f_Yu', 'f7', 'f_F2'];
@@ -215,23 +215,14 @@ window.testRunner = function(shutdownStateStatus, shutdownStateDescription) {
         for (t = 0; t < failureFontTests.length; t += 1)
         {
             r = tests[failureFontTests[t]];
-            if (!window.isLegacyVersion)
+            if (window.isLegacyVersion && (window.isIE6 || window.isIE7))
             {
-                failureResult = r.root === 1 && r.load === 2 && r.resize === 2;
+                hasFailureError = hasFailureError || (r.root > 0 || r.resize > 0);
             }
-            if (window.isLegacyVersion)
+            else
             {
-                if (window.isIE6 || window.isIE7)
-                {
-                    failureResult = r.root === 0 && r.load === 0 && r.resize === 0;
-                }
-                else
-                {
-                    failureResult = r.root === 1 && r.load === 0 && r.resize === 0;
-                }
+                hasFailureError = hasFailureError || (r.root !== 1 || r.resize !== 2);
             }
-
-            hasFailureError = hasFailureError || !failureResult;
         }
 
         if (!hasStandardError && !hasFailureError)

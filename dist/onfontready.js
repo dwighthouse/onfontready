@@ -16,17 +16,15 @@ window.onfontready = function (fontName, onReady, options) {
     var startupIframe = function (outerShutdown, parent, iframe) {
         iframe = document.createElement('iframe');
 
-        iframe.onload = function () {
-            tryFinish(iframe.contentWindow.onresize = tryFinish);
-        };
-
         shutdown = function () {
-            outerShutdown((iframe.contentWindow || 0).onresize = iframe.onload = 0);
+            outerShutdown(iframe.contentWindow.onresize = 0);
         };
 
         iframe.style.width = '999%';
 
         parent.appendChild(iframe);
+
+        iframe.contentWindow.onresize = tryFinish;
     };
 
 
@@ -53,5 +51,8 @@ window.onfontready = function (fontName, onReady, options) {
     }
     if (root) {
         startupIframe(shutdown, root.lastChild);
+    }
+    if (root) {
+        setTimeout(tryFinish);
     }
 };

@@ -99,11 +99,11 @@ pre {
 .arialLoaded .arial            { background: #cfc; font-family: 'Arial', serif; }
 .arialLoadedAndTimedOut .arial { background: #fcc; font-family: serif; }
 
-.monospace                             { background: #fcc; font-family: serif; }
-.monospaceLoading .monospace           { background: #fcc; font-family: serif; }
-.monospaceTimedOut .monospace          { background: #fcc; font-family: serif; }
-.monospaceLoaded .monospace            { background: #cfc; font-family: monospace, serif; }
-.monospaceLoadedAndTimedOut .monospace { background: #fcc; font-family: serif; }
+.sansSerif                             { background: #fcc; font-family: serif; }
+.sansSerifLoading .sansSerif           { background: #fcc; font-family: serif; }
+.sansSerifTimedOut .sansSerif          { background: #fcc; font-family: serif; }
+.sansSerifLoaded .sansSerif            { background: #cfc; font-family: sans-serif, serif; }
+.sansSerifLoadedAndTimedOut .sansSerif { background: #fcc; font-family: serif; }
 
 .cursive                           { background: #fcc; font-family: serif; }
 .cursiveLoading .cursive           { background: #cfc; font-family: serif; }

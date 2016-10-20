@@ -16,45 +16,22 @@ window.onfontready = function (fontName, onReady, options) {
     var startupIframe = function (outerShutdown, parent, iframe) {
         iframe = document.createElement('iframe');
 
-        var onLoad = function () {
-            if (iframe.contentWindow.attachEvent) {
-                iframe.contentWindow.attachEvent('onresize', tryFinish);
-            } else {
-                iframe.contentWindow.onresize = tryFinish;
-            }
-
-            tryFinish();
-        };
-
-        if (iframe.attachEvent) {
-            iframe.attachEvent('onload', onLoad);
-        } else {
-            iframe.onload = onLoad;
-        }
-
         shutdown = function () {
-            if (iframe.contentWindow) {
-                // Using attachEvent as the test compresses better
-                // IE6, IE7, and IE8 require detachEvent, not event assignement
-                if (iframe.contentWindow.attachEvent) {
-                    iframe.contentWindow.detachEvent('onresize', tryFinish);
-                } else {
-                    iframe.contentWindow.onresize = 0;
-                }
-            }
 
-            if (iframe.attachEvent) {
-                iframe.detachEvent('onload', onLoad);
-            } else {
-                iframe.onload = 0;
-            }
-
-            outerShutdown();
+            // Using attachEvent as the test compresses better
+            // IE6, IE7, and IE8 require detachEvent, not event assignment
+            outerShutdown(iframe.attachEvent ? iframe.contentWindow.detachEvent('onresize', tryFinish) : iframe.contentWindow.onresize = 0);
         };
 
         iframe.style.cssText = 'position:absolute;right:999%;bottom:999%;width:999%';
 
         parent.firstChild.firstChild.firstChild.appendChild(iframe);
+
+        if (iframe.attachEvent) {
+            iframe.contentWindow.attachEvent('onresize', tryFinish);
+        } else {
+            iframe.contentWindow.onresize = tryFinish;
+        }
     };
 
 
@@ -81,5 +58,8 @@ window.onfontready = function (fontName, onReady, options) {
     }
     if (root) {
         startupIframe(shutdown, root.lastChild);
+    }
+    if (root) {
+        setTimeout(tryFinish);
     }
 };
