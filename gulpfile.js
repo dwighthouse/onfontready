@@ -7,10 +7,27 @@ const envify = require('gulp-envify');
 const es = require('event-stream');
 const gulp = require('gulp');
 const gzip = require('gulp-gzip');
+const prettyError = require('pretty-error');
 const rename = require('gulp-rename');
 const replace = require('gulp-replace');
 const uglify = require('gulp-uglify');
 const zopfli = require('gulp-zopfli');
+
+const pe = new prettyError();
+pe.appendStyle({
+    'pretty-error > header > message': {
+        color: 'grey',
+    },
+    'pretty-error > trace > item > header > what': {
+        color: 'grey',
+    },
+    'pretty-error > trace > item > header > pointer > file': {
+        color: 'cyan',
+    },
+    'pretty-error > trace > item > header > pointer > line': {
+        color: 'cyan',
+    },
+});
 
 function build(options) {
     let baseStream = gulp.src('./src/onfontready.js')
@@ -27,7 +44,11 @@ function build(options) {
                 'transform-node-env-inline',
                 'transform-dead-code-elimination',
             ],
-        }));
+        }))
+        .on('error', function(error) {
+            console.log(pe.render(error));
+            this.emit('end');
+        });
         
     if (options.isLegacy)
     {
@@ -76,8 +97,7 @@ function build(options) {
     }
 
     // Merge the streams back together and output
-    return es.merge.apply(null, outStreams)
-        .pipe(gulp.dest(options.dest));
+    return es.merge.apply(null, outStreams).pipe(gulp.dest(options.dest));
 }
 
 
