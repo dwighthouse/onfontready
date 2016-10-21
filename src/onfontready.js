@@ -1,4 +1,4 @@
-module.exports = (fontName, onReady, options) => {
+module.exports = (fontName, onReady, options, root, tryFinish) => {
     options = options || 0;
 
     if (options.timeoutAfter) {
@@ -13,7 +13,7 @@ module.exports = (fontName, onReady, options) => {
         }, options.timeoutAfter);
     }
 
-    const tryFinish = () => {
+    tryFinish = () => {
         if (root && root.firstChild.clientWidth == root.lastChild.clientWidth) {
             document.body.removeChild(root);
             root = 0;
@@ -21,11 +21,9 @@ module.exports = (fontName, onReady, options) => {
         }
     };
 
-    let root = document.createElement('div');
-
     if (!process.env.isLegacy) {
         tryFinish(
-            document.body.appendChild(root).innerHTML =
+            document.body.appendChild(root = document.createElement('div')).innerHTML =
                 '<div style="position:fixed;right:999%;bottom:999%;white-space:pre;font:999px ' +
                     (options.generic ? '' : "'") + fontName + (options.generic ? '' : "'") +
                 ',serif">' +
@@ -41,7 +39,7 @@ module.exports = (fontName, onReady, options) => {
     
     if (process.env.isLegacy) {
         tryFinish(
-            document.body.appendChild(root).innerHTML =
+            document.body.appendChild(root = document.createElement('div')).innerHTML =
                 '<table style=position:absolute;right:999%;bottom:999%;width:auto>' +
                     '<tr>' +
                         '<td style=position:relative>' +
@@ -69,21 +67,16 @@ module.exports = (fontName, onReady, options) => {
         );
     }
 
-    if (!process.env.isLegacy) {
-        if (root) {
+    if (root)
+    {
+        if (!process.env.isLegacy) {
             root.firstChild.appendChild(fontName = document.createElement('iframe')).style.width = '999%';
             fontName.contentWindow.onresize = tryFinish;
-            fontName = 0;
-        }
-        if (root) {
             root.lastChild.appendChild(fontName = document.createElement('iframe')).style.width = '999%';
             fontName.contentWindow.onresize = tryFinish;
-            fontName = 0;
         }
-    }
 
-    if (process.env.isLegacy) {
-        if (root) {
+        if (process.env.isLegacy) {
             root.firstChild.firstChild.firstChild.firstChild.appendChild(fontName = document.createElement('iframe')).style.cssText = 'position:absolute;right:999%;bottom:999%;width:999%';
 
             if (fontName.attachEvent) {
@@ -93,10 +86,6 @@ module.exports = (fontName, onReady, options) => {
                 fontName.contentWindow.onresize = tryFinish;
             }
 
-            fontName = 0;
-        }
-
-        if (root) {
             root.lastChild.firstChild.firstChild.firstChild.appendChild(fontName = document.createElement('iframe')).style.cssText = 'position:absolute;right:999%;bottom:999%;width:999%';
 
             if (fontName.attachEvent) {
@@ -105,12 +94,10 @@ module.exports = (fontName, onReady, options) => {
             else {
                 fontName.contentWindow.onresize = tryFinish;
             }
-
-            fontName = 0;
         }
-    }
 
-    if (root) {
+        fontName = 0;
+
         setTimeout(tryFinish);
     }
 };

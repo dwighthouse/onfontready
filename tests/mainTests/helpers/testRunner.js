@@ -192,56 +192,56 @@ window.testRunner = function(shutdownStateStatus, shutdownStateDescription) {
     document.documentElement.className += " f_F2Loading";
 
     setTimeout(function() {
-        var tests = window.reporter.getTests();
-        window.log(JSON.stringify(tests, null, '    '))
+        // var tests = window.reporter.getTests();
+        // window.log(JSON.stringify(tests, null, '    '))
         window.log(document.documentElement.className);
 
-        var hasStandardError = false;
-        var hasFailureError = false;
+        // var hasStandardError = false;
+        // var hasFailureError = false;
 
-        var standardFontTests = ['Arial', 'sansSerif', 'f2', 'f3', 'f4', 'f5', 'f6', 'f8', 'f9', 'f10', 'f_Fo', 'f_F1'];
-        var f;
+        // var standardFontTests = ['Arial', 'sansSerif', 'f2', 'f3', 'f4', 'f5', 'f6', 'f8', 'f9', 'f10', 'f_Fo', 'f_F1'];
+        // var f;
 
-        for (f = 0; f < standardFontTests.length; f += 1)
-        {
-            hasStandardError = hasStandardError || (standardFontTests[f].root > 0 || standardFontTests[f].resize > 0);
-        }
+        // for (f = 0; f < standardFontTests.length; f += 1)
+        // {
+        //     hasStandardError = hasStandardError || (standardFontTests[f].root > 0 || standardFontTests[f].resize > 0);
+        // }
 
-        var failureFontTests = ['cursive', 'f_Yu', 'f7', 'f_F2'];
-        var t;
-        var r;
-        var failureResult;
+        // var failureFontTests = ['cursive', 'f_Yu', 'f7', 'f_F2'];
+        // var t;
+        // var r;
+        // var failureResult;
 
-        for (t = 0; t < failureFontTests.length; t += 1)
-        {
-            r = tests[failureFontTests[t]];
-            if (window.isLegacyVersion && (window.isIE6 || window.isIE7))
-            {
-                hasFailureError = hasFailureError || (r.root > 0 || r.resize > 0);
-            }
-            else
-            {
-                hasFailureError = hasFailureError || (r.root !== 1 || r.resize !== 2);
-            }
-        }
+        // for (t = 0; t < failureFontTests.length; t += 1)
+        // {
+        //     r = tests[failureFontTests[t]];
+        //     if (window.isLegacyVersion && (window.isIE6 || window.isIE7))
+        //     {
+        //         hasFailureError = hasFailureError || (r.root > 0 || r.resize > 0);
+        //     }
+        //     else
+        //     {
+        //         hasFailureError = hasFailureError || (r.root !== 1 || r.resize !== 2);
+        //     }
+        // }
 
-        if (!hasStandardError && !hasFailureError)
-        {
-            shutdownStateStatus.innerHTML = 'OK';
-            document.documentElement.className += ' shutdownStatesValid';
-            shutdownStateDescription.innerHTML = 'Everything shut down in the expected way. Incorrect Usages and Old IE Differences may not have shut down, but they behaved as expected under those conditions.';
-        }
-        else if (!hasStandardError && hasFailureError)
-        {
-            shutdownStateStatus.innerHTML = 'OK';
-            document.documentElement.className += ' shutdownStatesPartiallyValid';
-            shutdownStateDescription.innerHTML = 'All normal cases shut down as expected. Some Incorrect Usages or Old IE Differences did not shut down in the expected way.';
-        }
-        else
-        {
-            shutdownStateStatus.innerHTML = 'X';
-            document.documentElement.className += ' shutdownStatesInvalid';
-            shutdownStateDescription.innerHTML = 'Something went very wrong with the shutdown process.';
-        }
+        // if (!hasStandardError && !hasFailureError)
+        // {
+        //     shutdownStateStatus.innerHTML = 'OK';
+        //     document.documentElement.className += ' shutdownStatesValid';
+        //     shutdownStateDescription.innerHTML = 'Everything shut down in the expected way. Incorrect Usages and Old IE Differences may not have shut down, but they behaved as expected under those conditions.';
+        // }
+        // else if (!hasStandardError && hasFailureError)
+        // {
+        //     shutdownStateStatus.innerHTML = 'OK';
+        //     document.documentElement.className += ' shutdownStatesPartiallyValid';
+        //     shutdownStateDescription.innerHTML = 'All normal cases shut down as expected. Some Incorrect Usages or Old IE Differences did not shut down in the expected way.';
+        // }
+        // else
+        // {
+        //     shutdownStateStatus.innerHTML = 'X';
+        //     document.documentElement.className += ' shutdownStatesInvalid';
+        //     shutdownStateDescription.innerHTML = 'Something went very wrong with the shutdown process.';
+        // }
     }, 5000);
 };
