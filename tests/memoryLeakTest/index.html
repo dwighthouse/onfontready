@@ -1,0 +1,152 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Memory Leak Test</title>
+
+<div>
+    <div>
+        <label><input id="intentionalLeak" name="options" type="radio" /> Intentionally "leak" memory</label>
+    </div>
+    <div>
+        <label><input id="removeIframeReference" name="options" type="radio" /> Remove iframe reference</label>
+    </div>
+    <div>
+        <label><input id="removeEventListener" name="options" type="radio" /> Remove event listener</label>
+    </div>
+    <div>
+        <label><input id="doNothing" name="options" type="radio" checked /> Do nothing</label>
+    </div>
+</div>
+
+<button id="startTestButton" tabindex="0">Start Test</button>
+
+<div style="height: 300px; background: #eee;">
+    <div id="testDiv" style="width: 500px;"></div>
+</div>
+
+<pre id="console"></pre>
+
+<script>
+
+var startTestButton = document.getElementById('startTestButton');
+var testDiv = document.getElementById('testDiv');
+
+var finished = false;
+var mode = 'doNothing';
+var state = '';
+var leaked = [];
+var cycles = 0;
+
+function onResize() {
+    if (state !== 'resized')
+    {
+        return;
+    }
+
+    if (mode === 'removeEventListener' && testDiv.firstChild && testDiv.firstChild.nodeName === 'IFRAME')
+    {
+        if (testDiv.firstChild.attachEvent) {
+            testDiv.firstChild.contentWindow.detachEvent('onresize', onResize);
+        }
+        else {
+            testDiv.firstChild.contentWindow.onresize = 0;
+        }
+    }
+
+    cycles += 1;
+    testDiv.innerHTML = '';
+    setTimeout(createIframe, 20);
+}
+
+function causeResize() {
+    if (state !== 'created')
+    {
+        return;
+    }
+
+    testDiv.style.width = (Math.random() * 500 + 501) + 'px';
+
+    state = 'resized';
+}
+
+function createIframe() {
+    var iframe;
+
+    if (finished)
+    {
+        return;
+    }
+
+    testDiv.style.width = (Math.random() * 400 + 100) + 'px';
+
+    iframe = document.createElement('iframe');
+    iframe.style.width = '100%';
+    testDiv.appendChild(iframe);
+
+    if (iframe.attachEvent) {
+        iframe.contentWindow.attachEvent('onresize', onResize);
+    }
+    else {
+        iframe.contentWindow.onresize = onResize;
+    }
+
+    if (mode === 'intentionalLeak')
+    {
+        leaked.push(iframe);
+    }
+    else if (mode === 'removeIframeReference')
+    {
+        iframe = 0;
+    }
+    else if (mode === 'doNothing')
+    {
+        // Do nothing
+    }
+
+    state = 'created';
+
+    setTimeout(causeResize, 10);
+}
+
+startTestButton.onclick = function() {
+    leaked = [];
+    finished = false;
+    cycles = 0;
+
+    if (document.getElementById('intentionalLeak').checked)
+    {
+        mode = 'intentionalLeak';
+    }
+    else if (document.getElementById('removeIframeReference').checked)
+    {
+        mode = 'removeIframeReference';
+    }
+    else if (document.getElementById('removeEventListener').checked)
+    {
+        mode = 'removeEventListener';
+    }
+    else
+    {
+        mode = 'doNothing';
+    }
+
+    window.log('Starting test in ' + mode + ' mode.');
+
+    createIframe();
+
+    setTimeout(function() {
+        finished = true;
+        testDiv.innerHTML = '';
+        window.log('Finished! Performed ' + cycles + ' cycles.');
+    }, 5000);
+};
+
+window.log = (function() {
+    var consoleElement = document.getElementById('console');
+
+    return function(text) {
+        consoleElement.innerHTML = consoleElement.innerHTML + '<br>' + text;
+    };
+}());
+
+</script>
