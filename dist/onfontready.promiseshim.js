@@ -1,9 +1,8 @@
 // Insert into page after onfontready to convert it to a promise style
 // Catch should only occur if onTimeout would normally be called
-window.onfontready = function () {
+(function () {
     var onfontreadyOriginal = window.onfontready;
-
-    return function (fontName, options) {
+    window.onfontready = function (fontName, options) {
         options = options || {};
         return new Promise(function (resolve, reject) {
             onfontreadyOriginal(fontName, resolve, {
@@ -14,4 +13,4 @@ window.onfontready = function () {
             });
         });
     };
-}();
+})();

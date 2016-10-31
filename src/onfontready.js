@@ -65,7 +65,6 @@ module.exports = (fontName, onReady, options, root, tryFinish) => {
             if (root) {
                 if (process.env.isTest) {
                     window.reporter.modifyRootCount(fontNameCopy, -1);
-                    window.reporter.timedOut(fontNameCopy);
                 }
 
                 // Shutdown should occur even if onTimeout is not defined

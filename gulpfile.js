@@ -155,7 +155,7 @@ gulp.task('buildTestWatch', ['buildTest'], () => {
 
 
 
-gulp.task('promiseshim', () => {
+gulp.task('promise', () => {
     let baseStream = gulp.src('./src/onfontready.promiseshim.js')
         .pipe(babel({
             plugins: [
@@ -181,3 +181,13 @@ gulp.task('promiseshim', () => {
 
     return baseStream;
 });
+
+gulp.task('promiseWatch', ['promise'], () => {
+    gulp.watch('./src/onfontready.promiseshim.js', ['promise']);
+});
+
+
+
+gulp.task('all', ['build', 'buildTest', 'promise']);
+
+gulp.task('allWatch', ['buildWatch', 'buildTestWatch', 'promiseWatch']);

@@ -12,6 +12,8 @@ At its core, `onfontready` is uses carefully crafted CSS and iframes to determin
 
 With the right options, all known fonts should be detectable with `onfontready`. However, it is possible to create a font that `onfontready` cannot detect. Read about [How to Break `onfontready`](howToBreakOnfontready.md).
 
+`onfontready` is built from a single source file into multiple versions for testing and distribution, as well as the legacy and modern variants. Read about [Building `onfontready`](buildingOnfontready.md).
+
 
 ## Other Resources
 
