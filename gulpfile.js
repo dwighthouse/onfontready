@@ -29,7 +29,7 @@ pe.appendStyle({
     },
 });
 
-function build(options) {
+const build = (options) => {
     let baseStream = gulp.src('./src/onfontready.js')
         .pipe(replace('module.exports', 'window.onfontready'))
         .pipe(envify({
@@ -46,6 +46,7 @@ function build(options) {
             ],
         }))
         .on('error', function(error) {
+            // We want the this to re-bind, so avoid arrow function
             console.log(pe.render(error));
             this.emit('end');
         });
@@ -102,7 +103,7 @@ function build(options) {
 
 
 
-gulp.task('modern', function() {
+gulp.task('modern', () => {
     return build({
         dest: './dist',
         minify: true,
@@ -112,7 +113,7 @@ gulp.task('modern', function() {
     });
 });
 
-gulp.task('legacy', function() {
+gulp.task('legacy', () => {
     return build({
         isLegacy: true,
         dest: './dist',
@@ -125,20 +126,20 @@ gulp.task('legacy', function() {
 
 gulp.task('build', ['legacy', 'modern']);
 
-gulp.task('buildWatch', ['build'], function() {
+gulp.task('buildWatch', ['build'], () => {
     gulp.watch('./src/onfontready.js', ['build']);
 });
 
 
 
-gulp.task('modernTest', function() {
+gulp.task('modernTest', () => {
     return build({
         isTest: true,
         dest: './tests/mainTests/builds',
     });
 });
 
-gulp.task('legacyTest', function() {
+gulp.task('legacyTest', () => {
     return build({
         isLegacy: true,
         isTest: true,
@@ -148,6 +149,35 @@ gulp.task('legacyTest', function() {
 
 gulp.task('buildTest', ['legacyTest', 'modernTest']);
 
-gulp.task('buildTestWatch', ['buildTest'], function() {
+gulp.task('buildTestWatch', ['buildTest'], () => {
     gulp.watch('./src/onfontready.js', ['buildTest']);
+});
+
+
+
+gulp.task('promiseshim', () => {
+    let baseStream = gulp.src('./src/onfontready.promiseshim.js')
+        .pipe(babel({
+            plugins: [
+                'check-es2015-constants',
+                'transform-es2015-block-scoping',
+                'transform-es2015-arrow-functions',
+                'transform-node-env-inline',
+                'transform-dead-code-elimination',
+            ],
+        }))
+        .on('error', function(error) {
+            // We want the this to re-bind, so avoid arrow function
+            console.log(pe.render(error));
+            this.emit('end');
+        });
+
+    baseStream = baseStream.pipe(gulp.dest('./dist'));
+
+    baseStream = baseStream
+        .pipe(uglify())
+        .pipe(rename((path) => { path.basename += '.min' }))
+        .pipe(gulp.dest('./dist'));
+
+    return baseStream;
 });

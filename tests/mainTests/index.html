@@ -9,7 +9,7 @@
 <!--[if IE 7]><body class="ie7"><![endif]-->
 <!--[if IE 8]><body class="ie8"><![endif]-->
 
-<pre id="console"></pre>
+<pre id="console" style=""></pre>
 
 <div class="group">
     <h1>Main Tests</h1>
@@ -34,7 +34,10 @@
                 <h4>Sanity Check</h4>
                 <p>Uses normal font-loading capabilities. onfontready is not used. Susceptible to <a href="https://css-tricks.com/fout-foit-foft/">FOIT</a>.</p>
                 <pre>Font: 'f1'</pre>
-                <p><strong>Results:</strong> <em>Custom font should display</em></p>
+                <p><strong>Expected Results:</strong> <em>Custom font should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f1Notes" style="color: #999;">Pending...</span>
+                </p>
             </td>
         </tr>
     </table>
@@ -46,7 +49,10 @@
                 <h4>Normal Usage</h4>
                 <pre>Font: 'f2'</pre>
                 <pre>Options: {}</pre>
-                <p><strong>Results:</strong> <em>Custom font should display</em></p>
+                <p><strong>Expected Results:</strong> <em>Custom font should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f2Notes" style="color: #999;">Pending...</span>
+                </p>
             </td>
         </tr>
     </table>
@@ -58,7 +64,10 @@
                 <h4>Known Font</h4>
                 <pre>Font: 'Arial'</pre>
                 <pre>Options: {}</pre>
-                <p><strong>Results:</strong> <em>Arial font should display</em></p>
+                <p><strong>Expected Results:</strong> <em>Arial font should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="ArialNotes" style="color: #999;">Pending...</span>
+                </p>
             </td>
         </tr>
     </table>
@@ -71,7 +80,10 @@
                 <p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-family">Generic font families</a> can be specified in a font stack, but only without quotes. Specifying <span style="font-family: sans-serif;">{ generic: true }</span> causes onfontready to add the tested font without quotes in the CSS. Without this change, the generic font names are assumed to be the names of font faces that are loaded by the page.</p>
                 <pre>Font: sans-serif (generic)</pre>
                 <pre>Options: { generic: true }</pre>
-                <p><strong>Results:</strong> <em>Generic font-family sans-serif should display</em></p>
+                <p><strong>Expected Results:</strong> <em>Generic font-family sans-serif should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="sans-serifNotes" style="color: #999;">Pending...</span>
+                </p>
             </td>
         </tr>
     </table>
@@ -87,7 +99,10 @@
                 <p style="color: #f33">Incorrect Usage: Always set the generic option to true when testing generic font families.</p>
                 <p style="color: #f33">IE6 Failure: Generic font-family cursive should display because IE6 accepts generic font family names with quotes.</p>
                 <p style="color: #f33">IE7 Failure: Generic font-family cursive should display because IE7 accepts generic font family names with quotes.</p>
-                <p><strong>Results:</strong> <em>Fallback font (serif) should display, detection elements remain forever</em></p>
+                <p><strong>Expected Results:</strong> <em>Fallback font (serif) should display, detection elements remain forever</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="cursiveNotes" style="color: #999;">Pending...</span>
+                </p>
             </td>
         </tr>
     </table>
@@ -99,7 +114,10 @@
                 <h4>Using timeoutAfter and onTimeout</h4>
                 <pre>Font: 'f3'</pre>
                 <pre>Options: { timeoutAfter: 1, onTimeout: function() { ... } }</pre>
-                <p><strong>Results:</strong> <em>Fallback font (serif) should display</em></p>
+                <p><strong>Expected Results:</strong> <em>Fallback font (serif) should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f3Notes" style="color: #999;">Pending...</span>
+                </p>
             </td>
         </tr>
     </table>
@@ -113,7 +131,10 @@
                 <pre>Font: 'f4'</pre>
                 <pre>Options: { timeoutAfter: 0, onTimeout: function() { ... } }</pre>
                 <p style="color: #f33">Incorrect Usage: A 0 timeoutAfter is pointless. Use a negative timeoutAfter to do an <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers/setTimeout#Nested_timeouts_forced_to_>4ms">'immediate-ish' timeout</a>.</p>
-                <p><strong>Results:</strong> <em>Custom font should display</em></p>
+                <p><strong>Expected Results:</strong> <em>Custom font should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f4Notes" style="color: #999;">Pending...</span>
+                </p>
             </td>
         </tr>
     </table>
@@ -126,7 +147,10 @@
                 <p>Since <a href="https://developer.mozilla.org/en-US/docs/Glossary/Falsy">zero is falsy in JavaScript</a>, negative timeoutAfter values can be used for an <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers/setTimeout#Nested_timeouts_forced_to_>4ms">'immediate-ish' timeout</a>.</p>
                 <pre>Font: 'f9'</pre>
                 <pre>Options: { timeoutAfter: -1, onTimeout: function() { ... } }</pre>
-                <p><strong>Results:</strong> <em>Fallback font (serif) should display</em></p>
+                <p><strong>Expected Results:</strong> <em>Fallback font (serif) should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f9Notes" style="color: #999;">Pending...</span>
+                </p>
             </td>
         </tr>
     </table>
@@ -139,7 +163,10 @@
                 <pre>Font: 'f5'</pre>
                 <pre>Options: { timeoutAfter: 1 }</pre>
                 <p style="color: #f33">Incorrect Usage: Always use onTimeout option if timeoutAfter option is used.</p>
-                <p><strong>Results:</strong> <em>Fallback font (serif) should display</em></p>
+                <p><strong>Expected Results:</strong> <em>Fallback font (serif) should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f5Notes" style="color: #999;">Pending...</span>
+                </p>
             </td>
         </tr>
     </table>
@@ -152,7 +179,10 @@
                 <pre>Font: 'f8'</pre>
                 <pre>Options: { onTimeout: function() { ... } }</pre>
                 <p style="color: #f33">Incorrect Usage: Always use timeoutAfter option if onTimeout option is used.</p>
-                <p><strong>Results:</strong> <em>Custom font should display</em></p>
+                <p><strong>Expected Results:</strong> <em>Custom font should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f8Notes" style="color: #999;">Pending...</span>
+                </p>
             </td>
         </tr>
     </table>
@@ -164,7 +194,10 @@
                 <h4>Using sampleText</h4>
                 <pre>Font: 'f6'</pre>
                 <pre>Options: { sampleText: 'Hello World, onfontready' }</pre>
-                <p><strong>Results:</strong> <em>Custom font should display</em></p>
+                <p><strong>Expected Results:</strong> <em>Custom font should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f6Notes" style="color: #999;">Pending...</span>
+                </p>
             </td>
         </tr>
     </table>
@@ -178,7 +211,10 @@
                 <pre>Font: 'f_Fo'</pre>
                 <pre>Options: { sampleText: 'oF' }</pre>
                 <p style="color: #f33">IE6 Failure: Block glyphs should display for the 'n' and 't' in 'Font' because IE6 replaces missing glyphs in custom fonts with equal-sized blocks, creating a potential false-positive condition.</p>
-                <p><strong>Results:</strong> <em>Custom font should display only for 'F' and 'o' in 'Font'</em></p>
+                <p><strong>Expected Results:</strong> <em>Custom font should display only for 'F' and 'o' in 'Font'</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f_FoNotes" style="color: #999;">Pending...</span>
+                </p>
             </td>
         </tr>
     </table>
@@ -194,7 +230,10 @@
                 <p style="color: #f33">Incorrect Usage: If sampleText must be used, only use it with characters supported by the custom font being tested.</p>
                 <p style="color: #f33">IE6 Failure: Block glyphs should display because IE6 replaces missing glyphs in custom fonts with equal-sized blocks, creating a potential false-positive condition.</p>
                 <p style="color: #f33">IE7 Failure: IE7 replaces missing glyphs in custom fonts with serif font glyphs, regardless of fallback font, creating a potential false-positive condition.</p>
-                <p><strong>Results:</strong> <em>Fallback font (serif) should display, detection elements remain forever</em></p>
+                <p><strong>Expected Results:</strong> <em>Fallback font (serif) should display, detection elements remain forever</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f_YuNotes" style="color: #999;">Pending...</span>
+                </p>
             </td>
         </tr>
     </table>
@@ -210,7 +249,10 @@
                 <p style="color: #f33">Incorrect Usage: If sampleText must be used, only use it with characters supported by the custom font being tested.</p>
                 <p style="color: #f33">IE6 Failure: IE6 replaces missing glyphs in custom fonts with equal-sized blocks, creating a potential false-positive condition.</p>
                 <p style="color: #f33">IE7 Failure: IE7 replaces missing glyphs in custom fonts with serif font glyphs, regardless of fallback font, creating a potential false-positive condition.</p>
-                <p><strong>Results:</strong> <em>Fallback font (serif) should display, detection elements remain forever</em></p>
+                <p><strong>Expected Results:</strong> <em>Fallback font (serif) should display, detection elements remain forever</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f7Notes" style="color: #999;">Pending...</span>
+                </p>
             </td>
         </tr>
     </table>
@@ -224,7 +266,10 @@
                 <pre>Font: 'f10'</pre>
                 <pre>Options: { sampleText: String.fromCharCode(0) }</pre>
                 <p style="color: #f33">Incorrect Usage: If sampleText must be used, only use it with characters known to have different widths in serif and monospace.</p>
-                <p><strong>Results:</strong> <em>Fallback font (serif) should display</em></p>
+                <p><strong>Expected Results:</strong> <em>Fallback font (serif) should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f10Notes" style="color: #999;">Pending...</span>
+                </p>
             </td>
         </tr>
     </table>
@@ -238,7 +283,10 @@
                 <pre>Font: 'f_F1'</pre>
                 <pre>Options: { sampleText: 'F' }</pre>
                 <p style="color: #f33">IE6 Failure: IE6 replaces missing glyphs in custom fonts with equal-sized blocks, resulting in block glyphs for 'ont' in 'Font'.</p>
-                <p><strong>Results:</strong> <em>Custom font should display only for 'F' in 'Font'</em></p>
+                <p><strong>Expected Results:</strong> <em>Custom font should display only for 'F' in 'Font'</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f_F1Notes" style="color: #999;">Pending...</span>
+                </p>
             </td>
         </tr>
     </table>
@@ -254,19 +302,10 @@
                 <p style="color: #f33">Incorrect Usage: If custom font does not contain a space character, the sampleText option must be used. Furthermore, the sampleText must only contain glyphs the custom font defines.</p>
                 <p style="color: #f33">IE6 Failure: IE6 replaces missing glyphs in custom fonts with equal-sized blocks, creating a potential false-positive condition.</p>
                 <p style="color: #f33">IE7 Failure: IE7 replaces missing glyphs in custom fonts with serif font glyphs, regardless of fallback font, creating a potential false-positive condition.</p>
-                <p><strong>Results:</strong> <em>Fallback font (serif) should display, detection elements remain forever</em></p>
-            </td>
-        </tr>
-    </table>
-
-    <table class="box">
-        <tr>
-            <td id="shutdownStateStatus" class="example shutdownStates">?</td>
-            <td class="description">
-                <h4>Shutdown States</h4>
-                <p>Did the tests correctly shutdown, removing event listeners and DOM elements as expected?</p>
-                <p>Runs on a 5 second timeout. False negatives are possible on slow connections.</p>
-                <p><strong>Results:</strong> <em id="shutdownStateDescription">...</em></p>
+                <p><strong>Expected Results:</strong> <em>Fallback font (serif) should display, detection elements remain forever</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f_F2Notes" style="color: #999;">Pending...</span>
+                </p>
             </td>
         </tr>
     </table>

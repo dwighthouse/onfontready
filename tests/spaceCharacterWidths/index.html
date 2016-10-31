@@ -1,0 +1,198 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Space Character Widths</title>
+
+<h1>Space Character Widths</h1>
+
+<p>The general summary is that we can reasonably expect all browsers, both modern and very old, to have different space character widths for serif and monospace fonts. We can use this knowledge to remove the need to specify sampleText options in most cases.</p>
+
+
+<h3>Current Browser Results</h3>
+
+<!-- The dot surrounding the element is to prevent older browsers from collapsing whitespace initially -->
+<div id="a" style="position:absolute;bottom:999%;right:999%;white-space:pre;">.<span style="font:999px serif;"> </span>.</div>
+<div id="b" style="position:absolute;bottom:999%;right:999%;white-space:pre;">.<span style="font:999px sans-serif;"> </span>.</div>
+<div id="c" style="position:absolute;bottom:999%;right:999%;white-space:pre;">.<span style="font:999px monospace;"> </span>.</div>
+<div id="d" style="position:absolute;bottom:999%;right:999%;white-space:pre;">.<span style="font:999px cursive;"> </span>.</div>
+<div id="e" style="position:absolute;bottom:999%;right:999%;white-space:pre;">.<span style="font:999px fantasy;"> </span>.</div>
+
+<pre id="out" style="white-space: pre"></pre>
+
+
+<h3>All Results</h3>
+<pre>Mac Modern Browsers
+-------------------
+
+Chrome 52.0.2743.116 (Mac)
+249 - serif
+277 - sans-serif
+599 - monospace
+277 - cursive
+226 - fantasy
+
+Firefox 47.0 (Mac)
+250 - serif
+278 - sans-serif
+600 - monospace
+278 - cursive
+227 - fantasy
+
+Opera 39.0.2256.48 (Mac)
+250 - serif
+278 - sans-serif
+600 - monospace
+278 - cursive
+227 - fantasy
+
+Safari 9.1.2 (11601.7.7) (Mac)
+250 - serif
+278 - sans-serif
+600 - monospace
+278 - cursive
+227 - fantasy
+
+
+
+Windows Modern Browsers
+-----------------------
+
+Chrome Version 52.0.2743.116 m (Windows)
+249 - serif
+277 - sans-serif
+549 - monospace
+298 - cursive
+176 - fantasy
+
+Firefox 48.0.2 (Window)
+250 - serif
+278 - sans-serif
+600 - monospace
+299 - cursive
+278 - fantasy
+
+Opera 39.0 (Windows)
+250 - serif
+278 - sans-serif
+549 - monospace
+299 - cursive
+177 - fantasy
+
+Edge 25.10586.0.0
+250 - serif
+278 - sans-serif
+600 - monospace
+299 - cursive
+174 - fantasy
+
+Internet Explorer 11.494.10586.0
+250 - serif
+278 - sans-serif
+600 - monospace
+299 - cursive
+174 - fantasy
+
+Internet Explorer 11.0.9600.17843
+250 - serif
+278 - sans-serif
+600 - monospace
+207 - cursive
+174 - fantasy
+
+
+
+Old Versions
+------------
+
+Internet Explorer 10.0.9200.17457
+333 - serif
+278 - sans-serif
+600 - monospace
+207 - cursive
+174 - fantasy
+
+Internet Explorer 9.0.8112.16421
+333 - serif
+278 - sans-serif
+600 - monospace
+207 - cursive
+174 - fantasy
+
+Internet Explorer 8
+250 - serif
+278 - sans-serif
+599 - monospace
+299 - cursive
+250 - fantasy
+(took a timeout to see the width of a space-only div???)
+
+Internet Explorer 7
+250 - serif
+278 - sans-serif
+599 - monospace
+299 - cursive
+250 - fantasy
+(took a timeout to see the width of a space-only div???)
+
+Internet Explorer 6
+250 - serif
+278 - sans-serif
+599 - monospace
+299 - cursive
+250 - fantasy
+(took a timeout to see the width of a space-only div???)
+
+Chromium 4.0.207.0 (25573) (Mac)
+250 - serif
+278 - sans-serif
+599 - monospace
+299 - cursive
+176 - fantasy
+
+Safari 5.1.7 (7534.57.2) (Windows)
+250 - serif
+278 - sans-serif
+599 - monospace
+299 - cursive
+299 - fantasy</pre>
+
+<script>
+// IE6, 7, and 8 require span and other text around spaces to ensure proper rendering
+var names = [
+    {
+        id: 'a',
+        name: 'serif'
+    },
+    {
+        id: 'b',
+        name: 'sans-serif'
+    },
+    {
+        id: 'c',
+        name: 'monospace'
+    },
+    {
+        id: 'd',
+        name: 'cursive'
+    },
+    {
+        id: 'e',
+        name: 'fantasy'
+    }
+];
+
+var widths = [];
+
+var len = names.length;
+var n;
+
+for (n = 0; n < len; n += 1)
+{
+    widths.push([document.getElementById(names[n].id).clientWidth, names[n].name].join(' - '));
+}
+
+document.getElementById('out').innerHTML = widths.join('\n');
+
+</script>

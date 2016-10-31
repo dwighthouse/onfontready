@@ -7,15 +7,19 @@
 
 <h2>Usage Tests</h2>
 <ul>
-    <li><a href="main/modern_tests.html">Modern Version</a></li>
-    <li><a href="main/legacy_tests.html">Legacy Version</a></li>
+    <li><a href="mainTests/index.html">Main Tests</a> - Exhaustively tests features and failure cases of both the modern and legacy versions of onfontready.</li>
 </ul>
 
 <h2>Development Tests</h2>
 <ul>
-    <li><a href="inline_absolute_overflow_test/index.html">Inline Absolute Overflow Test</a></li>
-    <li><a href="browser_memory_leak_test/index.html">Browser Memory Leak Test</a></li>
-    <li><a href="scroll_based_resize_detection_test/index.html">Scroll-Based Resize Detection Test</a></li>
-    <li><a href="space_character_sizes/index.html">Space Character Sizes</a></li>
-    <li><a href="blank_font_spaces_test/index.html">Blank Font Spaces Test</a></li>
+    <li><a href="memoryLeakTest/index.html">New Browser Memory Leak Test</a> - Tests memory usage of event listeners after shutdown.</li>
+    <li><a href="contentWindowAvailabilityTest/index.html">contentWindow Availability Test</a> - At what point is an iframe's contentWindow available?</li>
+    <li><a href="spaceCharacterWidths/index.html">Space Character Widths</a> - How wide is the space character in various browsers and generic fonts?</li>
+    <li><a href="inlineAbsoluteOverflowTest/index.html">Inline Absolute Overflow Test</a> - What browsers are capable of making an absolutely positioned element fit inside a relatively positioned inline element?</li>
+    <li><a href="scrollBasedResizeDetectionTest/index.html">Scroll-Based Resize Detection Test</a> - Which browsers can detect font-size triggered scroll events?</li>
+</ul>
+
+<h2>Old Tests</h2>
+<ul>
+    <li><a href="browserMemoryLeakTest/index.html"><span style="text-decoration: line-through;">Browser Memory Leak Test</span> (deprecated)</a> - Tests memory usage of event listeners, but the results aren't relevant to onfontready's usage.</li>
 </ul>

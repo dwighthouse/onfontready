@@ -46,11 +46,12 @@ Once `MyCustomFont` becomes available, however, both span tags will have exactly
 
 There is no direct means for the page's Javascript to query the browser for the status or availability of a font, [at least not yet](https://developer.mozilla.org/en-US/docs/Web/API/CSS_Font_Loading_API). One cannot know if a font is already loaded or parsed directly. While measuring text widths on fallback stacks can detect at any given time if a font is available or not, there is no event that the browser will fire when it swaps one font for another. A method to detect the changing width of a tag's text is needed.
 
-Other than upcoming APIs, there are three ways to do this:
+There are a few ways to do this:
 
 1. Polling with `setTimeout`
 2. Sized Container Scroll Events
 3. Sized Iframe Resize Events
+4. (Future) TODO: https://developers.google.com/web/updates/2016/10/resizeobserver
 
 ### setTimeout Polling
 

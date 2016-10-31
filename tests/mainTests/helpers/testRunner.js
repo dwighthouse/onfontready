@@ -1,30 +1,43 @@
 window.testRunner = function(shutdownStateStatus, shutdownStateDescription) {
 
-    var parts = {
-        arial: 0,
-        f1: 0,
-        f2: 0,
-        f3: 0,
-        f4: 0,
-        f5: 0,
-        f6: 0,
-        f7: 0,
-        f8: 0,
-        f9: 0,
-        f10: 0,
-        f_Fo: 0,
-        f_Yu: 0
-    };
+    var f;
+
+    var testedFonts = [
+        'f1',
+        'f2',
+        'Arial',
+        'sans-serif',
+        'cursive',
+        'f3',
+        'f4',
+        'f9',
+        'f5',
+        'f8',
+        'f6',
+        'f_Fo',
+        'f_Yu',
+        'f7',
+        'f10',
+        'f_F1',
+        'f_F2'
+    ];
+
+    var parts = {};
+
+    for (f = 0; f < testedFonts.length; f += 1)
+    {
+        parts[testedFonts[f]] = 0;
+    }
 
     document.documentElement.className += " f1Loading";
-    window.addFontFace('f1', '../../tests/mainTests/custom_fonts/f1');
+    window.addFontFace('f1', '../../tests/mainTests/customFonts/f1');
     document.documentElement.className += " f1Loaded";
 
     window.onfontready('f2', function() {
         document.documentElement.className += " f2Loaded";
     });
     document.documentElement.className += " f2Loading";
-    window.addFontFace('f2', '../../tests/mainTests/custom_fonts/f2');
+    window.addFontFace('f2', '../../tests/mainTests/customFonts/f2');
 
     document.documentElement.className += " arialLoading";
     window.onfontready('Arial', function() {
@@ -57,7 +70,7 @@ window.testRunner = function(shutdownStateStatus, shutdownStateDescription) {
     });
     setTimeout(function() {
         document.documentElement.className += " f3Loading";
-        window.addFontFace('f3', '../../tests/mainTests/custom_fonts/f3');
+        window.addFontFace('f3', '../../tests/mainTests/customFonts/f3');
     }, 10);
     setTimeout(function() {
         if (parts.f3 === 2)
@@ -78,7 +91,7 @@ window.testRunner = function(shutdownStateStatus, shutdownStateDescription) {
     });
     setTimeout(function() {
         document.documentElement.className += " f4Loading";
-        window.addFontFace('f4', '../../tests/mainTests/custom_fonts/f4');
+        window.addFontFace('f4', '../../tests/mainTests/customFonts/f4');
     }, 10);
     setTimeout(function() {
         if (parts.f4 === 2)
@@ -99,7 +112,7 @@ window.testRunner = function(shutdownStateStatus, shutdownStateDescription) {
     });
     setTimeout(function() {
         document.documentElement.className += " f9Loading";
-        window.addFontFace('f9', '../../tests/mainTests/custom_fonts/f9');
+        window.addFontFace('f9', '../../tests/mainTests/customFonts/f9');
     }, 10);
     setTimeout(function() {
         if (parts.f9 === 2)
@@ -115,7 +128,7 @@ window.testRunner = function(shutdownStateStatus, shutdownStateDescription) {
     });
     setTimeout(function() {
         document.documentElement.className += " f5Loading";
-        window.addFontFace('f5', '../../tests/mainTests/custom_fonts/f5');
+        window.addFontFace('f5', '../../tests/mainTests/customFonts/f5');
     }, 10);
 
     window.onfontready('f8', function() {
@@ -129,7 +142,7 @@ window.testRunner = function(shutdownStateStatus, shutdownStateDescription) {
     });
     setTimeout(function() {
         document.documentElement.className += " f8Loading";
-        window.addFontFace('f8', '../../tests/mainTests/custom_fonts/f8');
+        window.addFontFace('f8', '../../tests/mainTests/customFonts/f8');
     }, 10);
     setTimeout(function() {
         if (parts.f8 === 2)
@@ -144,7 +157,7 @@ window.testRunner = function(shutdownStateStatus, shutdownStateDescription) {
         sampleText: 'Hello World, onfontready'
     });
     document.documentElement.className += " f6Loading";
-    window.addFontFace('f6', '../../tests/mainTests/custom_fonts/f6');
+    window.addFontFace('f6', '../../tests/mainTests/customFonts/f6');
 
     window.onfontready('f_Fo', function() {
         document.documentElement.className += " f_FoLoaded";
@@ -152,7 +165,7 @@ window.testRunner = function(shutdownStateStatus, shutdownStateDescription) {
         sampleText: 'oF' // f_Fo font only contains 'F' and 'o'
     });
     document.documentElement.className += " f_FoLoading";
-    window.addFontFace('f_Fo', '../../tests/mainTests/custom_fonts/f_Fo');
+    window.addFontFace('f_Fo', '../../tests/mainTests/customFonts/f_Fo');
 
     window.onfontready('f_Yu', function() {
         document.documentElement.className += " f_YuLoaded";
@@ -160,7 +173,7 @@ window.testRunner = function(shutdownStateStatus, shutdownStateDescription) {
         sampleText: 'Hello World' // f_Yu font only contains 'Y' or 'u'
     });
     document.documentElement.className += " f_YuLoading";
-    window.addFontFace('f_Yu', '../../tests/mainTests/custom_fonts/f_Yu');
+    window.addFontFace('f_Yu', '../../tests/mainTests/customFonts/f_Yu');
 
     window.onfontready('f7', function() {
         document.documentElement.className += " f7Loaded";
@@ -168,7 +181,7 @@ window.testRunner = function(shutdownStateStatus, shutdownStateDescription) {
         sampleText: 'Your Font' // f7 font does not contain 'Y', 'r', or 'u'
     });
     document.documentElement.className += " f7Loading";
-    window.addFontFace('f7', '../../tests/mainTests/custom_fonts/f7');
+    window.addFontFace('f7', '../../tests/mainTests/customFonts/f7');
 
     window.onfontready('f10', function() {
         document.documentElement.className += " f10Loaded";
@@ -182,66 +195,94 @@ window.testRunner = function(shutdownStateStatus, shutdownStateDescription) {
     }, {
         sampleText: 'F'
     });
-    window.addFontFace('f_F1', '../../tests/mainTests/custom_fonts/f_F1');
+    window.addFontFace('f_F1', '../../tests/mainTests/customFonts/f_F1');
     document.documentElement.className += " f_F1Loading";
 
     window.onfontready('f_F2', function() {
         document.documentElement.className += " f_F2Loaded";
     });
-    window.addFontFace('f_F2', '../../tests/mainTests/custom_fonts/f_F2');
+    window.addFontFace('f_F2', '../../tests/mainTests/customFonts/f_F2');
     document.documentElement.className += " f_F2Loading";
 
+    function writeReport(fontName, fontTestResults) {
+
+    }
+
     setTimeout(function() {
-        // var tests = window.reporter.getTests();
+        var tests = window.reporter.getTests();
+
         // window.log(JSON.stringify(tests, null, '    '))
-        window.log(document.documentElement.className);
+        // window.log(document.documentElement.className);
 
-        // var hasStandardError = false;
-        // var hasFailureError = false;
+        var resultsElement;
+        var testResults;
+        var output;
 
-        // var standardFontTests = ['Arial', 'sansSerif', 'f2', 'f3', 'f4', 'f5', 'f6', 'f8', 'f9', 'f10', 'f_Fo', 'f_F1'];
-        // var f;
+        for (f = 0; f < testedFonts.length; f += 1)
+        {
+            resultsElement = document.getElementById(testedFonts[f] + 'Notes');
+            resultsElement.style.color = '#000';
 
-        // for (f = 0; f < standardFontTests.length; f += 1)
-        // {
-        //     hasStandardError = hasStandardError || (standardFontTests[f].root > 0 || standardFontTests[f].resize > 0);
-        // }
+            output = '';
+            testResults = tests[testedFonts[f]];
 
-        // var failureFontTests = ['cursive', 'f_Yu', 'f7', 'f_F2'];
-        // var t;
-        // var r;
-        // var failureResult;
+            if (testResults)
+            {
+                output += '<div style="border-left: 4px solid #999;padding-left: 10px;">';
 
-        // for (t = 0; t < failureFontTests.length; t += 1)
-        // {
-        //     r = tests[failureFontTests[t]];
-        //     if (window.isLegacyVersion && (window.isIE6 || window.isIE7))
-        //     {
-        //         hasFailureError = hasFailureError || (r.root > 0 || r.resize > 0);
-        //     }
-        //     else
-        //     {
-        //         hasFailureError = hasFailureError || (r.root !== 1 || r.resize !== 2);
-        //     }
-        // }
+                if (testResults.rootCount === 0)
+                {
+                    output += '<div style="color:#328332;">Detection elements were removed. </div>';
+                }
+                else
+                {
+                    output += '<div style="color:#ff9300;">Detection elements were not removed. </div>';
+                }
 
-        // if (!hasStandardError && !hasFailureError)
-        // {
-        //     shutdownStateStatus.innerHTML = 'OK';
-        //     document.documentElement.className += ' shutdownStatesValid';
-        //     shutdownStateDescription.innerHTML = 'Everything shut down in the expected way. Incorrect Usages and Old IE Differences may not have shut down, but they behaved as expected under those conditions.';
-        // }
-        // else if (!hasStandardError && hasFailureError)
-        // {
-        //     shutdownStateStatus.innerHTML = 'OK';
-        //     document.documentElement.className += ' shutdownStatesPartiallyValid';
-        //     shutdownStateDescription.innerHTML = 'All normal cases shut down as expected. Some Incorrect Usages or Old IE Differences did not shut down in the expected way.';
-        // }
-        // else
-        // {
-        //     shutdownStateStatus.innerHTML = 'X';
-        //     document.documentElement.className += ' shutdownStatesInvalid';
-        //     shutdownStateDescription.innerHTML = 'Something went very wrong with the shutdown process.';
-        // }
+                if (testResults.iframesCreated)
+                {
+                    output += '<div style="color:#ff9300;">iframes were created. </div>';
+                }
+                else
+                {
+                    output += '<div style="color:#328332;">iframes were not created. </div>';
+                }
+
+                if (testResults.timedOut)
+                {
+                    output += '<div style="color:#ff9300;">Detection timed out before font loaded. </div>';
+                }
+                else
+                {
+                    output += '<div style="color:#328332;">Font loaded before detection timed out. </div>';
+                }
+
+                if (testResults.fontLoaded)
+                {
+                    output += '<div style="color:#328332;">Font loaded. </div>';
+                }
+                else
+                {
+                    output += '<div style="color:#ff9300;">Font did not load (or was not detected as loaded). </div>';
+                }
+
+                if (testResults.requiredExtraTimeout)
+                {
+                    output += '<div style="color:#ff9300;">Detection required usage of additional timeout during startup. </div>';
+                }
+                else
+                {
+                    output += '<div style="color:#328332;">Detection did not require usage of additional timeout during startup. </div>';
+                }
+
+                output += '</div>';
+            }
+            else
+            {
+                output += 'No Notes';
+            }
+
+            resultsElement.innerHTML = output;
+        }
     }, 5000);
 };
