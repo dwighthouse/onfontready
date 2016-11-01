@@ -3,20 +3,30 @@ Browser-based font load and parse detection with minimal size and maximum compat
 
 
 ## Features
-* Can be used to [prevent FOIT or FOUT](https://www.filamentgroup.com/lab/font-events.html) or to create a more complex font loading experience for pages
+* Can be used to [prevent FOIT or FOUT](https://www.filamentgroup.com/lab/font-events.html) or to [create a more complex font loading experience](docs/recipesAndUsagePatterns.md) for pages
 * Ridiculous browser support, supporting IE9+, Edge, Chrome, Firefox, Safari, Opera, and even IE6+ with [the `legacy` version](docs/legacyVersionDifferences.md)
 * The smallest known font detection library at a ludicrously small 371 bytes gzipped (or 444 bytes gzipped in the [IE6+ supporting `legacy` version](docs/legacyVersionDifferences.md))
-* With correct usage, it can detect all known fonts including [generic font families](https://www.smashingmagazine.com/2015/11/using-system-ui-fonts-practical-guide/), [zero-width fonts](https://github.com/adobe-fonts/adobe-blank), and other [weird fonts](http://processingjs.nihongoresources.com/the_smallest_font/)
-* The simple, unopinionated, callback-based architecture that can easily be [shimmed to be Promise compatible](docs/promiseShimUsage.md)
+* With correct settings, it can detect all known fonts including [generic font families](https://www.smashingmagazine.com/2015/11/using-system-ui-fonts-practical-guide/), [zero-width fonts](https://github.com/adobe-fonts/adobe-blank), and other [weird fonts](http://processingjs.nihongoresources.com/the_smallest_font/)
+* The simple, unopinionated, callback-based architecture that can easily be used as the basis of other tools and architectures, such as a [Promise-based architecture](docs/promiseShimUsage.md)
+* Tons of [Documentation](docs/README.md) and [Examples](docs/recipesAndUsagePatterns.md)
 * Can be used as CommonJS module or window global in a browser context
 * No dependencies
 
 
 ## Install
 
+Installation is primarily done via [NPM](https://nodejs.org/en/):
+
 ```
 npm install --save onfontready
 ```
+
+Or, use pre-built distribution versions from the `dist` directory:
+
+* [Modern version](dist/onfontready.js)
+* [Legacy version](dist/onfontready.legacy.js)
+* [Modern version, minified](dist/onfontready.min.js)
+* [Legacy version, minified](dist/onfontready.legacy.min.js)
 
 
 ## Basic Usage
@@ -106,11 +116,20 @@ onfontready(fontName, onReady, [options={}])
   - options.generic - (boolean) Set this option to `true` if and only if testing for the existance of a generic font family in a browser (such as `fantasy`, `cursive`, `san-serif`, or `BlinkMacSystemFont`)
   - options.sampleText - (string) Text used for font width testing. By default, it is set to a single space character (" "). The only use for this setting is when the tested font has no defined space character. There is only [one known font](http://processingjs.nihongoresources.com/the_smallest_font/) that does not have a space character, and it is unlikely to ever be used in a webpage, so this option can almost always be safely ignored.
 
+
+## Foundational Structure
+`onfontready` does not assume how it might be used. It purely detects when fonts are loaded and parsed by a browser. However, `onfontready` can be used as the core detection code upon which other, more complex and specific tools can be built.
+
+* `onfontready` does not attempt to initiate font loads itself via ajax as the [CSS Font Loading API](https://drafts.csswg.org/css-font-loading/#font-face-set-load) does.
+* `onfontready` does not feature Promise support, though [Promise support](docs/promiseShimUsage.md) can be added with a [simple shim](src/onfontready.promiseshim.js).
+* `onfontready` does not provide tools to attempt to load or fail to load multiple fonts as one unit, though [multi-font support](docs/multiFontDetection.md) can be added in the form of [`onfontsready`](src/onfontsready.md). 
+
+
 ## Compression
 The code for `onfontready` has been [code-golfed](https://en.wikipedia.org/wiki/Code_golf) for gzip compression. There are some 'bad-practice' code structures and lots of seemingly unnecessary repetition. However, the code is designed to be as small as possible after running it through standard [UglifyJS2](https://github.com/mishoo/UglifyJS2) and then gzipping it. Standard gzip compression (usually level 6) was used when building the library. The code, in its current form, gzips to 371 bytes (or 444 bytes for `legacy` version) at standard gzip level 6. Using [zopfli](https://en.wikipedia.org/wiki/Zopfli), the smallest possible gzip-compatible size, creates a version at 368 bytes (or 434 bytes for `legacy` version). Using [brotli](https://en.wikipedia.org/wiki/Brotli), a new higher-performing compression available to some modern browsers over HTTPS connections, creates a version at 277 bytes (or 327 bytes for `legacy` version). Read more about the [Compression Techniques](compressionTechniques.md) used in the library, or read through the [fully-commented source code](src/onfontready.js).
 
 
-## Why?!
+## Motivation
 I was attempting to build a website with a [size budget of less than 14KB gzipped](https://www.filamentgroup.com/lab/performance-rwd.html) for all HTML, CSS, JS, SVGs, and some inline images. I encountered a strange issue with inline SVGs (described below), which prompted me to research font loading in detail. The library I had been using, [fontfaceobserver](https://github.com/bramstein/fontfaceobserver), while small, still accounts for over 1KB when gzipped, which was a huge dent in my size budget. Using ideas from Back Alley Coder's [Element Resize Detector](http://www.backalleycoder.com/2013/03/18/cross-browser-event-based-element-resize-detection/), font load detection can be done on any browser without resorting to setTimeout polling at a much smaller size.
 
 
@@ -136,4 +155,6 @@ The bug occurs if...
 ## Future Plans
 * Add ES module support once tooling becomes realistic.
 * Produce a new modern version specifically for browsers with ES6 (ES2015) native support as the world switches to those browsers.
+* Make note about the upcoming [font-display](https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display) feature, which can aleviate the need for much of `onfontready` in very new browsers.
 * Add support for [ResizeObserver](https://developers.google.com/web/updates/2016/10/resizeobserver)-based detection when it becomes more widely supported, using the iframe resize method as the fallback.
+* Investigate source-code permutation techniques to generate the smallest possible compressed sizes by mere rearrangement of order-independent code and alternate equivalent structures.

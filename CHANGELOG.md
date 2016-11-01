@@ -2,11 +2,11 @@
 
 ## [1.1.0] - 2016-11-XX
 
-### All Changes
 - Added ability to detect generic font families
 - Removed the need to specify `sampleText` in all but [one known font](http://processingjs.nihongoresources.com/the_smallest_font/)
 - Reduced RAM and DOM usage by approximately 1/3rd
 - Added a shim to convert `onfontready` from a callback architecture to a Promise architecture if desired
+- Added `onfontsready`, an external function built on top of `onfontready` that detects the load/parse of multiple fonts as a unit
 - Improved compression by 46 bytes (modern) and 54 bytes (legacy) thanks to in-depth research on font structure, browser memory leaks, and standard character widths
 - Maintained full backwards compatibility
 - Added comprehensive documentation for design, usage, special cases, and other in-depth details
@@ -18,14 +18,10 @@
 - Reduced font format variations used in tests and recommended in documentation relative to actual worldwide usage patterns
 - Rebuilt build system to generate better intermediate distribution versions using Babel and some plugins
 - Updated build system commands to be more consistent and easy to use
+- Updated build system with some 'build everything' commands to simplify most build needs
 - Updated documentation for testing legacy versions of IE
 - Unified all folder and file names under camelCase naming
 - Updated README about changes and added new Future Plans
-
-### Update Guide
-- Remove `sampleText` usage, it should no longer be needed even for non-English fonts
-- Add `generic: true` to the `options` object to test for generic font families
-- If you prefer a Promise architecture over callbacks, use the new Promise shim
 
 ## [1.0.2] - 2016-06-23
 

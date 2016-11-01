@@ -3,7 +3,7 @@
 (function () {
     var onfontreadyOriginal = window.onfontready;
     window.onfontready = function (fontName, options) {
-        options = options || {};
+        options = options || 0;
         return new Promise(function (resolve, reject) {
             onfontreadyOriginal(fontName, resolve, {
                 timeoutAfter: options.timeoutAfter,

@@ -1,16 +1,16 @@
 # onfontready docs
 
-`onfontready` is a very small Javascript library for detecting fonts in browsers. By detecting font loading and parsing with `onfontready`, pages can avoid Flash of Invisible Text (FOIT) and Flash of Unstyled Text (FOUT). `onfontready` can also be used to detect if a named font is already installed locally on the client machine.
+`onfontready` is a very small Javascript library for detecting fonts in browsers. By detecting font loading and parsing with `onfontready`, pages can avoid [Flash of Invisible Text (FOIT) and Flash of Unstyled Text (FOUT)](https://css-tricks.com/fout-foit-foft/). `onfontready` can also be used to detect if a named font is already installed locally on the client machine.
 
-At its core, `onfontready` is uses carefully crafted CSS and iframes to determine when a single font is both loaded and parsed by the browser, completely ready for use. Read about [How it Works](howItWorks.md) to understand `onfontready`'s inner workings.
-
-`onfontready` does not make any assumptions about how it will be used. It is meant to be a foundation for other techniques, not a catch-all library for every scenario. Read about [Recipes and Usage Patterns](recipesAndUsagePatterns.md) to discover how to use `onfontready` for your project.
-
-`onfontready` is heavily optimized for size. It uses strange code structures that result in the smallest possible size after gzip compression. Read about [Compression Techniques](compressionTechniques.md) used in the library.
+`onfontready` does not make any assumptions about how it will be used. It is meant to be a foundation for other techniques, not a catch-all library for every scenario. Read about [Recipes and Usage Patterns](recipesAndUsagePatterns.md) to discover how to use `onfontready` for your project. There are additional resources for [Multi-Font Detection](multiFontDetection.md) and [Promise Shim Usage](promiseShimUsage.md).
 
 `onfontready` can detect fonts in most, if not all browsers that support both custom fonts and Javascript. Even Internet Explorer 6, 7, and 8 are supported with the `legacy` version. Read about [Legacy Version Differences](legacyVersionDifferences.md).
 
 With the right options, all known fonts should be detectable with `onfontready`. However, it is possible to create a font that `onfontready` cannot detect. Read about [How to Break `onfontready`](howToBreakOnfontready.md).
+
+At its core, `onfontready` is uses carefully crafted CSS and iframes to determine when a single font is both loaded and parsed by the browser, completely ready for use. Read about [How it Works](howItWorks.md) to understand `onfontready`'s inner workings.
+
+`onfontready` is heavily optimized for size. It uses strange code structures that result in the smallest possible size after gzip compression. Read about [Compression Techniques](compressionTechniques.md) used in the library.
 
 `onfontready` is built from a single source file into multiple versions for testing and distribution, as well as the legacy and modern variants. Read about [Building `onfontready`](buildingOnfontready.md).
 

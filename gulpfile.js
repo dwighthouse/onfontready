@@ -30,7 +30,7 @@ pe.appendStyle({
 });
 
 const build = (options) => {
-    let baseStream = gulp.src('./src/onfontready.js')
+    let baseStream = gulp.src(options.src)
         .pipe(replace('module.exports', 'window.onfontready'))
         .pipe(envify({
             isLegacy: options.isLegacy || false,
@@ -105,6 +105,7 @@ const build = (options) => {
 
 gulp.task('modern', () => {
     return build({
+        src: './src/onfontready.js',
         dest: './dist',
         minify: true,
         gzip: true,
@@ -115,6 +116,7 @@ gulp.task('modern', () => {
 
 gulp.task('legacy', () => {
     return build({
+        src: './src/onfontready.js',
         isLegacy: true,
         dest: './dist',
         minify: true,
@@ -134,6 +136,7 @@ gulp.task('buildWatch', ['build'], () => {
 
 gulp.task('modernTest', () => {
     return build({
+        src: './src/onfontready.js',
         isTest: true,
         dest: './tests/mainTests/builds',
     });
@@ -141,6 +144,7 @@ gulp.task('modernTest', () => {
 
 gulp.task('legacyTest', () => {
     return build({
+        src: './src/onfontready.js',
         isLegacy: true,
         isTest: true,
         dest: './tests/mainTests/builds',
@@ -156,30 +160,11 @@ gulp.task('buildTestWatch', ['buildTest'], () => {
 
 
 gulp.task('promise', () => {
-    let baseStream = gulp.src('./src/onfontready.promiseshim.js')
-        .pipe(babel({
-            plugins: [
-                'check-es2015-constants',
-                'transform-es2015-block-scoping',
-                'transform-es2015-arrow-functions',
-                'transform-node-env-inline',
-                'transform-dead-code-elimination',
-            ],
-        }))
-        .on('error', function(error) {
-            // We want the this to re-bind, so avoid arrow function
-            console.log(pe.render(error));
-            this.emit('end');
-        });
-
-    baseStream = baseStream.pipe(gulp.dest('./dist'));
-
-    baseStream = baseStream
-        .pipe(uglify())
-        .pipe(rename((path) => { path.basename += '.min' }))
-        .pipe(gulp.dest('./dist'));
-
-    return baseStream;
+    return build({
+        src: './src/onfontready.promiseshim.js',
+        dest: './dist',
+        minify: true,
+    });
 });
 
 gulp.task('promiseWatch', ['promise'], () => {
@@ -188,6 +173,20 @@ gulp.task('promiseWatch', ['promise'], () => {
 
 
 
-gulp.task('all', ['build', 'buildTest', 'promise']);
+gulp.task('onfontsready', () => {
+    return build({
+        src: './src/onfontsready.js',
+        dest: './dist',
+        minify: true,
+    });
+});
 
-gulp.task('allWatch', ['buildWatch', 'buildTestWatch', 'promiseWatch']);
+gulp.task('onfontsreadyWatch', ['onfontsready'], () => {
+    gulp.watch('./src/onfontsready.js', ['onfontsready']);
+});
+
+
+
+gulp.task('all', ['build', 'buildTest', 'promise', 'onfontsready']);
+
+gulp.task('allWatch', ['buildWatch', 'buildTestWatch', 'promiseWatch', 'onfontsreadyWatch']);
