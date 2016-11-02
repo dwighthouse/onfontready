@@ -1,6 +1,6 @@
 # Undetectable Fonts
 
-If `onfontready` is used correctly with no misapplyed options and run in a modern browser, it should be be able to detect all known fonts. There are some failure cases in IE6 and IE7 that are unavoidable (see [Main Tests](../tests/mainTests/index.html) for details). However, there are ways to construct a special font that would confuse it.
+If `onfontready` is used correctly with no misapplied options and run in a modern browser, it should be be able to detect all known fonts. There are some failure cases in IE6 and IE7 that are unavoidable (see [Main Tests](../tests/mainTests/index.html) for details). However, there are ways to construct a special font that would confuse it.
 
 First of all, if a font contains a space character, then `onfontready` can detect it, even if that space character's width is zero. Thus, only fonts without a space character can possibly trick it.
 
@@ -8,7 +8,7 @@ When a font does not contain a space character, `onfontready` requires the optio
 
 
 ## 1. Natural Zero-Width Characters
-Some characters are natually zero-width in most fonts. These include the various control characters, the newline (in most browsers), and other exotic characters. If these characters are zero-width in both fallback fonts, then `onfontready` will incorrectly assume that their equivalence means the tested font has been loaded.
+Some characters are naturally zero-width in most fonts. These include the various control characters, the newline (in most browsers), and other exotic characters. If these characters are zero-width in both fallback fonts, then `onfontready` will incorrectly assume that their equivalence means the tested font has been loaded.
 
 Here are just some of the known zero-width characters in most browsers, via unicode numerical values (and ranges of values):
 
