@@ -165,11 +165,11 @@ As this table demonstrates, `onfontready` is significantly smaller than comparab
 | zopfli ‡    | 368           | 434                  | 1463               |
 | brotli ¶    | 277           | 327                  | 1209               |
 
-\* - [UglifyJS2](https://github.com/mishoo/UglifyJS2) was used for minification.  
+\* - [UglifyJS](https://github.com/mishoo/UglifyJS2) was used for minification.  
 † - gzip level 6, the default compression level.  
 ‡ - [Zopfli](https://en.wikipedia.org/wiki/Zopfli), an exhaustive search compression. It typically produces the smallest possible gzip-compatible output.  
 ¶ - [Brotli](https://en.wikipedia.org/wiki/Brotli), a new higher-performing compression available to some modern browsers over HTTPS connections.  
-◦ - [FontFaceObserver](https://github.com/bramstein/fontfaceobserver) Standalone version 2.0.5 included for comparison. FontFaceObserver was already minified using the [Google Closure compiler](https://developers.google.com/closure/compiler/). For the table above, the minified code was run through UglifyJS2 to further compress it. Without UglifyJS2, the compressed sizes would be larger for FontFaceObserver.
+◦ - [FontFaceObserver](https://github.com/bramstein/fontfaceobserver) Standalone version 2.0.5 included for comparison. FontFaceObserver was already minified using the [Google Closure compiler](https://developers.google.com/closure/compiler/). For the table above, the minified code was run through UglifyJS to further compress it. Without UglifyJS, the compressed sizes would be larger for FontFaceObserver.
 
 To learn more, read about the [Compression Techniques](docs/compressionTechniques.md) used and read through the [fully-commented source code](src/onfontready.js).
 

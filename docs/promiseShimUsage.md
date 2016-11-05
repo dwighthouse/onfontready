@@ -2,6 +2,7 @@
 
 #### Doc Links
 * [Recipes and Usage Patterns](recipesAndUsagePatterns.md)
+    - [Handling Disabled Javascript](handlingDisabledJavascript.md)
     - [Promise Shim Usage](promiseShimUsage.md)
     - [Multi-Font Detection](multiFontDetection.md)
 * [Legacy Version Differences](legacyVersionDifferences.md)

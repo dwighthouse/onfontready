@@ -1,7 +1,8 @@
-# Undetectable Fonts
+# How To Break `onfontready`
 
 #### Doc Links
 * [Recipes and Usage Patterns](recipesAndUsagePatterns.md)
+    - [Handling Disabled Javascript](handlingDisabledJavascript.md)
     - [Promise Shim Usage](promiseShimUsage.md)
     - [Multi-Font Detection](multiFontDetection.md)
 * [Legacy Version Differences](legacyVersionDifferences.md)
@@ -11,7 +12,7 @@
 * [Building `onfontready`](buildingOnfontready.md)
 * [Docs Home](README.md)
 
-If `onfontready` is used correctly with no misapplied options and run in a modern browser, it should be be able to detect all known fonts. There are some failure cases in IE6 and IE7 that are unavoidable (see [Main Tests](../tests/mainTests/index.html) for details). However, there are ways to construct a special font that would confuse it.
+If `onfontready` is used correctly with no misapplied options and run in a modern browser, it should be able to detect all known fonts. There are some failure cases in IE6 and IE7 that are unavoidable (see [Main Tests](../tests/mainTests/index.html) for details). However, there are ways to construct a special font that would confuse it.
 
 First of all, if a font contains a space character, then `onfontready` can detect it, even if that space character's width is zero. Thus, only fonts without a space character can possibly trick it.
 
@@ -19,9 +20,9 @@ When a font does not contain a space character, `onfontready` requires the optio
 
 
 ## 1. Natural Zero-Width Characters
-Some characters are naturally zero-width in most fonts. These include the various control characters, the newline (in most browsers), and other exotic characters. If these characters are zero-width in both fallback fonts, then `onfontready` will incorrectly assume that their equivalence means the tested font has been loaded.
+Some characters are naturally zero-width in most fonts. These include the various control characters such as NUL and the newline (in most browsers). If these characters are zero-width in both fallback fonts, then `onfontready` will incorrectly assume that their equivalence means the tested font has been loaded.
 
-Here are just some of the known zero-width characters in most browsers, via unicode numerical values (and ranges of values):
+Here are just some of the known zero-width characters in most browsers, via unicode numerical ranges:
 
 * 1-8
 * 10-31
@@ -34,9 +35,9 @@ Here are just some of the known zero-width characters in most browsers, via unic
 
 
 ## 2. Equal Width Characters In Both Serif and Monospace Fonts
-Some characters always have the same width, even in such different fonts as the browser's generic serif and monospace fonts. These mostly come in the form of mathematical symbols and non-English letters. Additionally, a font may specify a standard box glyph (the so-called 'tofu' glyph) if it does not have a glyph to display for a given character. Normally such tofu wouldn't be seen because the browser would fall back to another font. However, since these are generic fallback fonts, there are no further fonts to fall back to. If these generic fonts don't support it, then tofu glyphs can occur. Tofu glyphs are usually equivalent-width.
+Some characters always have the same width, even in such different fonts as the browser's generic serif and monospace fonts. These mostly come in the form of mathematical symbols and non-English letters. Additionally, a font may specify a standard box glyph (the so-called 'tofu' glyph) if it does not have a glyph to display for a given character. Normally such tofu wouldn't be seen because the browser would fall back to another font. However, if the generic font families show tofu glyphs, the widths will usually be equivalent.
 
-As with Scenario #1 above, since these characters are of equal width, `onfontready` may falsely assume the font has already been loaded.
+As with #1 above, since these characters are of equal width, `onfontready` may falsely assume the font has already been loaded.
 
 Here is a small sampling of characters that share the exact same width in both serif and monospace fonts in one of my browsers (along with its unicode numerical value):
 
@@ -120,7 +121,7 @@ Here is a small sampling of characters that share the exact same width in both s
 
 
 ## 3. Carefully Constructed English Strings
-It is infeasible, but possible, to construct a `sampleText` string of more than one character that together results in an equal width string, in spite of the fact that each individual letter in the string might be a different width. Doing so would be highly unlikely by chance and probably varies by browser.
+It is unlikely, but possible, to construct a `sampleText` string of more than one character that together results in an equal width string, in spite of the fact that each individual letter in the string might be a different width. Doing so would be highly unlikely by chance and probably varies by browser.
 
 I know of no examples, but it might look like this. Assume, for the sake of argument, the following character widths relative to fonts:
 
@@ -134,7 +135,7 @@ If constructing the string "Mi", the widths might be:
 * `504 pixels ("M")` + `456 pixels ("i")` = 960 pixels in serif
 * `480 pixels ("M")` + `480 pixels ("i")` = 960 pixels in monospace
 
-As with Scenario #1 and #2 above, since these strings are of equal width, `onfontready` may falsely assume the font has already been loaded.
+As with #1 and #2 above, since these strings are of equal width, `onfontready` may falsely assume the font has already been loaded.
 
 
 [◀ Back to Docs Home](README.md)

@@ -2,6 +2,7 @@
 
 #### Doc Links
 * [Recipes and Usage Patterns](recipesAndUsagePatterns.md)
+    - [Handling Disabled Javascript](handlingDisabledJavascript.md)
     - [Promise Shim Usage](promiseShimUsage.md)
     - [Multi-Font Detection](multiFontDetection.md)
 * [Legacy Version Differences](legacyVersionDifferences.md)
@@ -17,14 +18,14 @@ These examples make some assumptions about both the server and the client:
 
 * If the font VT323 is installed locally on the client machine, the output visuals may not flicker as described.
 * If the testing browser's cache is not disabled or cleared prior to running Scenarios 1 through 5, the output visuals may not flicker as described.
-* If the server does not send correct caching headers for font files, the browser may not cache the font and future loads of Scenarios 6 through 8 may become susceptible to [FOIT](https://css-tricks.com/fout-foit-foft/) again. Fortunately, Google Fonts does return correct caching headers.
+* If the server does not send correct caching headers for font files, the browser may not cache the font. Future loads of Scenarios 6 through 8 may become susceptible to [FOIT](https://css-tricks.com/fout-foit-foft/). Fortunately, Google Fonts does return correct caching headers.
 
-The following scenarios only cover basic `onfontready` usage. To detect multiple font loads as a single unit (or timeout as a single unit), read about patterns of [Multi-Font Detection](multiFontDetection.md). To use `onfontready` in a Promise-based form, read about [Promise Shim Usage](promiseShimUsage.md).
+The following scenarios cover `onfontready` usage for detecting a single font. To make sure the font load experience works without Javascript enabled, read about [Handling Disabled Javascript](handlingDisabledJavascript.md). To detect multiple font loads as a single unit (or timeout as a single unit), read about patterns of [Multi-Font Detection](multiFontDetection.md). To use `onfontready` in a Promise-based form, read about [Promise Shim Usage](promiseShimUsage.md).
 
 
 ## Scenario 1: Show Fallback Until Font Loads
 
-This emulates the FOUT problem. The fallback font monospace will display until VT323 loads. After the font loads, the new font is switched in with a class change.
+This emulates the [FOUT](https://css-tricks.com/fout-foit-foft/) problem. The fallback font monospace will display until VT323 loads. After the font loads, the new font is switched in with a class change.
 
 ```html
 <!doctype html>
@@ -58,7 +59,7 @@ This emulates the FOUT problem. The fallback font monospace will display until V
 
 ## Scenario 2: Hide Text Until Font Loads
 
-This emulates the [FOIT](https://css-tricks.com/fout-foit-foft/) problem. The fallback font monospace will be used for layout, but the page will hide the text itself until VT323 loads. Once it has loaded, the font switch and the text will become opaque simultaneously.
+This emulates the [FOIT](https://css-tricks.com/fout-foit-foft/) problem. The fallback font monospace will be used for layout, but the page will hide the text itself until VT323 loads. Once it has loaded, the font is switched and the text is made opaque simultaneously using a class change.
 
 ```html
 <!doctype html>
@@ -169,9 +170,9 @@ This will show a special generic system font for Chrome browsers running on OS X
 
 ## Scenario 5: Detect Font With No Space Character
 
-If a font does not contain a space character, extra care must be taken to properly detect the font. Specify a `sampleText` string for a character that is known to exist in the font, **AND the equivalent serif and monospace characters are of different lengths**.
+If a font does not contain a space character, extra care must be taken to properly detect the font. The `sampleText` string option must be set to a character that is both known to be in the font and for which the equivalent serif and monospace characters are of different lengths.
 
-There is only [one known font](http://processingjs.nihongoresources.com/the_smallest_font/) that does not define a space character. Even IcoMoon-generated icon fonts include a defined space character. This example is included for completeness sake. VT323 actually does contain the space character.
+The space character is included in [IcoMoon](https://icomoon.io/app/)-generated icon fonts, [FontSquirrel's Webfont Generator](https://www.fontsquirrel.com/tools/webfont-generator) when explictly set to ignore the space character, and all normal fonts. There is only [one known font](http://processingjs.nihongoresources.com/the_smallest_font/) that does not define a space character. This example is included for completeness sake. VT323 actually does contain the space character, so specifying the `sampleText` here is not necessary.
 
 ```html
 <!doctype html>
@@ -207,7 +208,9 @@ There is only [one known font](http://processingjs.nihongoresources.com/the_smal
 
 ## Scenario 6: Use localStorage to Show Custom Font Immediately If Previously Loaded
 
-This is the same as Scenario 1, except that the page attempts to show the font immediately if the localStorage has data indicating the font has already been loaded thanks to an earlier page load. Using this technique, the `onfontready` library only needs to run once on the first load of the first page with a given font. This also avoids any possible style flickers related to causing reflow after the page has already rendered once with the fallback font.
+This is nearly identical to Scenario 1. However, if the page had previously loaded the font, the page can show it immediately without a new detection test. Using this technique, the `onfontready` library only needs to run once on the first load of the first page with a given font. This also avoids any possible style flickers related to causing reflow after the page has already rendered once with the fallback font.
+
+Be certain to send the [correct mime-types](https://github.com/h5bp/server-configs-apache/blob/master/src/media_types/media_types.conf#L56) and [caching headers](https://github.com/h5bp/server-configs-apache/blob/master/src/web_performance/expires_headers.conf#L75) for fonts when using this technique.
 
 ```html
 <!doctype html>
@@ -256,7 +259,9 @@ This is the same as Scenario 1, except that the page attempts to show the font i
 
 ## Scenario 7: Use Cookie to Show Custom Font Immediately If Previously Loaded
 
-The same as Scenario 6, but using cookies instead of localStorage. This technique works on older browsers that don't support localStorage.
+The same as Scenario 6, but using cookies instead of localStorage. This technique works on older browsers that don't support localStorage ([Can I Use localStorage](http://caniuse.com/#search=localstorage)).
+
+Be certain to send the [correct mime-types](https://github.com/h5bp/server-configs-apache/blob/master/src/media_types/media_types.conf#L56) and [caching headers](https://github.com/h5bp/server-configs-apache/blob/master/src/web_performance/expires_headers.conf#L75) for fonts when using this technique.
 
 ```html
 <!doctype html>
@@ -331,6 +336,8 @@ Under this scenario, preventing font flickers is prioritized over everything els
 
 This is identical to Scenario 6 except that the `onReady` callback does not set the `loaded` class on the html tag.
 
+Be certain to send the [correct mime-types](https://github.com/h5bp/server-configs-apache/blob/master/src/media_types/media_types.conf#L56) and [caching headers](https://github.com/h5bp/server-configs-apache/blob/master/src/web_performance/expires_headers.conf#L75) for fonts when using this technique.
+
 ```html
 <!doctype html>
 <html>
@@ -374,91 +381,41 @@ This is identical to Scenario 6 except that the `onReady` callback does not set 
 ```
 
 
-## Disabled Javascript Support
+## Scenario 9: Detect If Font Is Intalled Locally
 
-It is good to keep in mind that a user may have disabled Javascript, or previous scripts on the page might have caused an unrecoverable error. Though `onfontready` is designed to be inlined on every page of a site, it is still good practice to make custom font loading possible without Javascript enabled. There are two ways to do this.
-
-
-### Disabled Javascript Support - Method 1
-
-First, one can insert some overriding styles after the main stylesheet inside a noscript tag that forces custom font family usage. When scripts are enabled, this is skipped, and `onfontready` can run normally. This technique may only be possible in pages with HTML5 doctypes, due to rules about noscript and style tags.
+This scenario will switch to the VT323 font if a font by that name exists locally on the client machine. However, it only waits for 5 seconds before timing out. Notice how the example is not using Google Fonts.
 
 ```html
 <!doctype html>
 <html>
     <meta charset="utf-8">
-    <title>Disabled Javascript Support - Method 1</title>
-
-    <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
+    <title>Detect If Font Is Intalled Locally</title>
 
     <style>
         .font {
             font-family: monospace;
         }
 
-        .loaded .font {
+        .installed .font {
             font-family: 'VT323', monospace;
         }
     </style>
 
-    <noscript>
-        <style>
-            .font {
-                font-family: 'VT323', monospace;
+    <p class="font">Lorem ipsum...</p>
+
+    <script src="https://cdn.rawgit.com/dwighthouse/onfontready/master/dist/onfontready.min.js"></script>
+    <script>
+        window.onfontready('VT323', function() {
+            document.documentElement.className += ' installed';
+        }, {
+            timeoutAfter: 5000,
+            onTimeout: function() {
+                // Do nothing
             }
-        </style>
-    </noscript>
-
-    <p class="font">Lorem ipsum...</p>
-
-    <script src="https://cdn.rawgit.com/dwighthouse/onfontready/master/dist/onfontready.min.js"></script>
-    <script>
-        window.onfontready('VT323', function() {
-            document.documentElement.className += ' loaded';
         });
     </script>
 </html>
 ```
-
-
-### Disabled Javascript Support - Method 2
-
-Second, one can start off the page with the loaded styles, and then remove them as soon as Javascript is detected. Then they can be re-added as fonts are detected. If this removal happens before any usage of the font, the font will not actually begin loading.
-
-```html
-<!doctype html>
-<html class="loaded">
-    <meta charset="utf-8">
-    <title>Disabled Javascript Support - Method 2</title>
-
-    <script>
-        document.documentElement.className = document.documentElement.className.replace('loaded', '');
-    </script>
-
-    <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
-
-    <style>
-        .font {
-            font-family: monospace;
-        }
-
-        .loaded .font {
-            font-family: 'VT323', monospace;
-        }
-    </style>
-
-    <p class="font">Lorem ipsum...</p>
-
-    <script src="https://cdn.rawgit.com/dwighthouse/onfontready/master/dist/onfontready.min.js"></script>
-    <script>
-        window.onfontready('VT323', function() {
-            document.documentElement.className += ' loaded';
-        });
-    </script>
-</html>
-```
-
-
 
 
 [◀ Back to Docs Home](README.md)
