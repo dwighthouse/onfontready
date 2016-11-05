@@ -1,5 +1,16 @@
 # Undetectable Fonts
 
+#### Doc Links
+* [Recipes and Usage Patterns](recipesAndUsagePatterns.md)
+    - [Promise Shim Usage](promiseShimUsage.md)
+    - [Multi-Font Detection](multiFontDetection.md)
+* [Legacy Version Differences](legacyVersionDifferences.md)
+* [How to Break `onfontready`](howToBreakOnfontready.md)
+* [How it Works](howItWorks.md)
+* [Compression Techniques](compressionTechniques.md)
+* [Building `onfontready`](buildingOnfontready.md)
+* [Docs Home](README.md)
+
 If `onfontready` is used correctly with no misapplied options and run in a modern browser, it should be be able to detect all known fonts. There are some failure cases in IE6 and IE7 that are unavoidable (see [Main Tests](../tests/mainTests/index.html) for details). However, there are ways to construct a special font that would confuse it.
 
 First of all, if a font contains a space character, then `onfontready` can detect it, even if that space character's width is zero. Thus, only fonts without a space character can possibly trick it.
@@ -126,4 +137,4 @@ If constructing the string "Mi", the widths might be:
 As with Scenario #1 and #2 above, since these strings are of equal width, `onfontready` may falsely assume the font has already been loaded.
 
 
-[◀ Back to Docs](README.md)
+[◀ Back to Docs Home](README.md)

@@ -1,5 +1,16 @@
 # How it Works
 
+#### Doc Links
+* [Recipes and Usage Patterns](recipesAndUsagePatterns.md)
+    - [Promise Shim Usage](promiseShimUsage.md)
+    - [Multi-Font Detection](multiFontDetection.md)
+* [Legacy Version Differences](legacyVersionDifferences.md)
+* [How to Break `onfontready`](howToBreakOnfontready.md)
+* [How it Works](howItWorks.md)
+* [Compression Techniques](compressionTechniques.md)
+* [Building `onfontready`](buildingOnfontready.md)
+* [Docs Home](README.md)
+
 `onfontready` relies on the relative widths of the font being detected and at least two other fonts.
 
 
@@ -85,4 +96,4 @@ Previous versions of `onfontready` had to rely on a special test string for dete
 More recently, as part of research for version `1.1.0` of `onfontready` the common availability of the humble [space character](https://en.wikipedia.org/wiki/Whitespace_character) (ASCII #32) revealed its usefulness. With exactly [one known special-case exception](http://stackoverflow.com/q/39172165/195068), every font available or generated contains the space character, even icon fonts. Every browser appears to have vastly different space character widths for the `serif` and `monospace` generic font families (see [test data](../tests/spaceCharacterWidths/index.html)). With this knowledge, `onfontready` uses a single space as the test string by default. This removes the need to specify a test string in all common fonts (except fonts that do not contain a space character). In addition to simplifying library usage, this improvement reduced the size and memory usage of `onfontready` greatly.
 
 
-[◀ Back to Docs](README.md)
+[◀ Back to Docs Home](README.md)

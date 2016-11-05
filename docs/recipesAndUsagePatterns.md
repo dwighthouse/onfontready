@@ -1,5 +1,16 @@
 # Recipes and Usage Patterns
 
+#### Doc Links
+* [Recipes and Usage Patterns](recipesAndUsagePatterns.md)
+    - [Promise Shim Usage](promiseShimUsage.md)
+    - [Multi-Font Detection](multiFontDetection.md)
+* [Legacy Version Differences](legacyVersionDifferences.md)
+* [How to Break `onfontready`](howToBreakOnfontready.md)
+* [How it Works](howItWorks.md)
+* [Compression Techniques](compressionTechniques.md)
+* [Building `onfontready`](buildingOnfontready.md)
+* [Docs Home](README.md)
+
 `onfontready` can provide features to help with lots of different scenarios. The entire HTML page's content is included so there is no ambiguity. All instances of `onfontready` can either be the `modern` or `legacy` versions, depending on the desired browser support. Some optional tags (such as the head and body tags) are not included to save space.
 
 These examples make some assumptions about both the server and the client:
@@ -450,4 +461,4 @@ Second, one can start off the page with the loaded styles, and then remove them 
 
 
 
-[◀ Back to Docs](README.md)
+[◀ Back to Docs Home](README.md)

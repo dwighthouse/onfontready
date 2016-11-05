@@ -1,5 +1,16 @@
 # Compression Techniques
 
+#### Doc Links
+* [Recipes and Usage Patterns](recipesAndUsagePatterns.md)
+    - [Promise Shim Usage](promiseShimUsage.md)
+    - [Multi-Font Detection](multiFontDetection.md)
+* [Legacy Version Differences](legacyVersionDifferences.md)
+* [How to Break `onfontready`](howToBreakOnfontready.md)
+* [How it Works](howItWorks.md)
+* [Compression Techniques](compressionTechniques.md)
+* [Building `onfontready`](buildingOnfontready.md)
+* [Docs Home](README.md)
+
 One of `onfontready`'s primary features is its small compressed size. Gzipped, `onfontready` is about 3.5 times smaller than its primary competitor [FontFaceObserver](https://github.com/bramstein/fontfaceobserver), even if its Promise shim is not included. Optimistically, `onfontready` should be small enough to include inline on every page, removing the need for an extra HTTP request for pages without much Javascript. Adding only 371 bytes to the gzipped total size of a page, `onfontready` is very suitable for inlining.
 
 To achieve such high levels of compression, much research was performed into browser implementations, alternative techniques, fonts, font loading behaviors, [code golfing](https://en.wikipedia.org/wiki/Code_golf), and the nature of gzipped compression. A complete explanation of all techniques used is too large to fit here, but below are some major highlights and findings.
@@ -112,4 +123,4 @@ A few bytes here and there can be saved by rearranging order-independent code an
 Everything above may not work. You have to just try it and test it, until you work down to the smallest code you can. Gzip compression is a dark art, but it can be learned with practice.
 
 
-[◀ Back to Docs](README.md)
+[◀ Back to Docs Home](README.md)

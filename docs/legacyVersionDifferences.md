@@ -1,5 +1,16 @@
 # Legacy Version Differences
 
+#### Doc Links
+* [Recipes and Usage Patterns](recipesAndUsagePatterns.md)
+    - [Promise Shim Usage](promiseShimUsage.md)
+    - [Multi-Font Detection](multiFontDetection.md)
+* [Legacy Version Differences](legacyVersionDifferences.md)
+* [How to Break `onfontready`](howToBreakOnfontready.md)
+* [How it Works](howItWorks.md)
+* [Compression Techniques](compressionTechniques.md)
+* [Building `onfontready`](buildingOnfontready.md)
+* [Docs Home](README.md)
+
 The `legacy` version of `onfontready` was designed to allow font load and parse detection in Internet Explorer 6, 7, and 8. The `legacy` version is forward-compatible with all known browsers. It only uses older, more compatible code structures that most browsers no longer need, and would be a waste to implement in the standard `modern` version.
 
 ## Inline Absolute Overflow
@@ -53,4 +64,4 @@ else {
 ```
 
 
-[◀ Back to Docs](README.md)
+[◀ Back to Docs Home](README.md)
