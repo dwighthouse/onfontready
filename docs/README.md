@@ -1,5 +1,23 @@
 # onfontready docs
 
+<div style="float:right;padding:10px;border:1px solid #bbb;background:#eee;">
+    ### [Docs Home](README.md)
+    <ul style="list-style:none;padding:0;">
+        <li>
+            [Recipes and Usage Patterns](recipesAndUsagePatterns.md)
+            <ul style="list-style:none;padding:0 0 0 10px;">
+                <li>[Promise Shim Usage](promiseShimUsage.md)</li>
+                <li>[Multi-Font Detection](multiFontDetection.md)</li>
+            </ul>
+        </li>
+        <li>[Legacy Version Differences](legacyVersionDifferences.md)</li>
+        <li>[How to Break `onfontready`](howToBreakOnfontready.md)</li>
+        <li>[How it Works](howItWorks.md)</li>
+        <li>[Compression Techniques](compressionTechniques.md)</li>
+        <li>[Building `onfontready`](buildingOnfontready.md)</li>
+    </ul>
+</div>
+
 `onfontready` is a very small Javascript library for detecting fonts in browsers. By detecting font loading and parsing with `onfontready`, pages can avoid [Flash of Invisible Text (FOIT) and Flash of Unstyled Text (FOUT)](https://css-tricks.com/fout-foit-foft/). `onfontready` can also be used to detect if a named font is already installed locally on the client machine.
 
 `onfontready` does not make any assumptions about how it will be used. It is meant to be a foundation for other techniques, not a catch-all library for every scenario. Read about [Recipes and Usage Patterns](recipesAndUsagePatterns.md) to discover how to use `onfontready` for your project. There are additional resources for [Multi-Font Detection](multiFontDetection.md) and [Promise Shim Usage](promiseShimUsage.md).

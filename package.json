@@ -1,7 +1,7 @@
 {
   "name": "onfontready",
   "version": "1.1.0",
-  "description": "Browser-based font load and parse detection with minimal size and maximum compatibility.",
+  "description": "Font load and parse detection with minimal size and maximum compatibility.",
   "main": "src/onfontready.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
