@@ -43,6 +43,7 @@ Here is a very simple example usage that prevents FOIT, but will timeout the fon
 1. Import the desired font.
 
     * Describe a `@font-face` in CSS. ([Using Font-Face at CSS-Tricks](https://css-tricks.com/snippets/css/using-font-face/)).
+
         ```css
         @font-face {
             font-family: 'MyWebFont';
@@ -50,6 +51,7 @@ Here is a very simple example usage that prevents FOIT, but will timeout the fon
                  url('myTheme/fonts/webfont.woff') format('woff');
         }
         ```
+
     * Or import the font using a web font service, such as [Google Fonts](https://www.google.com/fonts).
         ```html
         <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
@@ -58,6 +60,7 @@ Here is a very simple example usage that prevents FOIT, but will timeout the fon
 2. Include `onfontready`.
 
     * Inline `onfontready` at the bottom of the HTML (recommended).
+
         ```html
         <html>
             ...
@@ -67,19 +70,24 @@ Here is a very simple example usage that prevents FOIT, but will timeout the fon
             </script>
         </html>
         ```
+
     * Or use script src to import `onfontready` at the bottom of the HTML.
+
         ```html
         <html>
             ...
             <script src="dist/onfontready.min.js"></script>
         </html>
         ```
+
     * Or include `onfontready` into Javascript codebase via CommonJS.
+
         ```javascript
         var onfontready = require('onfontready');
         ```
 
 3. Call `onfontready` with appropriate options. This pattern attempts to load the font, but will timeout after 5 seconds. Read [Recipes and Usage Patterns](docs/recipesAndUsagePatterns.md) for more options and usage patterns.
+
     ```javascript
     onfontready('MyWebFont', function() {
         document.documentElement.className += " fontLoaded";
@@ -92,6 +100,7 @@ Here is a very simple example usage that prevents FOIT, but will timeout the fon
     ```
 
 4. Define actions to take upon successful load (`onReady` is called) and/or load failure (`options.onTimeout` is called). In this pattern, `fancyFontElement` initially uses a sans-serif font. If the font loads successfully, the element will use the MyWebFont font. If the font fails to load, the element will use the monospace font and have grey text.
+
     ```css
     .fancyFontElement {
         font-family: sans-serif;
