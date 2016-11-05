@@ -150,7 +150,7 @@ onfontready(fontName, onReady, [options={}])
 
 * `onfontready` does not attempt to initiate font loads itself via ajax as the [CSS Font Loading API](https://drafts.csswg.org/css-font-loading/#font-face-set-load) does.
 * `onfontready` does not feature Promise support, though [Promise support](docs/promiseShimUsage.md) can be added with a [simple shim](src/onfontready.promiseshim.js).
-* `onfontready` does not provide tools for loading or timing out fonts as a single unit, though [multi-font support](docs/multiFontDetection.md) can be added using the [`onfontsready` function](src/onfontsready.md).
+* `onfontready` does not provide tools for loading or timing out fonts as a single unit, though [multi-font support](docs/multiFontDetection.md) can be added using the [`onfontsready` function](src/onfontsready.js).
 
 
 ## Compression

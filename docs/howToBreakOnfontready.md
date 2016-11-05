@@ -1,4 +1,4 @@
-# How To Break `onfontready`
+# How to Break `onfontready`
 
 #### Doc Links
 * [Recipes and Usage Patterns](recipesAndUsagePatterns.md)

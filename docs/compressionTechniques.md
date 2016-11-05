@@ -35,7 +35,7 @@ However, except for the [one known exception](http://processingjs.nihongoresourc
 ### You Don't Need `onload`
 Common wisdom on the internet [claims that `onload` must be called](https://davidwalsh.name/iframe-contentwindow-null) prior to accessing an iframe's `contentWindow`. Other places show that simply [appending the iframe](http://stackoverflow.com/a/10433550/195068) to the DOM is sufficient to access `contentWindow`.
 
-Doing my own [research](tests/contentWindowAvailabilityTest/index.html), I found that `contentWindow` becomes available in every browser immediately after appending an iframe to the DOM, even in IE6. This allowed the removal of all `onload`-related code, in exchange for an extra deferred finish attempt using `setTimeout`. This was a very benefitial trade.
+Doing my own [research](../tests/contentWindowAvailabilityTest/index.html), I found that `contentWindow` becomes available in every browser immediately after appending an iframe to the DOM, even in IE6. This allowed the removal of all `onload`-related code, in exchange for an extra deferred finish attempt using `setTimeout`. This was a very benefitial trade.
 
 ### You Don't Need Shutdown Code
 It is good practice to manually remove event listeners prior to removing elements from the DOM. In older browsers, failing to do so could cause memory leaks. On modern browsers, this is no longer a problem, because the browser's garbage collector can effectively detect circular references. Without effective understanding of how event listener references and closure functions affected the garbage collector, shutdown code had to be called to unregister event listeners.
@@ -108,7 +108,7 @@ Some techniques particularly helpful in `onfontready`:
 
 
 ## Use a Minifier
-There is no reason why you have to manually minify your code when a good minifier like [UglifyJS](https://github.com/mishoo/UglifyJS2) can do it for you. I have found that a majority of code golfing techniques I might otherwise apply, namely identifier mangling, can be applied automatically as a build step by Uglify. I do not recommend Closure Compiler, however. It is not as effective at this time for various reasons.
+There is no reason why you have to manually minify your code when a good minifier like [UglifyJS](https://github.com/mishoo/UglifyJS2) can do it for you. I have found that a majority of code golfing techniques I might otherwise apply, namely identifier mangling, can be applied automatically as a build step by Uglify. I do not recommend [Closure Compiler](https://developers.google.com/closure/compiler/), however. It is not as effective at this time for various reasons.
 
 
 ## Don't Confuse the Minifier

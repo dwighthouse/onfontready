@@ -29,7 +29,7 @@ At insertion time, even when specifying the style `white-space: pre;` on an elem
 
 To solve this, it is sufficient to surround the whitespace with some characters known to have widths. `onfontready` uses the period ("."). Unfortunately, simply surrounding the space character with periods could have negative consequences if the tested font does not contain the period character. In this scenario, the test would never complete, even after the font had loaded. To solve this, the outer text context is given a standard font size and family (`font: 999px monospace;` in `onfontready`). Then, an inner span element with the actual font test is styled and contains only the space character. Somehow, being both explicit about the span containing a space and having surrounding text in a known font causes these old Internet Explorer versions to correctly prevent the whitespace from collapsing.
 
-The output looks something like this:
+The detection test looks something like this:
 
 ```html
 ...
