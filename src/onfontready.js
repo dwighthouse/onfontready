@@ -30,7 +30,7 @@ module.exports = (fontName, onReady, options, root, tryFinish) => {
                 fontLoaded: false,
                 requiredExtraTimeout: false,
             };
-        }
+        };
 
         // A helper function tracks info about internal processes for testing
         window.reporter = window.reporter || {

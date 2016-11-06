@@ -204,10 +204,6 @@ window.testRunner = function(shutdownStateStatus, shutdownStateDescription) {
     window.addFontFace('f_F2', '../../tests/mainTests/customFonts/f_F2');
     document.documentElement.className += " f_F2Loading";
 
-    function writeReport(fontName, fontTestResults) {
-
-    }
-
     setTimeout(function() {
         var tests = window.reporter.getTests();
 
@@ -228,54 +224,54 @@ window.testRunner = function(shutdownStateStatus, shutdownStateDescription) {
 
             if (testResults)
             {
-                output += '<div style="border-left: 4px solid #999;padding-left: 10px;">';
+                output += '<span style="display:block;border-left: 4px solid #999;padding-left: 10px;">';
 
                 if (testResults.rootCount === 0)
                 {
-                    output += '<div style="color:#328332;">Detection elements were removed. </div>';
+                    output += '<span style="display:block;color:#328332;">Detection elements were removed. </span>';
                 }
                 else
                 {
-                    output += '<div style="color:#ff9300;">Detection elements were not removed. </div>';
+                    output += '<span style="display:block;color:#ff9300;">Detection elements were not removed. </span>';
                 }
 
                 if (testResults.iframesCreated)
                 {
-                    output += '<div style="color:#ff9300;">iframes were created. </div>';
+                    output += '<span style="display:block;color:#ff9300;">iframes were created. </span>';
                 }
                 else
                 {
-                    output += '<div style="color:#328332;">iframes were not created. </div>';
+                    output += '<span style="display:block;color:#328332;">iframes were not created. </span>';
                 }
 
                 if (testResults.timedOut)
                 {
-                    output += '<div style="color:#ff9300;">Detection timed out before font loaded. </div>';
+                    output += '<span style="display:block;color:#ff9300;">Detection timed out before font loaded. </span>';
                 }
                 else
                 {
-                    output += '<div style="color:#328332;">Font loaded before detection timed out. </div>';
+                    output += '<span style="display:block;color:#328332;">Font loaded before detection timed out. </span>';
                 }
 
                 if (testResults.fontLoaded)
                 {
-                    output += '<div style="color:#328332;">Font loaded. </div>';
+                    output += '<span style="display:block;color:#328332;">Font loaded. </span>';
                 }
                 else
                 {
-                    output += '<div style="color:#ff9300;">Font did not load (or was not detected as loaded). </div>';
+                    output += '<span style="display:block;color:#ff9300;">Font did not load (or was not detected as loaded). </span>';
                 }
 
                 if (testResults.requiredExtraTimeout)
                 {
-                    output += '<div style="color:#ff9300;">Detection required usage of additional timeout during startup. </div>';
+                    output += '<span style="display:block;color:#ff9300;">Detection required usage of additional timeout during startup. </span>';
                 }
                 else
                 {
-                    output += '<div style="color:#328332;">Detection did not require usage of additional timeout during startup. </div>';
+                    output += '<span style="display:block;color:#328332;">Detection did not require usage of additional timeout during startup. </span>';
                 }
 
-                output += '</div>';
+                output += '</span>';
             }
             else
             {

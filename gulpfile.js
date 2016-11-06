@@ -40,6 +40,7 @@ const build = (options) => {
             plugins: [
                 'check-es2015-constants',
                 'transform-es2015-block-scoping',
+                'transform-es2015-shorthand-properties',
                 'transform-es2015-arrow-functions',
                 'transform-node-env-inline',
                 'transform-dead-code-elimination',
