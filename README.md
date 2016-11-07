@@ -118,7 +118,7 @@ Here is a very simple example usage that prevents FOIT, but will timeout the fon
 
 There are many other patterns possible. For example:
 
-* Cookies or localStorage APIs can be used to optimize for second load.
+* localStorage APIs can be used to optimize for second load.
 * Emulate font loading behavior of other browsers.
 * FOUT flickering can be prevented on first load.
 * Generic font family support can be detected.

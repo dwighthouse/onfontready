@@ -18,7 +18,7 @@ These examples make some assumptions about both the server and the client:
 
 * If the font VT323 is installed locally on the client machine, the output visuals may not flicker as described.
 * If the testing browser's cache is not disabled or cleared prior to running Scenarios 1 through 5, the output visuals may not flicker as described.
-* If the server does not send correct caching headers for font files, the browser may not cache the font. Future loads of Scenarios 6 through 8 may become susceptible to [FOIT](https://css-tricks.com/fout-foit-foft/). Fortunately, Google Fonts does return correct caching headers.
+* If the server does not send correct caching headers for font files, the browser may not cache the font. Future loads of Scenarios 6 and 7 may become susceptible to [FOIT](https://css-tricks.com/fout-foit-foft/). Fortunately, Google Fonts does return correct caching headers.
 
 The following scenarios cover `onfontready` usage for detecting a single font. To make sure the font load experience works without Javascript enabled, read about [Handling Disabled Javascript](handlingDisabledJavascript.md). To detect multiple font loads as a single unit (or timeout as a single unit), read about patterns of [Multi-Font Detection](multiFontDetection.md). To use `onfontready` in a Promise-based form, read about [Promise Shim Usage](promiseShimUsage.md).
 
@@ -31,7 +31,7 @@ This emulates the [FOUT](https://css-tricks.com/fout-foit-foft/) problem. The fa
 <!doctype html>
 <html>
     <meta charset="utf-8">
-    <title>Show Fallback until Font Loaded</title>
+    <title>Show Fallback Until Font Loaded</title>
 
     <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
 
@@ -65,7 +65,7 @@ This emulates the [FOIT](https://css-tricks.com/fout-foit-foft/) problem. The fa
 <!doctype html>
 <html class="notloaded">
     <meta charset="utf-8">
-    <title>Hide Text until Font Loaded</title>
+    <title>Hide Text Until Font Loaded</title>
 
     <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
 
@@ -178,7 +178,7 @@ The space character is included in [IcoMoon](https://icomoon.io/app/)-generated 
 <!doctype html>
 <html>
     <meta charset="utf-8">
-    <title>Show Fallback until Font Loaded</title>
+    <title>Detect Font With No Space Character</title>
 
     <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
 
@@ -206,20 +206,22 @@ The space character is included in [IcoMoon](https://icomoon.io/app/)-generated 
 ```
 
 
-## Scenario 6: Use localStorage to Show Custom Font Immediately If Previously Loaded
+## Scenario 6: Use localStorage To Show Custom Font Immediately If Previously Loaded
 
 This is nearly identical to Scenario 1. However, if the page had previously loaded the font, the page can show it immediately without a new detection test. Using this technique, the `onfontready` library only needs to run once on the first load of the first page with a given font. This also avoids any possible style flickers related to causing reflow after the page has already rendered once with the fallback font.
 
-Be certain to send the [correct mime-types](https://github.com/h5bp/server-configs-apache/blob/master/src/media_types/media_types.conf#L56) and [caching headers](https://github.com/h5bp/server-configs-apache/blob/master/src/web_performance/expires_headers.conf#L75) for fonts when using this technique.
+Such a technique might also be converted to use cookies instead of localStorage.
+
+Be certain to send the [correct mime-types](https://github.com/h5bp/server-configs-apache/blob/master/src/media_types/media_types.conf#L56) and [caching headers](https://github.com/h5bp/server-configs-apache/blob/master/src/web_performance/expires_headers.conf#L75) for fonts when using this technique. This technique requires [localStorage support](http://caniuse.com/#search=localStorage).
 
 ```html
 <!doctype html>
 <html>
     <meta charset="utf-8">
-    <title>Use localStorage to Show Custom Font Immediately If Previously Loaded</title>
+    <title>Use localStorage To Show Custom Font Immediately If Previously Loaded</title>
 
     <script>
-        if (localStorage && localStorage.getItem && (/\bVT323\b/).test(localStorage.getItem('fonts'))) {
+        if (localStorage && localStorage.getItem && (/\bVT323\b/g).test(localStorage.getItem('fonts'))) {
             document.documentElement.className += ' loaded';
         }
     </script>
@@ -240,12 +242,12 @@ Be certain to send the [correct mime-types](https://github.com/h5bp/server-confi
 
     <script src="https://cdn.rawgit.com/dwighthouse/onfontready/master/dist/onfontready.min.js"></script>
     <script>
-        if (!(/\bloaded\b/).test(document.documentElement.className)) {
+        if (!(/\bloaded\b/g).test(document.documentElement.className)) {
             window.onfontready('VT323', function() {
-                document.documentElement.className += " loaded";
+                document.documentElement.className += ' loaded';
 
                 // Update localStorage 'fonts' value to contain list of font names separated by '<>'
-                var fontList = localStorage.getItem('fonts').split('<>');
+                var fontList = (localStorage.getItem('fonts') || '').split('<>');
                 fontList.push('VT323');
                 // NOTE: Here might be a good place to remove font names that are no longer used from previous site versions
 
@@ -257,95 +259,22 @@ Be certain to send the [correct mime-types](https://github.com/h5bp/server-confi
 ```
 
 
-## Scenario 7: Use Cookie to Show Custom Font Immediately If Previously Loaded
-
-The same as Scenario 6, but using cookies instead of localStorage. This technique works on older browsers that don't support localStorage ([Can I Use localStorage](http://caniuse.com/#search=localstorage)).
-
-Be certain to send the [correct mime-types](https://github.com/h5bp/server-configs-apache/blob/master/src/media_types/media_types.conf#L56) and [caching headers](https://github.com/h5bp/server-configs-apache/blob/master/src/web_performance/expires_headers.conf#L75) for fonts when using this technique.
-
-```html
-<!doctype html>
-<html>
-    <meta charset="utf-8">
-    <title>Use Cookie to Show Custom Font Immediately If Previously Loaded</title>
-
-    <script>
-        (function() {
-            var cookies = document.cookie.split(/; ?/g);
-            var c;
-            var key;
-            var value;
-
-            for (c = 0; c < cookies.length; c += 1) {
-                parts = cookies[c].split('=');
-                if (parts[0] === 'fonts' && (/\bVT323\b/).test(parts[1]))
-                {
-                    document.documentElement.className += ' loaded';
-                    break;
-                }
-            }
-        }());
-    </script>
-
-    <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
-
-    <style>
-        .font {
-            font-family: monospace;
-        }
-
-        .loaded .font {
-            font-family: 'VT323', monospace;
-        }
-    </style>
-
-    <p class="font">Lorem ipsum...</p>
-
-    <script src="https://cdn.rawgit.com/dwighthouse/onfontready/master/dist/onfontready.min.js"></script>
-    <script>
-        if (!(/\bloaded\b/).test(document.documentElement.className)) {
-            window.onfontready('VT323', function() {
-                document.documentElement.className += " loaded";
-
-                // Update cookie 'fonts' value to contain list of font names separated by '<>'
-                var cookies = document.cookie.split(/; ?/g);
-                var c;
-                var parts;
-                var cookieOutput = [];
-
-                for (c = 0; c < cookies.length; c += 1) {
-                    parts = cookies[c].split('=');
-                    if (parts[0] === 'fonts')
-                    {
-                        parts[1] = parts[1].split('<>').concat('VT323').join('<>');
-                        // NOTE: Here might be a good place to remove font names that are no longer used from previous site versions
-                    }
-                    cookieOutput.push(parts.join('='));
-                }
-                document.cookie = cookieOutput.join('; ');
-            });
-        }
-    </script>
-</html>
-```
-
-
-## Scenario 8: Only Show Fonts If Already Cached Using localStorage
+## Scenario 7: Only Show Fonts If Already Cached Using localStorage
 
 Under this scenario, preventing font flickers is prioritized over everything else. When the user visits the site for the first time, the font is loaded into the cache, but not displayed. The next time the site is visited, or whenever the visitor proceeds to another page on the site, the font is immediately displayed. At no point will the font flip while the visitor is reading.
 
 This is identical to Scenario 6 except that the `onReady` callback does not set the `loaded` class on the html tag.
 
-Be certain to send the [correct mime-types](https://github.com/h5bp/server-configs-apache/blob/master/src/media_types/media_types.conf#L56) and [caching headers](https://github.com/h5bp/server-configs-apache/blob/master/src/web_performance/expires_headers.conf#L75) for fonts when using this technique.
+Be certain to send the [correct mime-types](https://github.com/h5bp/server-configs-apache/blob/master/src/media_types/media_types.conf#L56) and [caching headers](https://github.com/h5bp/server-configs-apache/blob/master/src/web_performance/expires_headers.conf#L75) for fonts when using this technique. This technique requires [localStorage support](http://caniuse.com/#search=localStorage).
 
 ```html
 <!doctype html>
 <html>
     <meta charset="utf-8">
-    <title>Use localStorage to Show Custom Font Immediately If Previously Loaded</title>
+    <title>Only Show Fonts If Already Cached Using localStorage</title>
 
     <script>
-        if (localStorage && localStorage.getItem && (/\bVT323\b/).test(localStorage.getItem('fonts'))) {
+        if (localStorage && localStorage.getItem && (/\bVT323\b/g).test(localStorage.getItem('fonts'))) {
             document.documentElement.className += ' loaded';
         }
     </script>
@@ -366,10 +295,10 @@ Be certain to send the [correct mime-types](https://github.com/h5bp/server-confi
 
     <script src="https://cdn.rawgit.com/dwighthouse/onfontready/master/dist/onfontready.min.js"></script>
     <script>
-        if (!(/\bloaded\b/).test(document.documentElement.className)) {
+        if (!(/\bloaded\b/g).test(document.documentElement.className)) {
             window.onfontready('VT323', function() {
                 // Update localStorage 'fonts' value to contain list of font names separated by '<>'
-                var fontList = localStorage.getItem('fonts').split('<>');
+                var fontList = (localStorage.getItem('fonts') || '').split('<>');
                 fontList.push('VT323');
                 // NOTE: Here might be a good place to remove font names that are no longer used from previous site versions
 
@@ -381,7 +310,7 @@ Be certain to send the [correct mime-types](https://github.com/h5bp/server-confi
 ```
 
 
-## Scenario 9: Detect If Font Is Intalled Locally
+## Scenario 8: Detect If Font Is Intalled Locally
 
 This scenario will switch to the VT323 font if a font by that name exists locally on the client machine. However, it only waits for 5 seconds before timing out. Notice how the example is not using Google Fonts.
 
