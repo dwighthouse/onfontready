@@ -15,7 +15,7 @@
 - Updated tests with more information and explanation of browser quirks and special cases
 - Unified Main Tests into a single test for both `modern` and `legacy` versions
 - Merged modern and legacy versions into single version differentiated with `process.env` flags
-- Reduced font format variations used in tests and recommended in documentation relative to actual worldwide usage patterns
+- Reduced font format variations used in tests and recommended in documentation relative to actual worldwide usage patterns (see [issue #5](https://github.com/dwighthouse/onfontready/issues/5))
 - Rebuilt build system to generate better intermediate distribution versions using Babel and some plugins
 - Updated build system commands to be more consistent and easy to use
 - Updated build system with some 'build everything' commands to simplify most build needs
