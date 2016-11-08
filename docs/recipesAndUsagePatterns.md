@@ -48,7 +48,7 @@ This emulates the [FOUT](https://css-tricks.com/fout-foit-foft/) problem. The fa
 
     <p class="font">Lorem ipsum...</p>
 
-    <script src="https://cdn.rawgit.com/dwighthouse/onfontready/master/dist/onfontready.min.js"></script>
+    <script src="onfontready.min.js"></script>
     <script>
         window.onfontready('VT323', function() {
             document.documentElement.className += ' loaded';
@@ -82,7 +82,7 @@ This emulates the [FOIT](https://css-tricks.com/fout-foit-foft/) problem. The fa
 
     <p class="font">Lorem ipsum...</p>
 
-    <script src="https://cdn.rawgit.com/dwighthouse/onfontready/master/dist/onfontready.min.js"></script>
+    <script src="onfontready.min.js"></script>
     <script>
         window.onfontready('VT323', function() {
             document.documentElement.className = document.documentElement.className.replace('notloaded', 'loaded');
@@ -120,7 +120,7 @@ This emulates the [FOIT](https://css-tricks.com/fout-foit-foft/) problem. The fa
 
     <p class="font">Lorem ipsum...</p>
 
-    <script src="https://cdn.rawgit.com/dwighthouse/onfontready/master/dist/onfontready.min.js"></script>
+    <script src="onfontready.min.js"></script>
     <script>
         window.onfontready('VT323', function() {
             document.documentElement.className += ' loaded';
@@ -157,7 +157,7 @@ This will show a special generic system font for Chrome browsers running on OS X
 
     <p class="font">Lorem ipsum...</p>
 
-    <script src="https://cdn.rawgit.com/dwighthouse/onfontready/master/dist/onfontready.min.js"></script>
+    <script src="onfontready.min.js"></script>
     <script>
         window.onfontready('BlinkMacSystemFont', function() {
             document.documentElement.className += ' loaded';
@@ -195,7 +195,7 @@ The space character is included in [IcoMoon](https://icomoon.io/app/)-generated 
 
     <p class="font">Lorem ipsum...</p>
 
-    <script src="https://cdn.rawgit.com/dwighthouse/onfontready/master/dist/onfontready.min.js"></script>
+    <script src="onfontready.min.js"></script>
     <script>
         window.onfontready('VT323', function() {
             document.documentElement.className += ' loaded';
@@ -241,7 +241,7 @@ Be certain to send the [correct mime-types](https://github.com/h5bp/server-confi
 
     <p class="font">Lorem ipsum...</p>
 
-    <script src="https://cdn.rawgit.com/dwighthouse/onfontready/master/dist/onfontready.min.js"></script>
+    <script src="onfontready.min.js"></script>
     <script>
         if (!(/\bloaded\b/g).test(document.documentElement.className)) {
             window.onfontready('VT323', function() {
@@ -294,7 +294,7 @@ Be certain to send the [correct mime-types](https://github.com/h5bp/server-confi
 
     <p class="font">Lorem ipsum...</p>
 
-    <script src="https://cdn.rawgit.com/dwighthouse/onfontready/master/dist/onfontready.min.js"></script>
+    <script src="onfontready.min.js"></script>
     <script>
         if (!(/\bloaded\b/g).test(document.documentElement.className)) {
             window.onfontready('VT323', function() {
@@ -333,7 +333,7 @@ This scenario will switch to the VT323 font if a font by that name exists locall
 
     <p class="font">Lorem ipsum...</p>
 
-    <script src="https://cdn.rawgit.com/dwighthouse/onfontready/master/dist/onfontready.min.js"></script>
+    <script src="onfontready.min.js"></script>
     <script>
         window.onfontready('VT323', function() {
             document.documentElement.className += ' installed';

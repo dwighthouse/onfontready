@@ -5,8 +5,8 @@ Font load and parse detection with minimal size and maximum compatibility.
 ## Features
 * Can [create sophisticated font loading experiences](docs/recipesAndUsagePatterns.md) for pages, helping prevent [FOIT or FOUT](https://www.filamentgroup.com/lab/font-events.html).
 * Detects all known fonts including [generic font families](https://www.smashingmagazine.com/2015/11/using-system-ui-fonts-practical-guide/), [zero-width fonts](https://github.com/adobe-fonts/adobe-blank), and other [weird fonts](http://processingjs.nihongoresources.com/the_smallest_font/).
-* Supports IE9+, Edge, Chrome, Firefox, Safari, and Opera.
-* Supports IE6+, Edge, Chrome, Firefox, Safari, and Opera with [`legacy` version](dist/onfontready.legacy.js).
+* Supports IE9+, Edge, Chrome, Firefox, Safari (+iOS), and Opera.
+* Supports IE6+, Edge, Chrome, Firefox, Safari (+iOS), and Opera with [`legacy` version](dist/onfontready.legacy.js).
 * 371 bytes gzipped (or 444 bytes for `legacy`). More than 3.5 times smaller than [FontFaceObserver](https://github.com/bramstein/fontfaceobserver). Fantastic for inlining!
 * Uses unopinionated callback-based architecture. Easily extended to other tools and architectures, like Promises with the [Promise shim](docs/promiseShimUsage.md).
 * Tons of [Documentation](docs/README.md) and [Examples](docs/recipesAndUsagePatterns.md).

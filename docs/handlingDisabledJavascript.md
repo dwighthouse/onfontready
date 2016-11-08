@@ -47,7 +47,7 @@ The page can override the font styles inside a noscript tag. When scripts are en
 
     <p class="font">Lorem ipsum...</p>
 
-    <script src="https://cdn.rawgit.com/dwighthouse/onfontready/master/dist/onfontready.min.js"></script>
+    <script src="onfontready.min.js"></script>
     <script>
         window.onfontready('VT323', function() {
             document.documentElement.className += ' loaded';
@@ -85,7 +85,7 @@ Second, the page can start off with the loaded class, and then remove it as soon
 
     <p class="font">Lorem ipsum...</p>
 
-    <script src="https://cdn.rawgit.com/dwighthouse/onfontready/master/dist/onfontready.min.js"></script>
+    <script src="onfontready.min.js"></script>
     <script>
         window.onfontready('VT323', function() {
             document.documentElement.className += ' loaded';
