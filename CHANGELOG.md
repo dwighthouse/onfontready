@@ -1,6 +1,6 @@
 # Change Log
 
-## [1.1.0] - 2016-11-XX
+## [1.1.0] - 2016-11-08
 
 - Added ability to detect generic font families
 - Removed the need to specify `sampleText` in all but [one known font](http://processingjs.nihongoresources.com/the_smallest_font/)
