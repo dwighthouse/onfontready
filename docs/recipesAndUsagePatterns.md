@@ -19,6 +19,7 @@ These examples make some assumptions about both the server and the client:
 * If the font VT323 is installed locally on the client machine, the output visuals may not flicker as described.
 * If the testing browser's cache is not disabled or cleared prior to running Scenarios 1 through 5, the output visuals may not flicker as described.
 * If the server does not send correct caching headers for font files, the browser may not cache the font. Future loads of Scenarios 6 and 7 may become susceptible to [FOIT](https://css-tricks.com/fout-foit-foft/). Fortunately, Google Fonts does return correct caching headers.
+* These examples should be run on modern browsers. Text transparency and localStorage are not available on some older browsers.
 
 The following scenarios cover `onfontready` usage for detecting a single font. To make sure the font load experience works without Javascript enabled, read about [Handling Disabled Javascript](handlingDisabledJavascript.md). To detect multiple font loads as a single unit (or timeout as a single unit), read about patterns of [Multi-Font Detection](multiFontDetection.md). To use `onfontready` in a Promise-based form, read about [Promise Shim Usage](promiseShimUsage.md).
 
