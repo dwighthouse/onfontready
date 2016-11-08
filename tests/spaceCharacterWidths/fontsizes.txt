@@ -1,0 +1,134 @@
+Mac Modern Browsers
+-------------------
+
+Chrome 52.0.2743.116 (Mac)
+249 - serif
+277 - sans-serif
+599 - monospace
+277 - cursive
+226 - fantasy
+
+Firefox 47.0 (Mac)
+250 - serif
+278 - sans-serif
+600 - monospace
+278 - cursive
+227 - fantasy
+
+Opera 39.0.2256.48 (Mac)
+250 - serif
+278 - sans-serif
+600 - monospace
+278 - cursive
+227 - fantasy
+
+Safari 9.1.2 (11601.7.7) (Mac)
+250 - serif
+278 - sans-serif
+600 - monospace
+278 - cursive
+227 - fantasy
+
+
+
+Windows Modern Browsers
+-----------------------
+
+Chrome Version 52.0.2743.116 m (Windows)
+249 - serif
+277 - sans-serif
+549 - monospace
+298 - cursive
+176 - fantasy
+
+Firefox 48.0.2 (Window)
+250 - serif
+278 - sans-serif
+600 - monospace
+299 - cursive
+278 - fantasy
+
+Opera 39.0 (Windows)
+250 - serif
+278 - sans-serif
+549 - monospace
+299 - cursive
+177 - fantasy
+
+Edge 25.10586.0.0
+250 - serif
+278 - sans-serif
+600 - monospace
+299 - cursive
+174 - fantasy
+
+Internet Explorer 11.494.10586.0
+250 - serif
+278 - sans-serif
+600 - monospace
+299 - cursive
+174 - fantasy
+
+Internet Explorer 11.0.9600.17843
+250 - serif
+278 - sans-serif
+600 - monospace
+207 - cursive
+174 - fantasy
+
+
+
+Old Versions
+------------
+
+Internet Explorer 10.0.9200.17457
+333 - serif
+278 - sans-serif
+600 - monospace
+207 - cursive
+174 - fantasy
+
+Internet Explorer 9.0.8112.16421
+333 - serif
+278 - sans-serif
+600 - monospace
+207 - cursive
+174 - fantasy
+
+Internet Explorer 8
+250 - serif
+278 - sans-serif
+599 - monospace
+299 - cursive
+250 - fantasy
+(took a timeout to see the width of a space-only div???)
+
+Internet Explorer 7
+250 - serif
+278 - sans-serif
+599 - monospace
+299 - cursive
+250 - fantasy
+(took a timeout to see the width of a space-only div???)
+
+Internet Explorer 6
+250 - serif
+278 - sans-serif
+599 - monospace
+299 - cursive
+250 - fantasy
+(took a timeout to see the width of a space-only div???)
+
+Chromium 4.0.207.0 (25573) (Mac)
+250 - serif
+278 - sans-serif
+599 - monospace
+299 - cursive
+176 - fantasy
+
+Safari 5.1.7 (7534.57.2) (Windows)
+250 - serif
+278 - sans-serif
+599 - monospace
+299 - cursive
+299 - fantasy

@@ -1,0 +1,235 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Browser Memory Leak Test</title>
+
+<style>
+    .results {
+        border-collapse: collapse;
+    }
+
+    .results td {
+        padding: 6px;
+        border: 1px solid #ddd;
+    }
+
+    .success {
+        background: #328332;
+        color: #fff;
+    }
+
+    .success:before {
+        content: "✓";
+        display: inline-block;
+        width: 20px;
+    }
+
+    .failure {
+        background: #f00;
+        color: #fff;
+    }
+
+    .failure:before {
+        content: "×";
+        display: inline-block;
+        width: 20px;
+    }
+
+    .warning {
+        background: #ff9300;
+        color: #fff;
+    }
+
+    .warning:before {
+        content: "?";
+        display: inline-block;
+        width: 20px;
+    }
+</style>
+
+
+
+<h1>Browser Memory Leak Test</h1>
+
+<p>In an effort to further reduce code size, it was discovered that modern browsers usually remove event listeners from elements that are removed from the page, even if that event listener contains a circular reference to the element. The garbage collector should be able to handle this. This was not always the case.</p>
+
+<p>To check various browsers, a test was made would use more and more memory if the browser had this memory leak. Several major browsers were tested, and these are the results.</p>
+
+
+<h2>Test Results</h2>
+
+<table class="results">
+    <tr>
+        <td>Google Chrome (50.0.2661.94)</td>
+        <td class="success">No Memory Leak</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Mozilla Firefox (45.0.2)</td>
+        <td class="success">No Memory Leak</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Opera (36.0.2130.65)</td>
+        <td class="success">No Memory Leak</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Apple Safari (9.1, 11601.5.17.1)</td>
+        <td class="success">No Memory Leak</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Microsoft Edge</td>
+        <td class="success">No Memory Leak</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Internet Explorer 11</td>
+        <td class="success">No Memory Leak</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Internet Explorer 10</td>
+        <td class="failure">Memory Leak</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Internet Explorer 9</td>
+        <td class="failure">Memory Leak</td>
+        <td>
+            <a href="http://www.j15r.com/blog/2010/09/16/IE9_Memory_Leaks_Finally_Declared_Dead">Possible solution</a> is ineffective
+        </td>
+    </tr>
+    <tr>
+        <td>Internet Explorer 8</td>
+        <td class="success">No Memory Leak</td>
+        <td>Compatibility View has no effect</td>
+    </tr>
+    <tr>
+        <td>Internet Explorer 7</td>
+        <td class="failure">Memory Leak</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Internet Explorer 6</td>
+        <td class="failure">Memory Leak</td>
+        <td></td>
+    </tr>
+</table>
+
+
+<h2>Conclusion</h2>
+
+<p>While some newer browsers are not susceptible, memory leaks remain a relatively common problem. Therefore, onfontready will be keeping the event listener removal code for the foreseeable future.</p>
+
+<hr>
+
+<h2>Test</h2>
+
+<p>We create a series of very memory-heavy iframe onload event listeners on iframes that reference their own element, creating a circular dependency. Once the onload function is called, we immediately remove the iframe. Modern browsers should recognize that the circular depencency has no external references and then remove both. Older versions of IE were known to be unable to detect this correctly.</p>
+
+<p>Run the test while watching the page's memory usage. If the browser is working correctly, the page should consume no more than an additional 2,000 kb after completing the tests. If the browser has a memory leak, it should consume around 16,000 kb after completing the tests.</p>
+
+<div>
+    <label>
+        <input id="eventListenerCheckbox" type="checkbox" /> Clear event listener when removing iframe
+    </label>
+    <div>
+        <button id="startTestButton">Start Test</button>
+    </div>
+</div>
+
+<div>
+    <pre id="console"></pre>
+</div>
+
+<script>
+
+    (function() {
+        var consoleElement = document.getElementById('console');
+        window.log = function(text) {
+            consoleElement.innerHTML = consoleElement.innerHTML + '<br>' + text;
+        };
+    }());
+
+    (function() {
+        function attachEvent(element, eventName, callback) {
+            if (element.attachEvent)
+            {
+                element.attachEvent(eventName, callback);
+            }
+            else
+            {
+                element[eventName] = callback;
+            }
+        }
+
+        function detachEvent(element, eventName, callback) {
+            if (element.detachEvent)
+            {
+                element.detachEvent(eventName, callback);
+            }
+            else
+            {
+                element[eventName] = null;
+            }
+        }
+
+        var eventListenerCheckbox = document.getElementById('eventListenerCheckbox');
+        var startTestButton = document.getElementById('startTestButton');
+        var iframe;
+        var generatedOnLoadEvent;
+
+        function createOnLoadFunction(iframe) {
+            var obj = {
+                increment: 0,
+                hugeMemory: new Array(100000).join('0') + (new Date().getTime()),
+
+                // In some browsers, there would be a memory leak even if this were removed
+                circularReference: iframe
+            };
+
+            return function() {
+                obj.increment += 1;
+                destroy();
+            };
+        }
+
+        function create() {
+            iframe = document.createElement('iframe');
+
+            generatedOnLoadEvent = createOnLoadFunction(iframe);
+            attachEvent(iframe, 'onload', generatedOnLoadEvent);
+
+            document.body.appendChild(iframe);
+        }
+
+        function destroy() {
+            if (eventListenerCheckbox.checked)
+            {
+                detachEvent(iframe, 'onload', generatedOnLoadEvent)
+            }
+
+            document.body.removeChild(iframe);
+            iframe = null;
+            generatedOnLoadEvent = null;
+        }
+
+        function startTest() {
+            var interval = setInterval(function() {
+                create();
+            }, 100);
+
+            setTimeout(function() {
+                clearInterval(interval);
+                window.log('test complete');
+            }, 10000);
+        }
+
+        attachEvent(startTestButton, 'onclick', startTest);
+    }());
+
+</script>

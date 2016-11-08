@@ -1,0 +1,350 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Main Tests</title>
+
+<link href="../../tests/mainTests/helpers/styles.css" rel="stylesheet">
+
+<!--[if IE 6]><body class="ie6"><![endif]-->
+<!--[if IE 7]><body class="ie7"><![endif]-->
+<!--[if IE 8]><body class="ie8"><![endif]-->
+
+<pre id="console"></pre>
+
+<div class="group">
+    <h1>Main Tests</h1>
+    <p>These tests verify all aspects of the onfontready library itself, including graceful failures when improperly used. <strong>Please clear or disable your browser's cache prior to running these tests!</strong></p>
+</div>
+
+<div class="group">
+    <button id="startButton">Start Tests</button>
+
+    <label>
+        <input id="useLegacyCheckbox" type="checkbox" /> Use Legacy Version (required for IE6, IE7, &amp; IE8)
+    </label>
+</div>
+
+<div class="group">
+    <h2>Results</h2>
+
+    <table class="box">
+        <tr>
+            <td class="example f1">Font</td>
+            <td class="description">
+                <h4>Sanity Check</h4>
+                <p>Uses normal font-loading capabilities. onfontready is not used. Susceptible to <a href="https://css-tricks.com/fout-foit-foft/">FOIT</a>.</p>
+                <pre>Font: 'f1'</pre>
+                <p><strong>Expected Results:</strong> <em>Custom font should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f1Notes" style="color: #999;">Pending...</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f2">Font</td>
+            <td class="description">
+                <h4>Normal Usage</h4>
+                <pre>Font: 'f2'</pre>
+                <pre>Options: {}</pre>
+                <p><strong>Expected Results:</strong> <em>Custom font should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f2Notes" style="color: #999;">Pending...</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example arial">Font</td>
+            <td class="description">
+                <h4>Known Font</h4>
+                <pre>Font: 'Arial'</pre>
+                <pre>Options: {}</pre>
+                <p><strong>Expected Results:</strong> <em>Arial font should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="ArialNotes" style="color: #999;">Pending...</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example sansSerif">Font</td>
+            <td class="description">
+                <h4>Generic Font-Family</h4>
+                <p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-family">Generic font families</a> can be specified in a font stack, but only without quotes. Specifying <span style="font-family: sans-serif;">{ generic: true }</span> causes onfontready to add the tested font without quotes in the CSS. Without this change, the generic font names are assumed to be the names of font faces that are loaded by the page.</p>
+                <pre>Font: sans-serif (generic)</pre>
+                <pre>Options: { generic: true }</pre>
+                <p><strong>Expected Results:</strong> <em>Generic font-family sans-serif should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="sans-serifNotes" style="color: #999;">Pending...</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example cursive">Font</td>
+            <td class="description">
+                <h4>Generic Font-Family without Generic Option</h4>
+                <p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-family">Generic font families</a> cannot be detected properly if the generic option evaluates to false.</p>
+                <pre>Font: cursive (generic)</pre>
+                <pre>Options: { generic: false }</pre>
+                <p style="color: #f33">Incorrect Usage: Always set the generic option to true when testing generic font families.</p>
+                <p style="color: #f33">IE6 Failure: Generic font-family cursive should display because IE6 accepts generic font family names with quotes.</p>
+                <p style="color: #f33">IE7 Failure: Generic font-family cursive should display because IE7 accepts generic font family names with quotes.</p>
+                <p><strong>Expected Results:</strong> <em>Fallback font (serif) should display, detection elements remain forever</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="cursiveNotes" style="color: #999;">Pending...</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f3">Font</td>
+            <td class="description">
+                <h4>Using timeoutAfter and onTimeout</h4>
+                <pre>Font: 'f3'</pre>
+                <pre>Options: { timeoutAfter: 1, onTimeout: function() { ... } }</pre>
+                <p><strong>Expected Results:</strong> <em>Fallback font (serif) should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f3Notes" style="color: #999;">Pending...</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f4">Font</td>
+            <td class="description">
+                <h4>Zero timeoutAfter</h4>
+                <p>Since <a href="https://developer.mozilla.org/en-US/docs/Glossary/Falsy">zero is falsy in JavaScript</a>, using a 0 timeoutAfter will effectively tell onfontready not to use a timeout at all.</p>
+                <pre>Font: 'f4'</pre>
+                <pre>Options: { timeoutAfter: 0, onTimeout: function() { ... } }</pre>
+                <p style="color: #f33">Incorrect Usage: A 0 timeoutAfter is pointless. Use a negative timeoutAfter to do an <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers/setTimeout#Nested_timeouts_forced_to_>4ms">'immediate-ish' timeout</a>.</p>
+                <p><strong>Expected Results:</strong> <em>Custom font should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f4Notes" style="color: #999;">Pending...</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f9">Font</td>
+            <td class="description">
+                <h4>Negative timeoutAfter</h4>
+                <p>Since <a href="https://developer.mozilla.org/en-US/docs/Glossary/Falsy">zero is falsy in JavaScript</a>, negative timeoutAfter values can be used for an <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers/setTimeout#Nested_timeouts_forced_to_>4ms">'immediate-ish' timeout</a>.</p>
+                <pre>Font: 'f9'</pre>
+                <pre>Options: { timeoutAfter: -1, onTimeout: function() { ... } }</pre>
+                <p><strong>Expected Results:</strong> <em>Fallback font (serif) should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f9Notes" style="color: #999;">Pending...</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f5">Font</td>
+            <td class="description">
+                <h4>Missing onTimeout</h4>
+                <pre>Font: 'f5'</pre>
+                <pre>Options: { timeoutAfter: 1 }</pre>
+                <p style="color: #f33">Incorrect Usage: Always use onTimeout option if timeoutAfter option is used.</p>
+                <p><strong>Expected Results:</strong> <em>Fallback font (serif) should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f5Notes" style="color: #999;">Pending...</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f8">Font</td>
+            <td class="description">
+                <h4>Missing timeoutAfter</h4>
+                <pre>Font: 'f8'</pre>
+                <pre>Options: { onTimeout: function() { ... } }</pre>
+                <p style="color: #f33">Incorrect Usage: Always use timeoutAfter option if onTimeout option is used.</p>
+                <p><strong>Expected Results:</strong> <em>Custom font should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f8Notes" style="color: #999;">Pending...</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f6">Font</td>
+            <td class="description">
+                <h4>Using sampleText</h4>
+                <pre>Font: 'f6'</pre>
+                <pre>Options: { sampleText: 'Hello World, onfontready' }</pre>
+                <p><strong>Expected Results:</strong> <em>Custom font should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f6Notes" style="color: #999;">Pending...</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f_Fo">Font</td>
+            <td class="description">
+                <h4>Using sampleText with Limited Font</h4>
+                <p>Font 'f_Fo' only contains uppercase 'F' and lowercase 'o' glyphs. Since the sampleText only contains those characters, onfontready can detect that the custom font has been loaded.</p>
+                <pre>Font: 'f_Fo'</pre>
+                <pre>Options: { sampleText: 'oF' }</pre>
+                <p style="color: #f33">IE6 Failure: Block glyphs should display for the 'n' and 't' in 'Font' because IE6 replaces missing glyphs in custom fonts with equal-sized blocks, creating a potential false-positive condition.</p>
+                <p><strong>Expected Results:</strong> <em>Custom font should display only for 'F' and 'o' in 'Font'</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f_FoNotes" style="color: #999;">Pending...</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f_Yu">Font</td>
+            <td class="description">
+                <h4>Fully Unsupported Glyphs in sampleText False Negative</h4>
+                <p>Font 'f_Yu' only contains uppercase 'Y' and lowercase 'u' glyphs. Since the sampleText doesn't contain those characters, onfontready cannot detect that the custom font has been loaded.</p>
+                <pre>Font: 'f_Yu'</pre>
+                <pre>Options: { sampleText: 'Hello World' }</pre>
+                <p style="color: #f33">Incorrect Usage: If sampleText must be used, only use it with characters supported by the custom font being tested.</p>
+                <p style="color: #f33">IE6 Failure: Block glyphs should display because IE6 replaces missing glyphs in custom fonts with equal-sized blocks, creating a potential false-positive condition.</p>
+                <p style="color: #f33">IE7 Failure: IE7 replaces missing glyphs in custom fonts with serif font glyphs, regardless of fallback font, creating a potential false-positive condition.</p>
+                <p><strong>Expected Results:</strong> <em>Fallback font (serif) should display, detection elements remain forever</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f_YuNotes" style="color: #999;">Pending...</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f7">Font</td>
+            <td class="description">
+                <h4>Partially Supported Glyphs in sampleText False Negative</h4>
+                <p>Font 'f7' does not contain glyphs for uppercase 'Y', lowercase 'r', and lowercase 'u'. However it does contain the other glyphs in the sampleText. The unsupported glyphs will lead to differing widths in the sampleText, even after the custom font has loaded. onfontready cannot detect that the custom font has been loaded.</p>
+                <pre>Font: 'f7'</pre>
+                <pre>Options: { sampleText: 'Your Font' }</pre>
+                <p style="color: #f33">Incorrect Usage: If sampleText must be used, only use it with characters supported by the custom font being tested.</p>
+                <p style="color: #f33">IE6 Failure: IE6 replaces missing glyphs in custom fonts with equal-sized blocks, creating a potential false-positive condition.</p>
+                <p style="color: #f33">IE7 Failure: IE7 replaces missing glyphs in custom fonts with serif font glyphs, regardless of fallback font, creating a potential false-positive condition.</p>
+                <p><strong>Expected Results:</strong> <em>Fallback font (serif) should display, detection elements remain forever</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f7Notes" style="color: #999;">Pending...</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f10">Font</td>
+            <td class="description">
+                <h4>sampleText with Character Width Equivalence False Positive</h4>
+                <p>Many characters in Unicode can and do have the same width regardless of the font used. For example, consider the line-feed character is always zero-width. Many mathematical symbols and higher-level Unicode characters also have this same-width property, even if they visually appear different, in serif and monospace fonts. Since onfontready relies on differing widths of characters in different fonts, using such a width-equivalent character as the sampleText will cause onReady to be called immediately, even if the custom font isn't fully loaded. The custom font may load, but the false positive generated may allow the page to generate <a href="https://css-tricks.com/fout-foit-foft/">FOIT</a> text.</p>
+                <pre>Font: 'f10'</pre>
+                <pre>Options: { sampleText: String.fromCharCode(0) }</pre>
+                <p style="color: #f33">Incorrect Usage: If sampleText must be used, only use it with characters known to have different widths in serif and monospace.</p>
+                <p><strong>Expected Results:</strong> <em>Fallback font (serif) should display</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f10Notes" style="color: #999;">Pending...</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f_F1">Font</td>
+            <td class="description">
+                <h4>Using sampleText with Font Containing No Space Character</h4>
+                <p>Font 'f_F1' contains only a single glyph for the capital 'F'. There is no space character specified at all. Since this font does not contain a space character, sampleText must be used.</p>
+                <pre>Font: 'f_F1'</pre>
+                <pre>Options: { sampleText: 'F' }</pre>
+                <p style="color: #f33">IE6 Failure: IE6 replaces missing glyphs in custom fonts with equal-sized blocks, resulting in block glyphs for 'ont' in 'Font'.</p>
+                <p><strong>Expected Results:</strong> <em>Custom font should display only for 'F' in 'Font'</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f_F1Notes" style="color: #999;">Pending...</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="box">
+        <tr>
+            <td class="example f_F2">Font</td>
+            <td class="description">
+                <h4>Not Using sampleText with Font Containing No Space Character</h4>
+                <p>Font 'f_F2' contains only a single glyph for the capital 'F'. There is no space character specified at all. Since no sampleText is specified, onfontready will attempt to use a space for the sampleText. This will result in a false-negative.</p>
+                <pre>Font: 'f_F2'</pre>
+                <pre>Options: {}</pre>
+                <p style="color: #f33">Incorrect Usage: If custom font does not contain a space character, the sampleText option must be used. Furthermore, the sampleText must only contain glyphs the custom font defines.</p>
+                <p style="color: #f33">IE6 Failure: IE6 replaces missing glyphs in custom fonts with equal-sized blocks, creating a potential false-positive condition.</p>
+                <p style="color: #f33">IE7 Failure: IE7 replaces missing glyphs in custom fonts with serif font glyphs, regardless of fallback font, creating a potential false-positive condition.</p>
+                <p><strong>Expected Results:</strong> <em>Fallback font (serif) should display, detection elements remain forever</em></p>
+                <p>
+                    <strong>Result Notes:</strong> <span id="f_F2Notes" style="color: #999;">Pending...</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script src="../../tests/mainTests/helpers/jsonPolyfill.js"></script>
+<script src="../../tests/mainTests/helpers/log.js"></script>
+<script src="../../tests/mainTests/helpers/addFontFace.js"></script>
+<script src="../../tests/mainTests/helpers/testRunner.js"></script>
+
+<script src="../../tests/mainTests/builds/onfontready.legacy.js"></script>
+<script>window.onfontreadyLegacy = window.onfontready;</script>
+<script src="../../tests/mainTests/builds/onfontready.js"></script>
+
+<!--[if IE 6]><script>window.isIE6 = true;</script><![endif]-->
+<!--[if IE 7]><script>window.isIE7 = true;</script><![endif]-->
+<!--[if IE 8]><script>window.isIE8 = true;</script><![endif]-->
+
+<script>
+var startButton = document.getElementById('startButton');
+var useLegacyCheckbox = document.getElementById('useLegacyCheckbox');
+var shutdownStateStatus = document.getElementById('shutdownStateStatus');
+var shutdownStateDescription = document.getElementById('shutdownStateDescription');
+
+// Default IE 8 and below to using legacy version
+if (window.isIE6 || window.isIE7 || window.isIE8)
+{
+    useLegacyCheckbox.checked = true;
+}
+
+startButton.onclick = function() {
+    startButton.setAttribute('disabled', 'disabled');
+
+    if (useLegacyCheckbox.checked)
+    {
+        window.isLegacyVersion = true;
+        window.onfontready = window.onfontreadyLegacy;
+    }
+
+    window.testRunner(shutdownStateStatus, shutdownStateDescription);
+};
+</script>

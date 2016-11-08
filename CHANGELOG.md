@@ -1,5 +1,28 @@
 # Change Log
 
+## [1.1.0] - 2016-11-08
+
+- Added ability to detect generic font families
+- Removed the need to specify `sampleText` in all but [one known font](http://processingjs.nihongoresources.com/the_smallest_font/)
+- Reduced RAM and DOM usage by approximately 1/3rd
+- Added a shim to convert `onfontready` from a callback architecture to a Promise architecture if desired
+- Added `onfontsready`, an external function built on top of `onfontready` that detects the load/parse of multiple fonts as a unit
+- Improved compression by 46 bytes (modern) and 54 bytes (legacy) thanks to in-depth research on font structure, browser memory leaks, and standard character widths
+- Maintained full backwards compatibility
+- Added comprehensive documentation for design, usage, special cases, and other in-depth details
+- Added built-in generation of zopfli and brotli compressions for size comparisons
+- Added many new tests, both for new functionality and additional special cases
+- Updated tests with more information and explanation of browser quirks and special cases
+- Unified Main Tests into a single test for both `modern` and `legacy` versions
+- Merged modern and legacy versions into single version differentiated with `process.env` flags
+- Reduced font format variations used in tests and recommended in documentation relative to actual worldwide usage patterns (see [issue #5](https://github.com/dwighthouse/onfontready/issues/5))
+- Rebuilt build system to generate better intermediate distribution versions using Babel and some plugins
+- Updated build system commands to be more consistent and easy to use
+- Updated build system with some 'build everything' commands to simplify most build needs
+- Updated documentation for testing legacy versions of IE
+- Unified all folder and file names under camelCase naming
+- Updated README about changes and added new Future Plans
+
 ## [1.0.2] - 2016-06-23
 
 - Improved compression by 50 bytes (modern) and 41 bytes (legacy)

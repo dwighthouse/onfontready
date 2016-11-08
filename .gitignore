@@ -1,3 +1,5 @@
+.DS_Store
 node_modules/
 dist/*.gz
-tests/main/builds/
+dist/*.br
+tests/mainTests/builds/

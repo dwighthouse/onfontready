@@ -1,237 +1,123 @@
-// * fontName - Font name used in the `@font-face` declaration
-// * onReady - Function called upon successful font load and parse detection
-// * options - Optional parameter
-//   - options.sampleText - Text string used to test font loading
-//                          Defaults to "onfontready"
-//   - options.timeoutAfter - Milliseconds to wait before giving up
-//                            Calls the `options.onTimeout` callback
-//                            Unset or 0 will result in an indefinite wait
-//   - options.onTimeout - Called after `options.timeoutAfter` milliseconds
-//                           have elapsed without an `onReady` call
-window.onfontready = function(fontName, onReady, options) {
+// * fontName : Font name used in the `@font-face` declaration
+// * onReady  : Function called upon successful font load and parse detection
+// * options  : Optional parameters
+// * options.timeoutAfter : Milliseconds to wait before giving up
+//                          Triggers options.onTimeout call
+//                          Unset or 0 will result in an indefinite wait
+// * options.onTimeout    : Called after options.timeoutAfter milliseconds
+//                            have elapsed without an onReady call
+// * options.sampleText   : Text string used to test font loading
+//                          Defaults to " " (space character)
+// * options.generic      : Boolean set to true if attempting to detect
+//                            generic family font
+// * root                 : Undefined variable used by function
+// * tryFinish            : Undefined variable used by function
+window.onfontready = function (fontName, onReady, options, root, tryFinish) {
 
     // Ensure options is defined to prevent access errors
-    // The defaulted 'onfontready' works as an object and is more compressable
-    options = options || 'onfontready';
+    options = options || 0;
 
     // A 0 timeoutAfter will prevent the timeout functionality
-    if (options.timeoutAfter)
-    {
-        setTimeout(function() {
-            // Prevent timeout after shutdown
-            if (root)
-            {
-                // Shutdown should occur whether onTimeout exists or not
-                // Two calls combined, shutdown is called first
-                // onTimeout should not be called if undefined in options
-                //   Since shutdown called a second time is effectively a
-                //   no-op, use that as a default function
-                (options.onTimeout || shutdown)(shutdown());
+
+    // root and tryFinish parameters prevent the need for var statement
+
+    if (options.timeoutAfter) {
+        setTimeout(function () {
+            // Prevent onTimeout call after shutdown
+            if (root) {
+
+                // Shutdown should occur even if onTimeout is not defined
+                document.body.removeChild(root);
+
+                // Break the reference to the DOM element to allow GC to run
+                // Assigning to 0 also results in falsy root tests elsewhere
+                root = 0;
+
+                // This won't prevent TypeError if onTimeout is not a function
+                if (options.onTimeout) {
+                    options.onTimeout();
+                }
             }
         }, options.timeoutAfter);
     }
 
-    if ('test' === "production")
-    {
-        var testName = fontName;
-        // A helper function that counts the creation and destruction of
-        //   elements and event listeners for testing purposes
-        function reporter() {
-            var tests = {};
+    // Measures the test elements to determine if the font has loaded
+    // Always safe to call, even after shutdown
+    // Using function assignment compresses better than function declaration
+    tryFinish = function () {
+        // Prevent test or onReady call after shutdown
+        // The width of the parent elements are influenced by the children,
+        //   so it is sufficient to measure the parents
+        // clientWidth only measures to integer accuracy
+        //   This is sufficient for such large font sizes (999px)
+        // Both compared values are integers, so double equality is sufficient
+        if (root && root.firstChild.clientWidth == root.lastChild.clientWidth) {
 
-            return {
-                increment: function(name, type) {
-                    if (!tests[name])
-                    {
-                        tests[name] = {
-                            root: 0,
-                            load: 0,
-                            resize: 0
-                        };
-                    }
-                    tests[name][type] += 1;
-                },
-                decrement: function(name, type) {
-                    if (!tests[name])
-                    {
-                        tests[name] = {
-                            root: 0,
-                            load: 0,
-                            resize: 0
-                        };
-                    }
-                    tests[name][type] -= 1;
-                },
-                fullReport: function() {
-                    return tests;
-                }
-            };
-        }
-        window.testReporter = window.testReporter || reporter();
-    }
-
-    var tryFinish = function() {
-        // Prevent equality check if shutdown already called
-        if (root)
-        {
-            // Save off the serif width inline with the comparison and use
-            //   it to directly compare to other two widths
-            // Reuse the fontName variable for serif width, since it has
-            //   already been fully used by the time this tryFinish is called
-            // Using clientWidth is smaller than getBoundingClientRect().left
-            //   It rounds to nearest integer instead of using floating point
-            //   However, this is safe due to the large font sizes
-            // Looking up the childNodes each time compresses better
-            if ((fontName = root.childNodes[0].clientWidth) == root.childNodes[1].clientWidth &&
-                fontName == root.childNodes[2].clientWidth)
-            {
-                // Two calls combined, shutdown is called first
-                onReady(shutdown());
-            }
-        }
-    };
-
-    var shutdown = function() {
-        // Prevent double-removal of root
-        if (root)
-        {
             document.body.removeChild(root);
-            if ('test' === "production")
-            {
-                window.testReporter.decrement(testName, 'root');
-            }
-        }
 
-        // Setting root to 0 prevents extra tests and shutdowns while safely
-        //   breaking the reference for the garbage collector
-        root = 0;
+            // Break the reference to the DOM element to allow GC to run
+            // Assigning to 0 also results in falsy root tests elsewhere
+            root = 0;
+
+            onReady();
+        }
     };
 
-    // Passing outerShutdown allows shutdown sequence in reverse order
-    //   without variables or loops
-    // iframe parameter is used as a local variable
-    // Having three parameters guarantees that this function declaration
-    //   will have the same signature (when minified) as the outer closure
-    //   which will save some bytes when compressed
-    var startupIframe = function(outerShutdown, appendToChildIndex, iframe) {
-        // Attempts to add more compression by combining this line
-        //   with other operations have failed
-        iframe = document.createElement('iframe');
-
-        iframe.onload = function() {
-            // Check if font is loaded at iframe onload time
-            tryFinish();
-
-            // If shutdown has already been called due to a tryFinish above
-            //   root will already be destroyed and this code won't run
-            if (root)
-            {
-                // Check if font is loaded during iframe resize
-                iframe.contentWindow.onresize = tryFinish;
-                if ('test' === "production")
-                {
-                    window.testReporter.increment(testName, 'resize');
-                }
-            }
-        };
-        if ('test' === "production")
-        {
-            window.testReporter.increment(testName, 'load');
-        }
-
-        // Reassign the shutdown function to new wrapped shutdown function
-        // Removes the need to store off shutdown functions, use loops,
-        //   or assume all three startupIframe calls occurred
-        shutdown = function() {
-            // Test is up here because outerShutdown acts recursively
-            if ('test' === "production")
-            {
-                window.testReporter.decrement(testName, 'resize');
-                window.testReporter.decrement(testName, 'load');
-            }
-
-            // Perform shutdown operation inside function call for compression
-            // Break the references to remove event listeners by 0 assignment
-            // If the iframe.contentWindow is already gone,
-            //   perform reference break assignment to meaningless string
-            //   This is safe and compresses better
-
-            // The inner shutdown calls outerShutdown in reverse order
-            // This prevents the need to return or store a shutdown function
-            outerShutdown(iframe.onload = (iframe.contentWindow || 'onfontready').onresize = 0);
-        };
-
-        // The iframe must only have a width relative to the text's width
-        // Using 999% instead of 100% is more compressable
-        // We are not measuring the width of the iframes, only using them
-        //   to detect resizes, so it does not matter their exact width
-        //   However, 100% or greater is likely required in special cases
-        iframe.style.width = '999%';
-
-        // Appending must be last to allow the iframe's onload to be setup
-        //   early enough
-        root.childNodes[appendToChildIndex].appendChild(iframe);
-    };
-
-    var root;
-
-    // An iframe within an out-of-flow div, allows the iframe's width to be
-    //   associated with the text's width
-    //   If the text width changes, the iframe is resized
-    // Specifying the font size inside the font shorthand removes the need
-    //   to declare both font-size and font-family
-    // Font size of 999% shares the string with positioning styles
-    //   The font size will be 999% of the html page's base font size
-    //   As long as it's fairly large, the exact size doesn't matter
-    // Font quotes are sometimes necessary, but prevent the use of onfontready
-    //   to detect generic-named fonts' readiness
-    // Here, sampleText defaults to 'onfontready' if not assigned
-    // It is more compressable to assign root here (oddly)
-    // The return value of appendChild is the appended element,
-    //   so the innerHTML assignment can be done immediately
+    // Attempt to finish early if the font is already loaded
+    // The tryFinish call happens after the test elements are added
+    tryFinish(
+    // Save bytes by creating and assigning the root div inside call
+    // appendChild returns the root, allowing innerHTML usage inline
     document.body.appendChild(root = document.createElement('div')).innerHTML =
-        '<div style="font:999% \'' + fontName + '\',serif;position:fixed;right:999%;bottom:999%;white-space:pre">' +
-            (options.sampleText || 'onfontready') +
-        '</div>' +
-        '<div style="font:999% \'' + fontName + '\',sans-serif;position:fixed;right:999%;bottom:999%;white-space:pre">' +
-            (options.sampleText || 'onfontready') +
-        '</div>' +
-        '<div style="font:999% \'' + fontName + '\',monospace;position:fixed;right:999%;bottom:999%;white-space:pre">' +
-            (options.sampleText || 'onfontready') +
-        '</div>';
-    // -Unapplied Compressions-
-    // Modern browsers (except Edge and IE12) can allow the space between
-    //   999% and the quote for the font name to be removed
-    // Using <pre> tags instead of <div> tags would allow us to ignore
-    //   white-space:pre in modern browsers, and compress much better,
-    //   but this is more likely to interfere with user's page styles
+    // position:fixed breaks the element out of page flow
+    //   Being out of flow makes the div size to the text
+    // white-space:pre ensures no text wrapping will occur
+    // Out of bounds percentage bottom/right prevents scrollbars
+    // font combines font-size and font-family
+    // Font size 999px differentiates fallback fonts
+    // Using font size in pixels prevents possible
+    //   failure due to zero-sized default page fonts
+    // Using a <pre> instead of a <div> tag might be smaller, but
+    //   it is more likely to interfere with page styles
+    '<div style="position:fixed;white-space:pre;bottom:999%;right:999%;font:999px ' + (
+    // Generic fonts should be quote-less
+    options.generic ? '' : "'") + fontName + (options.generic ? '' : "'") +
+    // Fallback font sizes text differently from
+    //   the adjacent div until the font has loaded
+    ',serif">' + (
+    // A single space is the text default
+    options.sampleText || ' ') + '</div>' + '<div style="position:fixed;white-space:pre;bottom:999%;right:999%;font:999px ' + (options.generic ? '' : "'") + fontName + (options.generic ? '' : "'") + ',monospace">' + (options.sampleText || ' ') + '</div>');
 
-    if ('test' === "production")
-    {
-        window.testReporter.increment(testName, 'root');
-    }
 
-    // Check if font is already loaded at startup time
-    tryFinish();
+    // If the font is already loaded, tryFinish will have already destroyed
+    //   the root reference, so the iframes will never be inserted
+    if (root) {
+        // The fontName value has already been used, reuse for reference
+        // Save bytes by creating and assigning the iframe inside call
+        // appendChild returns the iframe, allowing style usage inline
+        // The iframe's width only needs to be relative to the parent's
+        root.firstChild.appendChild(fontName = document.createElement('iframe')).style.width = '999%';
 
-    // Checking the root each time for previous shutdowns allows startupIframe
-    //   to safely create and inject the iframe in an interlaced fashion
-    // It is more compressable to put the root checks outside the function
-    // Passing the shutdown reference each time is more compressable than
-    //   creating an assignment within the startupIframe function
-    // Passing the index of the child to append to is more compressable
-    //   than sending the child itself
-    // The parameter order is also for compression reasons
-    if (root)
-    {
-        startupIframe(shutdown, 0);
-    }
-    if (root)
-    {
-        startupIframe(shutdown, 1);
-    }
-    if (root)
-    {
-        startupIframe(shutdown, 2);
+        // contentWindow becomes available upon DOM insertion
+        // Assigning a non-closure function to onresize prevents the
+        //   possibility of memory leaks through event handlers
+        fontName.contentWindow.onresize = tryFinish;
+
+        // By reusing the fontName (via reassignment), the DOM reference
+        //   to the first iframe is broken, reducing memory leak potential
+        root.lastChild.appendChild(fontName = document.createElement('iframe')).style.width = '999%';
+
+        fontName.contentWindow.onresize = tryFinish;
+
+        // Because of iframe loading nuances, sometimes the font can finish
+        //   loading after the root is inserted, but before the onresize
+        //   event handler can be added to an iframe, creating a potential
+        //   for a missed resize event
+        // This setTimeout gives the browser an additional chance to catch
+        //   a font load after returning control to the browser
+        // By assigning the result of setTimeout (a timeout ID) to the
+        //   fontName, the DOM reference to the second iframe is broken,
+        //   further reducing the posibility of memory leaks
+        fontName = setTimeout(tryFinish);
     }
 };
