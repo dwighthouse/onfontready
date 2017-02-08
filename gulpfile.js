@@ -10,6 +10,7 @@ const gzip = require('gulp-gzip');
 const prettyError = require('pretty-error');
 const rename = require('gulp-rename');
 const replace = require('gulp-replace');
+const shell = require('gulp-shell');
 const uglify = require('gulp-uglify');
 const zopfli = require('gulp-zopfli');
 
@@ -42,6 +43,9 @@ const build = (options) => {
                 'transform-es2015-block-scoping',
                 'transform-es2015-shorthand-properties',
                 'transform-es2015-arrow-functions',
+                ['transform-es2015-template-literals', {
+                    "loose": true,
+                }],
                 'transform-node-env-inline',
                 'transform-dead-code-elimination',
             ],
@@ -63,6 +67,8 @@ const build = (options) => {
     {
         baseStream = baseStream
             .pipe(uglify())
+            .pipe(replace('"</div>"', "'</div>'"))
+            .pipe(replace('"</span>.</table>"', "'</span>.</table>'"))
             .pipe(rename((path) => { path.basename += '.min' }))
             .pipe(gulp.dest(options.dest));
     }
@@ -191,3 +197,25 @@ gulp.task('onfontsreadyWatch', ['onfontsready'], () => {
 gulp.task('all', ['build', 'buildTest', 'promise', 'onfontsready']);
 
 gulp.task('allWatch', ['buildWatch', 'buildTestWatch', 'promiseWatch', 'onfontsreadyWatch']);
+
+
+
+// This task makes use of gzthermal, which can only be found on this forum post:
+// https://encode.ru/threads/1889-gzthermal-pseudo-thermal-view-of-Gzip-Deflate-compression-efficiency
+// To use, decompress the runtime for your OS, then place it in the root directory of this project, next to this gulpfile
+gulp.task('thermal', () => {
+    return gulp.src([
+            './dist/onfontready.min.js.gz',
+            './dist/onfontready.legacy.min.js.gz',
+        ])
+        .pipe(shell([
+            './gzthermal ./dist/onfontready.min.js.gz',
+            'mv ./gzthermal-result.png ./dist/onfontready.min.js.gz.png',
+            './gzthermal ./dist/onfontready.legacy.min.js.gz',
+            'mv ./gzthermal-result.png ./dist/onfontready.legacy.min.js.gz.png',
+        ]));
+});
+
+gulp.task('thermalWatch', ['thermal'], () => {
+    gulp.watch('./dist/onfontready.min.js.gz', ['thermal'])
+});

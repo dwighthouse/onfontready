@@ -1,5 +1,7 @@
 .DS_Store
-node_modules/
-dist/*.gz
 dist/*.br
+dist/*.gz
+dist/*.png
+gzthermal
+node_modules/
 tests/mainTests/builds/
