@@ -45,6 +45,6 @@
     "gulp-replace": "0.5.4",
     "gulp-uglify": "2.0.0",
     "gulp-zopfli": "1.0.0",
-    "pretty-error": "^2.0.2"
+    "pretty-error": "2.1.1"
   }
 }
