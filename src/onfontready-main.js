@@ -1,9 +1,7 @@
 import ie6 from './onfontready-ie6.js';
 
-export default (fontName, onReady, options, sampleText) => {
+export default (fontName, onReady, options) => {
     options = options || 0;
-    fontName = options.generic ? fontName : `'${fontName}'`;
-    sampleText = options.sampleText || ' ';
 
     let active = true;
 
@@ -15,7 +13,7 @@ export default (fontName, onReady, options, sampleText) => {
         }, options.timeoutAfter);
     }
 
-    ie6(fontName, sampleText, () => {
+    ie6(options.generic ? fontName : `'${fontName}'`, options.sampleText || ' ', () => {
         if (active) {
             active = false;
             onReady();
